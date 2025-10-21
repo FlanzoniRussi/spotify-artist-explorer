@@ -12,5 +12,5 @@ export type I18nAction =
 export interface I18nContextType {
   language: SupportedLanguage;
   changeLanguage: (language: SupportedLanguage) => void;
-  t: (key: string, options?: Record<string, any>) => string;
+  t: (key: string, options?: Record<string, unknown>) => string;
 }

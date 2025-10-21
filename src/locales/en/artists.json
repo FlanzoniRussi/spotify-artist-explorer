@@ -2,7 +2,21 @@
   "listing": {
     "title": "Artists",
     "subtitle": "Discover new artists and explore their music",
+    "startSearch": "Start searching for artists",
+    "searchHint": "Enter an artist name to discover their music and information",
+    "noResults": "No artists found",
+    "tryDifferent": "No artists found for your search. Try a different term.",
     "totalResults": "{{count}} artist found",
+    "stats": {
+      "totalArtists": "Total Artists",
+      "totalFollowers": "Total Followers",
+      "avgPopularity": "Avg Popularity"
+    },
+    "pagination": {
+      "previous": "Previous",
+      "next": "Next"
+    },
+    "apiNote": "Results limited to 1000 artists by Spotify API",
     "totalResults_plural": "{{count}} artists found",
     "popularity": "Popularity",
     "followers": "{{count}} follower",
@@ -15,7 +29,24 @@
     "genres": "Genres",
     "popularity": "Popularity",
     "followers": "Followers",
-    "externalLinks": "External Links"
+    "externalLinks": "External Links",
+    "notFound": "Artist not found",
+    "notFoundDescription": "The artist you're looking for doesn't exist or has been removed.",
+    "variousGenres": "Various genres",
+    "openInSpotify": "Open in Spotify",
+    "popularityTrend": "Popularity Trend",
+    "noTracks": "No tracks available",
+    "noTracksDescription": "This artist doesn't have any top tracks available.",
+    "noAlbums": "No albums available",
+    "noAlbumsDescription": "This artist doesn't have any albums available.",
+    "chart": {
+      "veryLow": "Very Low",
+      "low": "Low",
+      "moderate": "Moderate",
+      "high": "High",
+      "veryHigh": "Very High",
+      "popularity": "Popularity"
+    }
   },
   "search": {
     "byName": "Search by name",

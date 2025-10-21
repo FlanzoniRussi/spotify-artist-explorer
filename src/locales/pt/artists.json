@@ -2,7 +2,21 @@
   "listing": {
     "title": "Artistas",
     "subtitle": "Descubra novos artistas e explore sua música",
+    "startSearch": "Comece a buscar por artistas",
+    "searchHint": "Digite o nome de um artista para descobrir sua música e informações",
+    "noResults": "Nenhum artista encontrado",
+    "tryDifferent": "Nenhum artista foi encontrado para sua busca. Tente um termo diferente.",
     "totalResults": "{{count}} artista encontrado",
+    "stats": {
+      "totalArtists": "Total de Artistas",
+      "totalFollowers": "Total de Seguidores",
+      "avgPopularity": "Popularidade Média"
+    },
+    "pagination": {
+      "previous": "Anterior",
+      "next": "Próximo"
+    },
+    "apiNote": "Resultados limitados a 1000 artistas pela API do Spotify",
     "totalResults_plural": "{{count}} artistas encontrados",
     "popularity": "Popularidade",
     "followers": "{{count}} seguidor",
@@ -15,7 +29,24 @@
     "genres": "Gêneros",
     "popularity": "Popularidade",
     "followers": "Seguidores",
-    "externalLinks": "Links Externos"
+    "externalLinks": "Links Externos",
+    "notFound": "Artista não encontrado",
+    "notFoundDescription": "O artista que você está procurando não existe ou foi removido.",
+    "variousGenres": "Vários gêneros",
+    "openInSpotify": "Abrir no Spotify",
+    "popularityTrend": "Tendência de Popularidade",
+    "noTracks": "Nenhuma música disponível",
+    "noTracksDescription": "Este artista não possui músicas populares disponíveis.",
+    "noAlbums": "Nenhum álbum disponível",
+    "noAlbumsDescription": "Este artista não possui álbuns disponíveis.",
+    "chart": {
+      "veryLow": "Muito Baixa",
+      "low": "Baixa",
+      "moderate": "Moderada",
+      "high": "Alta",
+      "veryHigh": "Muito Alta",
+      "popularity": "Popularidade"
+    }
   },
   "search": {
     "byName": "Buscar por nome",

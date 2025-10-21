@@ -1,3 +1,4 @@
+/* eslint-disable react-refresh/only-export-components */
 import React, { createContext, useContext, useReducer, useEffect } from 'react';
 import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
@@ -18,7 +19,7 @@ import enArtists from '../../locales/en/artists.json';
 import enForms from '../../locales/en/forms.json';
 
 const initialState: I18nState = {
-  language: 'pt',
+  language: (localStorage.getItem('i18nextLng') as SupportedLanguage) || 'pt',
   isLoading: true,
 };
 
@@ -59,6 +60,7 @@ i18n
   .use(initReactI18next)
   .init({
     resources,
+    lng: 'pt',
     fallbackLng: 'pt',
     defaultNS: 'common',
     ns: ['common', 'artists', 'forms'],
@@ -81,6 +83,10 @@ export function I18nProvider({ children }: I18nProviderProps) {
   useEffect(() => {
     const initI18n = async () => {
       try {
+        if (!localStorage.getItem('i18nextLng')) {
+          localStorage.setItem('i18nextLng', 'pt');
+        }
+        
         await i18n.init();
         const detectedLanguage = i18n.language as SupportedLanguage;
         dispatch({ type: 'SET_LANGUAGE', payload: detectedLanguage });
@@ -107,7 +113,7 @@ export function I18nProvider({ children }: I18nProviderProps) {
     }
   };
 
-  const t = (key: string, options?: Record<string, any>) => {
+  const t = (key: string, options?: Record<string, unknown>) => {
     return i18n.t(key, options);
   };
 
