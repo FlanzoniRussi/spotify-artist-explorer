@@ -39,6 +39,9 @@
     "noTracksDescription": "Este artista não possui músicas populares disponíveis.",
     "noAlbums": "Nenhum álbum disponível",
     "noAlbumsDescription": "Este artista não possui álbuns disponíveis.",
+    "releaseDate": "Data de Lançamento",
+    "tracks": "Músicas",
+    "duration": "Duração",
     "chart": {
       "veryLow": "Muito Baixa",
       "low": "Baixa",
@@ -57,6 +60,11 @@
       "popularity": "Popularidade",
       "name": "Nome",
       "followers": "Seguidores"
+    },
+    "types": {
+      "all": "Todos",
+      "artists": "Artistas",
+      "albums": "Álbuns"
     }
   }
 }

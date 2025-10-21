@@ -1,6 +1,7 @@
 import React from 'react';
-import { Heart, Users, TrendingUp, ExternalLink } from 'lucide-react';
+import { Heart, Users, TrendingUp, ExternalLink, Eye } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { useTranslation } from '../../hooks/useTranslation';
 import type { SpotifyArtist } from '../../types';
 
 interface ArtistCardProps {
@@ -14,6 +15,7 @@ export const ArtistCard: React.FC<ArtistCardProps> = ({
   isFavorite,
   onToggleFavorite,
 }) => {
+  const { t } = useTranslation();
   const formatFollowers = (count: number): string => {
     if (count >= 1000000) {
       return `${(count / 1000000).toFixed(1)}M`;
@@ -32,10 +34,10 @@ export const ArtistCard: React.FC<ArtistCardProps> = ({
   };
 
   const getPopularityLabel = (popularity: number): string => {
-    if (popularity >= 80) return 'Very Popular';
-    if (popularity >= 60) return 'Popular';
-    if (popularity >= 40) return 'Moderate';
-    return 'Emerging';
+    if (popularity >= 80) return t('labels.veryPopular');
+    if (popularity >= 60) return t('labels.popular');
+    if (popularity >= 40) return t('labels.moderate');
+    return t('labels.emerging');
   };
 
   return (
@@ -64,7 +66,7 @@ export const ArtistCard: React.FC<ArtistCardProps> = ({
               ? 'bg-red-500 text-white shadow-lg'
               : 'bg-white/80 dark:bg-dark-600/80 text-gray-600 dark:text-gray-300 hover:bg-red-500 hover:text-white'
           }`}
-          aria-label={isFavorite ? 'Remove from favorites' : 'Add to favorites'}
+          aria-label={isFavorite ? t('actions.removeFromFavorites') : t('actions.addToFavorites')}
         >
           <Heart className={`w-4 h-4 ${isFavorite ? 'fill-current' : ''}`} />
         </button>
@@ -77,7 +79,7 @@ export const ArtistCard: React.FC<ArtistCardProps> = ({
             {artist.name}
           </h3>
           <p className="text-sm text-gray-600 dark:text-gray-400">
-            {artist.genres?.slice(0, 2).join(', ') || 'Various genres'}
+            {artist.genres?.slice(0, 2).join(', ') || t('labels.variousGenres')}
           </p>
         </div>
 
@@ -86,7 +88,7 @@ export const ArtistCard: React.FC<ArtistCardProps> = ({
           <div className="flex items-center justify-between">
             <div className="flex items-center text-sm text-gray-600 dark:text-gray-400">
               <Users className="w-4 h-4 mr-2" />
-              <span>{formatFollowers(artist.followers.total)} followers</span>
+              <span>{formatFollowers(artist.followers.total)} {t('labels.followers')}</span>
             </div>
             <div className={`flex items-center text-sm font-medium ${getPopularityColor(artist.popularity)}`}>
               <TrendingUp className="w-4 h-4 mr-1" />
@@ -103,9 +105,10 @@ export const ArtistCard: React.FC<ArtistCardProps> = ({
         <div className="flex gap-2">
           <Link
             to={`/artist/${artist.id}`}
-            className="flex-1 bg-primary-500 hover:bg-primary-600 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors duration-200 text-center"
+            className="flex-1 bg-primary-500 hover:bg-primary-600 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors duration-200 text-center flex items-center justify-center gap-2"
           >
-            View Details
+            <Eye className="w-4 h-4" />
+            {t('actions.viewDetails')}
           </Link>
           {artist.external_urls?.spotify && (
             <a
@@ -113,7 +116,7 @@ export const ArtistCard: React.FC<ArtistCardProps> = ({
               target="_blank"
               rel="noopener noreferrer"
               className="p-2 border border-gray-300 dark:border-dark-300 text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-dark-400 rounded-lg transition-colors duration-200"
-              aria-label="Open in Spotify"
+              aria-label={t('actions.openInSpotify')}
             >
               <ExternalLink className="w-4 h-4" />
             </a>
