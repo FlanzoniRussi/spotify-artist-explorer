@@ -1,4 +1,3 @@
-import React from 'react';
 import { Globe } from 'lucide-react';
 import { useTranslation } from '../../hooks/useTranslation';
 import type { SupportedLanguage } from './i18n-types';

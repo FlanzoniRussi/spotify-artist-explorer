@@ -1,4 +1,5 @@
-import React, { createContext, useContext, useState, useEffect, useCallback, ReactNode } from 'react';
+import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
+import type { ReactNode } from 'react';
 import type { CustomTrack } from '../types';
 import { generateId } from '../utils/formatters';
 
@@ -143,6 +144,7 @@ export const CustomTracksProvider: React.FC<CustomTracksProviderProps> = ({ chil
   );
 };
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const useCustomTracks = (): CustomTracksContextType => {
   const context = useContext(CustomTracksContext);
   if (context === undefined) {
