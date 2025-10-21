@@ -4,6 +4,8 @@ import type { UserFavorite } from './spotify';
 export interface CustomTrack {
   id: string;
   name: string;
+  artist: string;
+  album?: string;
   year: number;
   genre: string;
   duration: {
