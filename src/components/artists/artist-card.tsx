@@ -6,13 +6,13 @@ import type { SpotifyArtist } from '../../types';
 interface ArtistCardProps {
   artist: SpotifyArtist;
   isFavorite: boolean;
-  onAddToFavorites: () => void;
+  onToggleFavorite: () => void;
 }
 
 export const ArtistCard: React.FC<ArtistCardProps> = ({
   artist,
   isFavorite,
-  onAddToFavorites,
+  onToggleFavorite,
 }) => {
   const formatFollowers = (count: number): string => {
     if (count >= 1000000) {
@@ -58,7 +58,7 @@ export const ArtistCard: React.FC<ArtistCardProps> = ({
         
         {/* Favorite Button */}
         <button
-          onClick={onAddToFavorites}
+          onClick={onToggleFavorite}
           className={`absolute top-3 right-3 p-2 rounded-full transition-all duration-200 ${
             isFavorite
               ? 'bg-red-500 text-white shadow-lg'

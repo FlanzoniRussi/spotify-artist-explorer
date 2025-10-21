@@ -14,7 +14,7 @@ import { debounce } from '../../utils/formatters';
 
 export const ArtistListPage: React.FC = () => {
   const { t } = useTranslation();
-  const { favorites, addFavorite } = useFavorites();
+  const { favorites, toggleFavorite } = useFavorites();
   const [searchQuery, setSearchQuery] = useState('');
   const [debouncedQuery, setDebouncedQuery] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
@@ -48,7 +48,7 @@ export const ArtistListPage: React.FC = () => {
   // Usar os artistas diretamente da API (já filtrados e ordenados pelo SpotifyService)
   const artists = searchData?.artists || [];
 
-  const handleAddToFavorites = (artist: SpotifyArtist) => {
+  const handleToggleFavorite = (artist: SpotifyArtist) => {
     const favoriteData = {
       name: artist.name,
       artist: artist.name,
@@ -56,12 +56,12 @@ export const ArtistListPage: React.FC = () => {
       duration: 0,
       type: 'artist' as const,
     };
-    addFavorite(favoriteData);
+    toggleFavorite(favoriteData);
   };
 
-  const handleIsFavorite = (artistId: string) => {
-    // Para artistas, vamos verificar pelo nome já que não temos ID único
-    return favorites.some(fav => fav.type === 'artist' && fav.name === artistId);
+  const handleIsFavorite = (artist: SpotifyArtist) => {
+    // Verificar se o artista já está nos favoritos pelo nome
+    return favorites.some(fav => fav.type === 'artist' && fav.name === artist.name);
   };
 
   const stats = useMemo(() => {
@@ -211,8 +211,8 @@ export const ArtistListPage: React.FC = () => {
                 <ArtistCard
                   key={artist.id}
                   artist={artist}
-                  isFavorite={handleIsFavorite(artist.name)}
-                  onAddToFavorites={() => handleAddToFavorites(artist)}
+                  isFavorite={handleIsFavorite(artist)}
+                  onToggleFavorite={() => handleToggleFavorite(artist)}
                 />
               ))}
             </div>
