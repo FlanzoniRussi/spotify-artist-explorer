@@ -9,7 +9,7 @@ import { DatePicker } from '../ui/date-picker';
 import type { CustomTrack } from '../../types';
 
 interface TrackRegistrationFormProps {
-  onSuccess?: (track: any) => void;
+  onSuccess?: (track: CustomTrack) => void;
   onCancel?: () => void;
   initialData?: Partial<TrackFormData>;
   editingTrack?: CustomTrack | null;
@@ -47,7 +47,6 @@ export const TrackRegistrationForm: React.FC<TrackRegistrationFormProps> = ({
   });
 
   const watchedDuration = watch('duration');
-  const watchedIsReleased = watch('isReleased');
 
   // Auto-save form data to localStorage
   useEffect(() => {
@@ -69,7 +68,7 @@ export const TrackRegistrationForm: React.FC<TrackRegistrationFormProps> = ({
         const parsedDraft = JSON.parse(draft);
         Object.entries(parsedDraft).forEach(([key, value]) => {
           if (value !== undefined && value !== null) {
-            setValue(key as keyof TrackFormData, value as any);
+            setValue(key as keyof TrackFormData, value as TrackFormData[keyof TrackFormData]);
           }
         });
       }

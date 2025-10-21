@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Music, CheckCircle, AlertCircle, Plus, List, Edit, Trash2 } from 'lucide-react';
 import { useTranslation } from '../../hooks/useTranslation';
 import { useCustomTracks } from '../../hooks/useCustomTracks';
@@ -9,7 +9,7 @@ import type { CustomTrack } from '../../types';
 
 export const TrackRegistrationPage: React.FC = () => {
   const { t } = useTranslation();
-  const { customTracks, isLoading, addCustomTrack, clearCustomTracks, removeCustomTrack } = useCustomTracks();
+  const { customTracks, isLoading, clearCustomTracks, removeCustomTrack } = useCustomTracks();
   const [showForm, setShowForm] = useState(false);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
   const [editingTrack, setEditingTrack] = useState<CustomTrack | null>(null);

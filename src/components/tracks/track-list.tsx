@@ -138,7 +138,7 @@ export const TrackList: React.FC<TrackListProps> = ({
                         target="_blank"
                         rel="noopener noreferrer"
                         className="text-gray-400 hover:text-gray-600 dark:text-gray-500 dark:hover:text-gray-300 transition-colors duration-200"
-                        aria-label="Open in Spotify"
+                        aria-label={t('actions.openInSpotify')}
                       >
                         <ExternalLink className="w-4 h-4" />
                       </a>

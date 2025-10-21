@@ -20,7 +20,6 @@ export const DatePicker: React.FC<DatePickerProps> = ({
   className = '',
   error = false,
 }) => {
-  const currentYear = new Date().getFullYear();
   const years = Array.from(
     { length: max - min + 1 },
     (_, i) => max - i

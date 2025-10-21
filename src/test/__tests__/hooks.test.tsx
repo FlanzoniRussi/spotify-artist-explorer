@@ -113,7 +113,7 @@ describe('useFavorites', () => {
       name: 'Test Track',
       artist: 'Test Artist',
       type: 'track',
-      duration_ms: 180000,
+      duration: 180000,
     });
   });
 });
