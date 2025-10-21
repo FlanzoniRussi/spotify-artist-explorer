@@ -11,6 +11,7 @@
   },
   "search": {
     "placeholder": "Buscar artistas...",
+    "placeholderCombined": "Buscar artistas e álbuns...",
     "noResults": "Nenhum resultado encontrado",
     "searching": "Buscando..."
   },
@@ -58,5 +59,34 @@
     "popularity": "Popularidade",
     "duration": "Duração",
     "actions": "Ações"
+  },
+  "sections": {
+    "artists": "Artistas",
+    "albums": "Álbuns",
+    "tracks": "Músicas"
+  },
+  "filters": {
+    "all": "Todos",
+    "artists": "Artistas",
+    "albums": "Álbuns"
+  },
+  "stats": {
+    "albums": "Álbuns"
+  },
+  "actions": {
+    "viewDetails": "Ver Detalhes",
+    "openInSpotify": "Abrir no Spotify",
+    "addToFavorites": "Adicionar aos Favoritos",
+    "removeFromFavorites": "Remover dos Favoritos"
+  },
+  "labels": {
+    "followers": "seguidores",
+    "variousGenres": "Vários gêneros",
+    "veryPopular": "Muito Popular",
+    "popular": "Popular",
+    "moderate": "Moderado",
+    "emerging": "Emergente",
+    "track": "música",
+    "tracks": "músicas"
   }
 }

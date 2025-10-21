@@ -11,6 +11,7 @@
   },
   "search": {
     "placeholder": "Search artists...",
+    "placeholderCombined": "Search artists and albums...",
     "noResults": "No results found",
     "searching": "Searching..."
   },
@@ -58,5 +59,34 @@
     "popularity": "Popularity",
     "duration": "Duration",
     "actions": "Actions"
+  },
+  "sections": {
+    "artists": "Artists",
+    "albums": "Albums",
+    "tracks": "Tracks"
+  },
+  "filters": {
+    "all": "All",
+    "artists": "Artists",
+    "albums": "Albums"
+  },
+  "stats": {
+    "albums": "Albums"
+  },
+  "actions": {
+    "viewDetails": "View Details",
+    "openInSpotify": "Open in Spotify",
+    "addToFavorites": "Add to Favorites",
+    "removeFromFavorites": "Remove from Favorites"
+  },
+  "labels": {
+    "followers": "followers",
+    "variousGenres": "Various genres",
+    "veryPopular": "Very Popular",
+    "popular": "Popular",
+    "moderate": "Moderate",
+    "emerging": "Emerging",
+    "track": "track",
+    "tracks": "tracks"
   }
 }
