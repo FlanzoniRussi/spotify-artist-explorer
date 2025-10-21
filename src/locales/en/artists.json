@@ -1,0 +1,31 @@
+{
+  "listing": {
+    "title": "Artists",
+    "subtitle": "Discover new artists and explore their music",
+    "totalResults": "{{count}} artist found",
+    "totalResults_plural": "{{count}} artists found",
+    "popularity": "Popularity",
+    "followers": "{{count}} follower",
+    "followers_plural": "{{count}} followers"
+  },
+  "details": {
+    "title": "Artist Details",
+    "topTracks": "Popular Tracks",
+    "albums": "Albums",
+    "genres": "Genres",
+    "popularity": "Popularity",
+    "followers": "Followers",
+    "externalLinks": "External Links"
+  },
+  "search": {
+    "byName": "Search by name",
+    "byAlbum": "Search by album",
+    "filters": "Filters",
+    "sortBy": "Sort by",
+    "sortOptions": {
+      "popularity": "Popularity",
+      "name": "Name",
+      "followers": "Followers"
+    }
+  }
+}

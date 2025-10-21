@@ -1,0 +1,54 @@
+{
+  "app": {
+    "title": "Spotify Artists",
+    "subtitle": "Descubra seus artistas favoritos"
+  },
+  "navigation": {
+    "home": "Início",
+    "artists": "Artistas",
+    "favorites": "Favoritos",
+    "register": "Cadastrar Música"
+  },
+  "search": {
+    "placeholder": "Buscar artistas...",
+    "noResults": "Nenhum resultado encontrado",
+    "searching": "Buscando..."
+  },
+  "buttons": {
+    "search": "Buscar",
+    "loadMore": "Carregar Mais",
+    "addToFavorites": "Adicionar aos Favoritos",
+    "removeFromFavorites": "Remover dos Favoritos",
+    "save": "Salvar",
+    "cancel": "Cancelar",
+    "back": "Voltar",
+    "retry": "Tentar Novamente"
+  },
+  "loading": {
+    "default": "Carregando...",
+    "artists": "Carregando artistas...",
+    "tracks": "Carregando músicas...",
+    "albums": "Carregando álbuns..."
+  },
+  "errors": {
+    "generic": "Algo deu errado. Tente novamente.",
+    "network": "Erro de conexão. Verifique sua internet.",
+    "notFound": "Não encontrado",
+    "unauthorized": "Acesso não autorizado"
+  },
+  "empty": {
+    "noArtists": "Nenhum artista encontrado",
+    "noFavorites": "Você ainda não tem favoritos",
+    "noTracks": "Nenhuma música encontrada",
+    "noAlbums": "Nenhum álbum encontrado"
+  },
+  "theme": {
+    "light": "Claro",
+    "dark": "Escuro",
+    "system": "Sistema"
+  },
+  "language": {
+    "portuguese": "Português",
+    "english": "English"
+  }
+}

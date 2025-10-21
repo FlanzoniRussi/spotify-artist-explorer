@@ -1,0 +1,62 @@
+{
+  "trackRegistration": {
+    "title": "Cadastrar Nova Música",
+    "subtitle": "Adicione uma nova música à sua coleção",
+    "fields": {
+      "name": {
+        "label": "Nome da Música",
+        "placeholder": "Digite o nome da música",
+        "required": "Nome é obrigatório",
+        "minLength": "Nome deve ter pelo menos 2 caracteres"
+      },
+      "artist": {
+        "label": "Artista",
+        "placeholder": "Digite o nome do artista",
+        "required": "Artista é obrigatório"
+      },
+      "album": {
+        "label": "Álbum",
+        "placeholder": "Digite o nome do álbum"
+      },
+      "year": {
+        "label": "Ano de Lançamento",
+        "placeholder": "Ex: 2023",
+        "required": "Ano é obrigatório",
+        "min": "Ano deve ser maior que 1900",
+        "max": "Ano não pode ser maior que o atual"
+      },
+      "genre": {
+        "label": "Gênero",
+        "placeholder": "Selecione um gênero",
+        "required": "Gênero é obrigatório"
+      },
+      "duration": {
+        "label": "Duração",
+        "minutes": "Minutos",
+        "seconds": "Segundos",
+        "required": "Duração é obrigatória"
+      },
+      "isReleased": {
+        "label": "Já foi lançada?",
+        "yes": "Sim",
+        "no": "Não"
+      }
+    },
+    "buttons": {
+      "save": "Salvar Música",
+      "cancel": "Cancelar",
+      "reset": "Limpar Formulário"
+    },
+    "success": "Música cadastrada com sucesso!",
+    "error": "Erro ao cadastrar música. Tente novamente."
+  },
+  "validation": {
+    "required": "Este campo é obrigatório",
+    "email": "Digite um email válido",
+    "minLength": "Deve ter pelo menos {{min}} caracteres",
+    "maxLength": "Deve ter no máximo {{max}} caracteres",
+    "min": "Valor mínimo é {{min}}",
+    "max": "Valor máximo é {{max}}",
+    "pattern": "Formato inválido"
+  }
+}

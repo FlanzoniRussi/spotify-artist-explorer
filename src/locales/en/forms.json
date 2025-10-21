@@ -1,0 +1,62 @@
+{
+  "trackRegistration": {
+    "title": "Register New Track",
+    "subtitle": "Add a new track to your collection",
+    "fields": {
+      "name": {
+        "label": "Track Name",
+        "placeholder": "Enter track name",
+        "required": "Name is required",
+        "minLength": "Name must have at least 2 characters"
+      },
+      "artist": {
+        "label": "Artist",
+        "placeholder": "Enter artist name",
+        "required": "Artist is required"
+      },
+      "album": {
+        "label": "Album",
+        "placeholder": "Enter album name"
+      },
+      "year": {
+        "label": "Release Year",
+        "placeholder": "Ex: 2023",
+        "required": "Year is required",
+        "min": "Year must be greater than 1900",
+        "max": "Year cannot be greater than current year"
+      },
+      "genre": {
+        "label": "Genre",
+        "placeholder": "Select a genre",
+        "required": "Genre is required"
+      },
+      "duration": {
+        "label": "Duration",
+        "minutes": "Minutes",
+        "seconds": "Seconds",
+        "required": "Duration is required"
+      },
+      "isReleased": {
+        "label": "Already released?",
+        "yes": "Yes",
+        "no": "No"
+      }
+    },
+    "buttons": {
+      "save": "Save Track",
+      "cancel": "Cancel",
+      "reset": "Clear Form"
+    },
+    "success": "Track registered successfully!",
+    "error": "Error registering track. Please try again."
+  },
+  "validation": {
+    "required": "This field is required",
+    "email": "Enter a valid email",
+    "minLength": "Must have at least {{min}} characters",
+    "maxLength": "Must have at most {{max}} characters",
+    "min": "Minimum value is {{min}}",
+    "max": "Maximum value is {{max}}",
+    "pattern": "Invalid format"
+  }
+}

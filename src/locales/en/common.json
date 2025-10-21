@@ -1,0 +1,54 @@
+{
+  "app": {
+    "title": "Spotify Artists",
+    "subtitle": "Discover your favorite artists"
+  },
+  "navigation": {
+    "home": "Home",
+    "artists": "Artists",
+    "favorites": "Favorites",
+    "register": "Register Track"
+  },
+  "search": {
+    "placeholder": "Search artists...",
+    "noResults": "No results found",
+    "searching": "Searching..."
+  },
+  "buttons": {
+    "search": "Search",
+    "loadMore": "Load More",
+    "addToFavorites": "Add to Favorites",
+    "removeFromFavorites": "Remove from Favorites",
+    "save": "Save",
+    "cancel": "Cancel",
+    "back": "Back",
+    "retry": "Try Again"
+  },
+  "loading": {
+    "default": "Loading...",
+    "artists": "Loading artists...",
+    "tracks": "Loading tracks...",
+    "albums": "Loading albums..."
+  },
+  "errors": {
+    "generic": "Something went wrong. Please try again.",
+    "network": "Connection error. Check your internet.",
+    "notFound": "Not found",
+    "unauthorized": "Unauthorized access"
+  },
+  "empty": {
+    "noArtists": "No artists found",
+    "noFavorites": "You don't have any favorites yet",
+    "noTracks": "No tracks found",
+    "noAlbums": "No albums found"
+  },
+  "theme": {
+    "light": "Light",
+    "dark": "Dark",
+    "system": "System"
+  },
+  "language": {
+    "portuguese": "Português",
+    "english": "English"
+  }
+}
