@@ -50,5 +50,13 @@
   "language": {
     "portuguese": "Português",
     "english": "English"
+  },
+  "table": {
+    "number": "#",
+    "title": "Title",
+    "album": "Album",
+    "popularity": "Popularity",
+    "duration": "Duration",
+    "actions": "Actions"
   }
 }
