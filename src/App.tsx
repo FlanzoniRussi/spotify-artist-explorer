@@ -4,6 +4,8 @@ import { ThemeProvider } from './features/theme/theme-context';
 import { I18nProvider } from './features/i18n';
 import { useTranslation } from './hooks/useTranslation';
 import { MainLayout } from './components/layout/main-layout';
+import { ArtistListPage } from './pages/artists/artist-list-page';
+import { ArtistDetailsPage } from './pages/artists/artist-details-page';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -15,41 +17,6 @@ const queryClient = new QueryClient({
     },
   },
 });
-const HomePage = () => {
-  const { t } = useTranslation();
-
-  return (
-    <div className='text-center py-12'>
-      <h1 className='text-4xl font-bold text-gradient mb-4'>
-        {t('app.title')}
-      </h1>
-      <p className='text-gray-600 dark:text-gray-400 text-lg mb-8'>
-        {t('app.subtitle')}
-      </p>
-      <div className='bg-white dark:bg-dark-500 rounded-xl p-8 shadow-lg max-w-md mx-auto'>
-        <h2 className='text-2xl font-semibold mb-4'>Features Coming Soon</h2>
-        <ul className='space-y-2 text-left'>
-          <li className='flex items-center space-x-2'>
-            <div className='w-2 h-2 bg-primary-500 rounded-full'></div>
-            <span>Artist search and discovery</span>
-          </li>
-          <li className='flex items-center space-x-2'>
-            <div className='w-2 h-2 bg-primary-500 rounded-full'></div>
-            <span>Top tracks and albums</span>
-          </li>
-          <li className='flex items-center space-x-2'>
-            <div className='w-2 h-2 bg-primary-500 rounded-full'></div>
-            <span>Interactive charts</span>
-          </li>
-          <li className='flex items-center space-x-2'>
-            <div className='w-2 h-2 bg-primary-500 rounded-full'></div>
-            <span>Favorites management</span>
-          </li>
-        </ul>
-      </div>
-    </div>
-  );
-};
 
 const FavoritesPage = () => {
   const { t } = useTranslation();
@@ -85,13 +52,14 @@ function App() {
       <I18nProvider>
         <ThemeProvider>
           <Router>
-            <MainLayout>
-              <Routes>
-                <Route path='/' element={<HomePage />} />
-                <Route path='/favorites' element={<FavoritesPage />} />
-                <Route path='/register-track' element={<RegisterTrackPage />} />
-              </Routes>
-            </MainLayout>
+                        <MainLayout>
+                          <Routes>
+                            <Route path='/' element={<ArtistListPage />} />
+                            <Route path='/artist/:id' element={<ArtistDetailsPage />} />
+                            <Route path='/favorites' element={<FavoritesPage />} />
+                            <Route path='/register-track' element={<RegisterTrackPage />} />
+                          </Routes>
+                        </MainLayout>
           </Router>
         </ThemeProvider>
       </I18nProvider>
