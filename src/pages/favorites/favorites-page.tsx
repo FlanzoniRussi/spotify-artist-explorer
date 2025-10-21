@@ -1,4 +1,5 @@
 import React, { useState, useMemo } from 'react';
+import { motion } from 'framer-motion';
 import { Heart, Search, Trash2 } from 'lucide-react';
 import { useFavorites } from '../../hooks/useFavorites';
 import { useTranslation } from '../../hooks/useTranslation';
@@ -70,12 +71,51 @@ export const FavoritesPage: React.FC = () => {
     );
   }
 
+  // Animation variants
+  const pageVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: { 
+      opacity: 1, 
+      y: 0,
+      transition: {
+        duration: 0.5,
+        ease: "easeOut"
+      }
+    }
+  };
+
+  const headerVariants = {
+    hidden: { opacity: 0, y: -20 },
+    visible: { 
+      opacity: 1, 
+      y: 0,
+      transition: {
+        duration: 0.3,
+        delay: 0.1
+      }
+    }
+  };
+
   return (
-    <div className="container mx-auto px-4 py-8">
+    <motion.div 
+      className="container mx-auto px-4 py-8"
+      variants={pageVariants}
+      initial="hidden"
+      animate="visible"
+    >
       {/* Header */}
-      <div className="mb-8">
+      <motion.div 
+        className="mb-8"
+        variants={headerVariants}
+        initial="hidden"
+        animate="visible"
+      >
         <div className="flex items-center justify-between mb-4">
-          <div>
+          <motion.div
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.2, duration: 0.3 }}
+          >
             <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
               {t('navigation.favorites')}
             </h1>
@@ -85,23 +125,39 @@ export const FavoritesPage: React.FC = () => {
                 : `${favorites.length} ${favorites.length === 1 ? 'favorito' : 'favoritos'} salvos`
               }
             </p>
-          </div>
+          </motion.div>
           
           {favorites.length > 0 && (
-            <button
+            <motion.button
               onClick={handleClearAll}
               className="flex items-center gap-2 px-4 py-2 text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-colors duration-200"
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.3, duration: 0.3 }}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
             >
               <Trash2 className="w-4 h-4" />
               Limpar todos
-            </button>
+            </motion.button>
           )}
         </div>
 
         {/* Stats */}
         {favorites.length > 0 && (
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-            <div className="bg-white dark:bg-dark-500 rounded-lg p-4 shadow-sm border border-gray-200 dark:border-dark-300">
+          <motion.div 
+            className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.4, duration: 0.3 }}
+          >
+            <motion.div 
+              className="bg-white dark:bg-dark-500 rounded-lg p-4 shadow-sm border border-gray-200 dark:border-dark-300"
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 0.5, duration: 0.3 }}
+              whileHover={{ scale: 1.02 }}
+            >
               <div className="flex items-center gap-2">
                 <Heart className="w-5 h-5 text-red-500" />
                 <div>
@@ -111,9 +167,15 @@ export const FavoritesPage: React.FC = () => {
                   </p>
                 </div>
               </div>
-            </div>
+            </motion.div>
             
-            <div className="bg-white dark:bg-dark-500 rounded-lg p-4 shadow-sm border border-gray-200 dark:border-dark-300">
+            <motion.div 
+              className="bg-white dark:bg-dark-500 rounded-lg p-4 shadow-sm border border-gray-200 dark:border-dark-300"
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 0.6, duration: 0.3 }}
+              whileHover={{ scale: 1.02 }}
+            >
               <div className="flex items-center gap-2">
                 <div className="w-5 h-5 bg-blue-500 rounded-full flex items-center justify-center">
                   <span className="text-white text-xs font-bold">A</span>
@@ -125,9 +187,15 @@ export const FavoritesPage: React.FC = () => {
                   </p>
                 </div>
               </div>
-            </div>
+            </motion.div>
             
-            <div className="bg-white dark:bg-dark-500 rounded-lg p-4 shadow-sm border border-gray-200 dark:border-dark-300">
+            <motion.div 
+              className="bg-white dark:bg-dark-500 rounded-lg p-4 shadow-sm border border-gray-200 dark:border-dark-300"
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 0.7, duration: 0.3 }}
+              whileHover={{ scale: 1.02 }}
+            >
               <div className="flex items-center gap-2">
                 <div className="w-5 h-5 bg-green-500 rounded-full flex items-center justify-center">
                   <span className="text-white text-xs font-bold">Á</span>
@@ -139,9 +207,15 @@ export const FavoritesPage: React.FC = () => {
                   </p>
                 </div>
               </div>
-            </div>
+            </motion.div>
             
-            <div className="bg-white dark:bg-dark-500 rounded-lg p-4 shadow-sm border border-gray-200 dark:border-dark-300">
+            <motion.div 
+              className="bg-white dark:bg-dark-500 rounded-lg p-4 shadow-sm border border-gray-200 dark:border-dark-300"
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 0.8, duration: 0.3 }}
+              whileHover={{ scale: 1.02 }}
+            >
               <div className="flex items-center gap-2">
                 <div className="w-5 h-5 bg-purple-500 rounded-full flex items-center justify-center">
                   <span className="text-white text-xs font-bold">M</span>
@@ -153,14 +227,19 @@ export const FavoritesPage: React.FC = () => {
                   </p>
                 </div>
               </div>
-            </div>
-          </div>
+            </motion.div>
+          </motion.div>
         )}
-      </div>
+      </motion.div>
 
       {/* Filters and Search */}
       {favorites.length > 0 && (
-        <div className="mb-8 space-y-4">
+        <motion.div 
+          className="mb-8 space-y-4"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.9, duration: 0.3 }}
+        >
           <SearchInput
             value={searchQuery}
             onChange={setSearchQuery}
@@ -168,49 +247,62 @@ export const FavoritesPage: React.FC = () => {
             className="max-w-md"
           />
           
-          <div className="flex gap-2 flex-wrap">
-            <button
+          <motion.div 
+            className="flex gap-2 flex-wrap"
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 1.0, duration: 0.3 }}
+          >
+            <motion.button
               onClick={() => setSelectedType('all')}
               className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors duration-200 ${
                 selectedType === 'all'
                   ? 'bg-primary-500 text-white'
                   : 'bg-gray-100 dark:bg-dark-400 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-dark-300'
               }`}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
             >
               Todos ({favoritesByType.all})
-            </button>
-            <button
+            </motion.button>
+            <motion.button
               onClick={() => setSelectedType('artist')}
               className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors duration-200 ${
                 selectedType === 'artist'
                   ? 'bg-primary-500 text-white'
                   : 'bg-gray-100 dark:bg-dark-400 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-dark-300'
               }`}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
             >
 {t('sections.artists')} ({favoritesByType.artist})
-            </button>
-            <button
+            </motion.button>
+            <motion.button
               onClick={() => setSelectedType('album')}
               className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors duration-200 ${
                 selectedType === 'album'
                   ? 'bg-primary-500 text-white'
                   : 'bg-gray-100 dark:bg-dark-400 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-dark-300'
               }`}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
             >
 {t('sections.albums')} ({favoritesByType.album})
-            </button>
-            <button
+            </motion.button>
+            <motion.button
               onClick={() => setSelectedType('track')}
               className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors duration-200 ${
                 selectedType === 'track'
                   ? 'bg-primary-500 text-white'
                   : 'bg-gray-100 dark:bg-dark-400 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-dark-300'
               }`}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
             >
               Músicas ({favoritesByType.track})
-            </button>
-          </div>
-        </div>
+            </motion.button>
+          </motion.div>
+        </motion.div>
       )}
 
       {/* Results */}
@@ -235,16 +327,27 @@ export const FavoritesPage: React.FC = () => {
           description="Tente ajustar sua busca ou filtros para encontrar seus favoritos."
         />
       ) : (
-        <div className="space-y-4">
-          {filteredFavorites.map((favorite) => (
-            <FavoriteItem
+        <motion.div 
+          className="space-y-4"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 1.1, duration: 0.3 }}
+        >
+          {filteredFavorites.map((favorite, index) => (
+            <motion.div
               key={favorite.id}
-              favorite={favorite}
-              onRemove={handleRemoveFavorite}
-            />
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 1.2 + (index * 0.1), duration: 0.3 }}
+            >
+              <FavoriteItem
+                favorite={favorite}
+                onRemove={handleRemoveFavorite}
+              />
+            </motion.div>
           ))}
-        </div>
+        </motion.div>
       )}
-    </div>
+    </motion.div>
   );
 };

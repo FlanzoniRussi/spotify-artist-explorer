@@ -1,5 +1,6 @@
 import React from 'react';
 import { useParams, Link } from 'react-router-dom';
+import { motion } from 'framer-motion';
 import { ArrowLeft, ExternalLink, Calendar, Music, TrendingUp, Heart } from 'lucide-react';
 import { useSpotifyAlbum, useSpotifyAlbumTracks } from '../../hooks/useSpotify';
 import { useTranslation } from '../../hooks/useTranslation';
@@ -139,11 +140,53 @@ export const AlbumDetailsPage: React.FC = () => {
     );
   }
 
+  // Animation variants
+  const pageVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: { 
+      opacity: 1, 
+      y: 0,
+      transition: {
+        duration: 0.5,
+        ease: "easeOut"
+      }
+    }
+  };
+
+  const backButtonVariants = {
+    hidden: { opacity: 0, x: -20 },
+    visible: { 
+      opacity: 1, 
+      x: 0,
+      transition: {
+        duration: 0.3,
+        delay: 0.1
+      }
+    },
+    hover: {
+      x: -5,
+      transition: {
+        duration: 0.2
+      }
+    }
+  };
+
   return (
     <ErrorBoundary>
-      <div className="container mx-auto px-4 py-8">
+      <motion.div 
+        className="container mx-auto px-4 py-8"
+        variants={pageVariants}
+        initial="hidden"
+        animate="visible"
+      >
         {/* Back Button */}
-        <div className="mb-8">
+        <motion.div 
+          className="mb-8"
+          variants={backButtonVariants}
+          initial="hidden"
+          animate="visible"
+          whileHover="hover"
+        >
           <Link
             to="/"
             className="inline-flex items-center gap-2 text-gray-600 dark:text-gray-400 hover:text-primary-500 dark:hover:text-primary-400 transition-colors duration-200"
@@ -151,70 +194,137 @@ export const AlbumDetailsPage: React.FC = () => {
             <ArrowLeft className="w-4 h-4" />
             {t('buttons.back')}
           </Link>
-        </div>
+        </motion.div>
 
         {/* Album Header */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8">
+        <motion.div 
+          className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.2, duration: 0.5 }}
+        >
           {/* Album Cover */}
-          <div className="lg:col-span-1">
-            <div className="aspect-square rounded-xl overflow-hidden shadow-lg">
+          <motion.div 
+            className="lg:col-span-1"
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.3, duration: 0.5 }}
+          >
+            <motion.div 
+              className="aspect-square rounded-xl overflow-hidden shadow-lg"
+              whileHover={{ scale: 1.02 }}
+              transition={{ duration: 0.3 }}
+            >
               {album.images?.[0]?.url ? (
-                <img
+                <motion.img
                   src={album.images[0].url}
                   alt={album.name}
                   className="w-full h-full object-cover"
+                  initial={{ scale: 1.1 }}
+                  animate={{ scale: 1 }}
+                  transition={{ duration: 0.5 }}
                 />
               ) : (
-                <div className="w-full h-full bg-gradient-to-br from-primary-400 to-primary-600 flex items-center justify-center">
-                  <span className="text-white text-6xl font-bold">
+                <motion.div 
+                  className="w-full h-full bg-gradient-to-br from-primary-400 to-primary-600 flex items-center justify-center"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ duration: 0.5 }}
+                >
+                  <motion.span 
+                    className="text-white text-6xl font-bold"
+                    initial={{ scale: 0 }}
+                    animate={{ scale: 1 }}
+                    transition={{ delay: 0.2, duration: 0.3 }}
+                  >
                     {album.name.charAt(0).toUpperCase()}
-                  </span>
-                </div>
+                  </motion.span>
+                </motion.div>
               )}
-            </div>
-          </div>
+            </motion.div>
+          </motion.div>
 
           {/* Album Info */}
-          <div className="lg:col-span-2">
-            <div className="mb-6">
-              <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-2">
+          <motion.div 
+            className="lg:col-span-2"
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.4, duration: 0.5 }}
+          >
+            <motion.div 
+              className="mb-6"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.5, duration: 0.3 }}
+            >
+              <motion.h1 
+                className="text-4xl font-bold text-gray-900 dark:text-white mb-2"
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.6, duration: 0.3 }}
+              >
                 {album.name}
-              </h1>
-              <p className="text-xl text-gray-600 dark:text-gray-400 mb-4">
+              </motion.h1>
+              <motion.p 
+                className="text-xl text-gray-600 dark:text-gray-400 mb-4"
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.7, duration: 0.3 }}
+              >
                 {album.artists.map(artist => artist.name).join(', ')}
-              </p>
+              </motion.p>
               
               {/* Album Actions */}
-              <div className="flex items-center gap-4 mb-6">
-                <button
+              <motion.div 
+                className="flex items-center gap-4 mb-6"
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.8, duration: 0.3 }}
+              >
+                <motion.button
                   onClick={handleToggleAlbumFavorite}
                   className={`flex items-center gap-2 px-4 py-2 rounded-lg font-medium transition-colors duration-200 ${
                     isAlbumFavorite()
                       ? 'bg-red-500 text-white'
                       : 'bg-gray-100 dark:bg-dark-400 text-gray-700 dark:text-gray-300 hover:bg-red-500 hover:text-white'
                   }`}
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
                 >
                   <Heart className={`w-4 h-4 ${isAlbumFavorite() ? 'fill-current' : ''}`} />
                   {isAlbumFavorite() ? t('actions.removeFromFavorites') : t('actions.addToFavorites')}
-                </button>
+                </motion.button>
                 
                 {album.external_urls?.spotify && (
-                  <a
+                  <motion.a
                     href={album.external_urls.spotify}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="flex items-center gap-2 px-4 py-2 border border-gray-300 dark:border-dark-300 text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-dark-400 rounded-lg transition-colors duration-200"
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
                   >
                     <ExternalLink className="w-4 h-4" />
                     {t('actions.openInSpotify')}
-                  </a>
+                  </motion.a>
                 )}
-              </div>
-            </div>
+              </motion.div>
+            </motion.div>
 
             {/* Album Stats */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <div className="bg-white dark:bg-dark-500 rounded-lg p-4 shadow-sm border border-gray-200 dark:border-dark-300">
+            <motion.div 
+              className="grid grid-cols-1 md:grid-cols-3 gap-4"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.9, duration: 0.3 }}
+            >
+              <motion.div 
+                className="bg-white dark:bg-dark-500 rounded-lg p-4 shadow-sm border border-gray-200 dark:border-dark-300"
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ delay: 1.0, duration: 0.3 }}
+                whileHover={{ scale: 1.02 }}
+              >
                 <div className="flex items-center gap-2 mb-2">
                   <Calendar className="w-4 h-4 text-primary-500" />
                   <span className="text-sm font-medium text-gray-600 dark:text-gray-400">
@@ -224,9 +334,15 @@ export const AlbumDetailsPage: React.FC = () => {
                 <p className="text-lg font-semibold text-gray-900 dark:text-white">
                   {formatDate(album.release_date)}
                 </p>
-              </div>
+              </motion.div>
 
-              <div className="bg-white dark:bg-dark-500 rounded-lg p-4 shadow-sm border border-gray-200 dark:border-dark-300">
+              <motion.div 
+                className="bg-white dark:bg-dark-500 rounded-lg p-4 shadow-sm border border-gray-200 dark:border-dark-300"
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ delay: 1.1, duration: 0.3 }}
+                whileHover={{ scale: 1.02 }}
+              >
                 <div className="flex items-center gap-2 mb-2">
                   <Music className="w-4 h-4 text-primary-500" />
                   <span className="text-sm font-medium text-gray-600 dark:text-gray-400">
@@ -236,9 +352,15 @@ export const AlbumDetailsPage: React.FC = () => {
                 <p className="text-lg font-semibold text-gray-900 dark:text-white">
                   {album.total_tracks}
                 </p>
-              </div>
+              </motion.div>
 
-              <div className="bg-white dark:bg-dark-500 rounded-lg p-4 shadow-sm border border-gray-200 dark:border-dark-300">
+              <motion.div 
+                className="bg-white dark:bg-dark-500 rounded-lg p-4 shadow-sm border border-gray-200 dark:border-dark-300"
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ delay: 1.2, duration: 0.3 }}
+                whileHover={{ scale: 1.02 }}
+              >
                 <div className="flex items-center gap-2 mb-2">
                   <TrendingUp className="w-4 h-4 text-primary-500" />
                   <span className="text-sm font-medium text-gray-600 dark:text-gray-400">
@@ -248,16 +370,25 @@ export const AlbumDetailsPage: React.FC = () => {
                 <p className="text-lg font-semibold text-gray-900 dark:text-white">
                   {getTotalDuration()}
                 </p>
-              </div>
-            </div>
-          </div>
-        </div>
+              </motion.div>
+            </motion.div>
+          </motion.div>
+        </motion.div>
 
         {/* Album Tracks */}
-        <div>
-          <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 1.3, duration: 0.5 }}
+        >
+          <motion.h2 
+            className="text-2xl font-bold text-gray-900 dark:text-white mb-6"
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 1.4, duration: 0.3 }}
+          >
             {t('artists:details.tracks')} ({tracksData?.items?.length || 0})
-          </h2>
+          </motion.h2>
           
           {tracksLoading ? (
             <div className="space-y-2">
@@ -278,8 +409,8 @@ export const AlbumDetailsPage: React.FC = () => {
               description={t('artists:details.noTracksDescription')}
             />
           )}
-        </div>
-      </div>
+        </motion.div>
+      </motion.div>
     </ErrorBoundary>
   );
 };
