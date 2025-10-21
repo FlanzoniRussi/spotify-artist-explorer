@@ -1,5 +1,7 @@
 import React from 'react';
-import { Heart, Calendar, ExternalLink } from 'lucide-react';
+import { Heart, Calendar, ExternalLink, Eye } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { useTranslation } from '../../hooks/useTranslation';
 import type { SpotifyAlbum } from '../../types';
 import { formatDate } from '../../utils/formatters';
 
@@ -14,6 +16,7 @@ export const AlbumGrid: React.FC<AlbumGridProps> = ({
   onToggleFavorite,
   isFavorite,
 }) => {
+  const { t } = useTranslation();
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
       {albums.map((album) => (
@@ -45,7 +48,7 @@ export const AlbumGrid: React.FC<AlbumGridProps> = ({
                   ? 'bg-red-500 text-white shadow-lg'
                   : 'bg-white/80 dark:bg-dark-600/80 text-gray-600 dark:text-gray-300 hover:bg-red-500 hover:text-white'
               }`}
-              aria-label={isFavorite(album) ? 'Remove from favorites' : 'Add to favorites'}
+              aria-label={isFavorite(album) ? t('actions.removeFromFavorites') : t('actions.addToFavorites')}
             >
               <Heart className={`w-4 h-4 ${isFavorite(album) ? 'fill-current' : ''}`} />
             </button>
@@ -69,7 +72,7 @@ export const AlbumGrid: React.FC<AlbumGridProps> = ({
                 <span>{formatDate(album.release_date)}</span>
               </div>
               <div className="text-sm text-gray-600 dark:text-gray-400">
-                {album.total_tracks} track{album.total_tracks !== 1 ? 's' : ''}
+                {album.total_tracks} {album.total_tracks !== 1 ? t('labels.tracks') : t('labels.track')}
               </div>
               <div className="text-sm text-gray-600 dark:text-gray-400 capitalize">
                 {album.album_type}
@@ -78,25 +81,25 @@ export const AlbumGrid: React.FC<AlbumGridProps> = ({
 
             {/* Actions */}
             <div className="flex gap-2">
+              <Link
+                to={`/album/${album.id}`}
+                className="flex-1 bg-primary-500 hover:bg-primary-600 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors duration-200 text-center flex items-center justify-center gap-2"
+              >
+                <Eye className="w-4 h-4" />
+                {t('actions.viewDetails')}
+              </Link>
+              
               {album.external_urls?.spotify && (
                 <a
                   href={album.external_urls.spotify}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex-1 bg-primary-500 hover:bg-primary-600 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors duration-200 text-center"
+                  className="p-2 border border-gray-300 dark:border-dark-300 text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-dark-400 rounded-lg transition-colors duration-200"
+                  aria-label={t('actions.openInSpotify')}
                 >
-                  Open in Spotify
+                  <ExternalLink className="w-4 h-4" />
                 </a>
               )}
-              <a
-                href={album.external_urls?.spotify}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="p-2 border border-gray-300 dark:border-dark-300 text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-dark-400 rounded-lg transition-colors duration-200"
-                aria-label="Open in Spotify"
-              >
-                <ExternalLink className="w-4 h-4" />
-              </a>
             </div>
           </div>
         </div>
