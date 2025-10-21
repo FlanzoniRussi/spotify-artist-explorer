@@ -1,16 +1,16 @@
 import React, { useState, useMemo } from 'react';
-import { Music, Users, TrendingUp } from 'lucide-react';
-import { useSpotifyArtists } from '../../hooks/useSpotify';
+import { Music, Users, TrendingUp, Disc, Filter } from 'lucide-react';
+import { useSpotifyArtists, useSpotifyAlbums } from '../../hooks/useSpotify';
 import { useTranslation } from '../../hooks/useTranslation';
 import { useFavorites } from '../../hooks/useFavorites';
-import type { SpotifyArtist } from '../../types';
+import type { SpotifyArtist, SpotifyAlbum } from '../../types';
 import { ArtistCard } from '../../components/artists/artist-card';
+import { AlbumGrid } from '../../components/albums/album-grid';
 import { SearchInput } from '../../components/ui/search-input';
 import { LoadingSkeleton } from '../../components/ui/loading-skeleton';
 import { EmptyState } from '../../components/ui/empty-state';
 import { ErrorBoundary } from '../../components/error-boundary';
 import { Pagination } from '../../components/ui/pagination';
-import { debounce } from '../../utils/formatters';
 
 export const ArtistListPage: React.FC = () => {
   const { t } = useTranslation();
@@ -18,9 +18,16 @@ export const ArtistListPage: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [debouncedQuery, setDebouncedQuery] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
+  const [searchType, setSearchType] = useState<'artist' | 'album' | 'all'>('all');
 
   const debouncedSearch = useMemo(
-    () => debounce((query: string) => setDebouncedQuery(query), 300),
+    () => {
+      let timeout: ReturnType<typeof setTimeout>;
+      return (query: string) => {
+        clearTimeout(timeout);
+        timeout = setTimeout(() => setDebouncedQuery(query), 300);
+      };
+    },
     []
   );
 
@@ -38,15 +45,28 @@ export const ArtistListPage: React.FC = () => {
 
   const {
     data: searchData,
-    isLoading,
-    error,
-    isFetching,
+    isLoading: artistsLoading,
+    error: artistsError,
+    isFetching: artistsFetching,
   } = useSpotifyArtists(debouncedQuery, currentPage - 1, 20);
+
+  const {
+    data: albumsData,
+    isLoading: albumsLoading,
+    error: albumsError,
+    isFetching: albumsFetching,
+  } = useSpotifyAlbums(debouncedQuery, currentPage - 1, 20);
 
   const pagination = searchData?.pagination;
 
   // Usar os artistas diretamente da API (já filtrados e ordenados pelo SpotifyService)
-  const artists = searchData?.artists || [];
+  const artists = useMemo(() => searchData?.artists || [], [searchData?.artists]);
+  const albums = useMemo(() => albumsData || [], [albumsData]);
+
+  // Estados de loading e erro combinados
+  const isLoading = artistsLoading || albumsLoading;
+  const isFetching = artistsFetching || albumsFetching;
+  const error = artistsError || albumsError;
 
   const handleToggleFavorite = (artist: SpotifyArtist) => {
     const favoriteData = {
@@ -64,18 +84,47 @@ export const ArtistListPage: React.FC = () => {
     return favorites.some(fav => fav.type === 'artist' && fav.name === artist.name);
   };
 
+  const handleToggleAlbumFavorite = (album: SpotifyAlbum) => {
+    const favoriteData = {
+      name: album.name,
+      artist: album.artists[0]?.name || 'Unknown',
+      album: album.name,
+      duration: 0,
+      type: 'album' as const,
+    };
+    toggleFavorite(favoriteData);
+  };
+
+  const handleIsAlbumFavorite = (album: SpotifyAlbum) => {
+    return favorites.some(fav => 
+      fav.type === 'album' && 
+      fav.name === album.name && 
+      fav.artist === (album.artists[0]?.name || 'Unknown')
+    );
+  };
+
+  // Resultados filtrados baseados no tipo de busca
+  const filteredResults = useMemo(() => {
+    if (searchType === 'artist') return { artists, albums: [] };
+    if (searchType === 'album') return { artists: [], albums };
+    return { artists, albums };
+  }, [artists, albums, searchType]);
+
   const stats = useMemo(() => {
-    if (!artists.length) return null;
+    if (!artists.length && !albums.length) return null;
     
     const totalFollowers = artists.reduce((sum, artist) => sum + artist.followers.total, 0);
-    const avgPopularity = artists.reduce((sum, artist) => sum + artist.popularity, 0) / artists.length;
+    const avgPopularity = artists.length > 0 
+      ? artists.reduce((sum, artist) => sum + artist.popularity, 0) / artists.length 
+      : 0;
     
     return {
       totalArtists: artists.length,
+      totalAlbums: albums.length,
       totalFollowers,
       avgPopularity: Math.round(avgPopularity),
     };
-  }, [artists]);
+  }, [artists, albums]);
 
   if (error) {
     return (
@@ -112,12 +161,51 @@ export const ArtistListPage: React.FC = () => {
 
         {/* Search */}
         <div className="mb-8">
-          <SearchInput
-            value={searchQuery}
-            onChange={handleSearchChange}
-            placeholder={t('artists:search.byName')}
-            loading={isFetching}
-          />
+          <div className="mb-4">
+            <SearchInput
+              value={searchQuery}
+              onChange={handleSearchChange}
+              placeholder={t('search.placeholderCombined')}
+              loading={isFetching}
+            />
+          </div>
+          
+          {/* Search Type Filter */}
+          <div className="flex gap-2 flex-wrap">
+            <button
+              onClick={() => setSearchType('all')}
+              className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors duration-200 ${
+                searchType === 'all'
+                  ? 'bg-primary-500 text-white'
+                  : 'bg-gray-100 dark:bg-dark-400 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-dark-300'
+              }`}
+            >
+              <Filter className="w-4 h-4" />
+              {t('filters.all')}
+            </button>
+            <button
+              onClick={() => setSearchType('artist')}
+              className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors duration-200 ${
+                searchType === 'artist'
+                  ? 'bg-primary-500 text-white'
+                  : 'bg-gray-100 dark:bg-dark-400 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-dark-300'
+              }`}
+            >
+              <Users className="w-4 h-4" />
+              {t('filters.artists')}
+            </button>
+            <button
+              onClick={() => setSearchType('album')}
+              className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors duration-200 ${
+                searchType === 'album'
+                  ? 'bg-primary-500 text-white'
+                  : 'bg-gray-100 dark:bg-dark-400 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-dark-300'
+              }`}
+            >
+              <Disc className="w-4 h-4" />
+              {t('filters.albums')}
+            </button>
+          </div>
         </div>
 
         {/* Stats */}
@@ -130,7 +218,7 @@ export const ArtistListPage: React.FC = () => {
         )}
         
         {stats && debouncedQuery && (
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
             <div className="bg-white dark:bg-dark-500 rounded-lg p-6 shadow-sm border border-gray-200 dark:border-dark-300">
               <div className="flex items-center">
                 <div className="p-2 bg-primary-100 dark:bg-primary-900 rounded-lg">
@@ -142,6 +230,22 @@ export const ArtistListPage: React.FC = () => {
                   </p>
                   <p className="text-2xl font-bold text-gray-900 dark:text-white">
                     {stats.totalArtists}
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-white dark:bg-dark-500 rounded-lg p-6 shadow-sm border border-gray-200 dark:border-dark-300">
+              <div className="flex items-center">
+                <div className="p-2 bg-primary-100 dark:bg-primary-900 rounded-lg">
+                  <Disc className="w-6 h-6 text-primary-600 dark:text-primary-400" />
+                </div>
+                <div className="ml-4">
+                  <p className="text-sm font-medium text-gray-600 dark:text-gray-400">
+                    {t('stats.albums')}
+                  </p>
+                  <p className="text-2xl font-bold text-gray-900 dark:text-white">
+                    {stats.totalAlbums}
                   </p>
                 </div>
               </div>
@@ -198,7 +302,7 @@ export const ArtistListPage: React.FC = () => {
               <LoadingSkeleton key={index} className="h-64" />
             ))}
           </div>
-        ) : artists.length === 0 ? (
+        ) : filteredResults.artists.length === 0 && filteredResults.albums.length === 0 ? (
         <EmptyState
           icon={<Music size={48} className='text-gray-400 dark:text-gray-500' />}
           title={t('artists:listing.noResults')}
@@ -206,16 +310,40 @@ export const ArtistListPage: React.FC = () => {
         />
         ) : (
           <>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-              {artists.map((artist) => (
-                <ArtistCard
-                  key={artist.id}
-                  artist={artist}
-                  isFavorite={handleIsFavorite(artist)}
-                  onToggleFavorite={() => handleToggleFavorite(artist)}
+            {/* Artists Section */}
+            {filteredResults.artists.length > 0 && (
+              <div className="mb-8">
+                <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
+                  <Users className="w-5 h-5" />
+                  {t('sections.artists')} ({filteredResults.artists.length})
+                </h2>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                  {filteredResults.artists.map((artist) => (
+                    <ArtistCard
+                      key={artist.id}
+                      artist={artist}
+                      isFavorite={handleIsFavorite(artist)}
+                      onToggleFavorite={() => handleToggleFavorite(artist)}
+                    />
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Albums Section */}
+            {filteredResults.albums.length > 0 && (
+              <div className="mb-8">
+                <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
+                  <Disc className="w-5 h-5" />
+                  {t('sections.albums')} ({filteredResults.albums.length})
+                </h2>
+                <AlbumGrid
+                  albums={filteredResults.albums}
+                  onToggleFavorite={handleToggleAlbumFavorite}
+                  isFavorite={handleIsAlbumFavorite}
                 />
-              ))}
-            </div>
+              </div>
+            )}
             
             {/* Pagination */}
             {pagination && pagination.totalPages > 1 && (
