@@ -93,6 +93,16 @@ export const useSpotifyAlbum = (id: string) => {
   });
 };
 
+export const useSpotifyAlbumTracks = (id: string) => {
+  return useQuery({
+    queryKey: ['album-tracks', id],
+    queryFn: () => spotifyService.getAlbumTracks(id),
+    enabled: !!id,
+    staleTime: 10 * 60 * 1000,
+    gcTime: 30 * 60 * 1000,
+  });
+};
+
 export const useSpotifyTrack = (id: string) => {
   return useQuery({
     queryKey: ['track', id],
@@ -111,7 +121,7 @@ export const useInfiniteSpotifyArtists = (query: string, limit = 20) => {
     enabled: query.length > 0,
     initialPageParam: 0,
     getNextPageParam: (lastPage, allPages) => {
-      if (lastPage.length < limit) return undefined;
+      if (lastPage.artists.length < limit) return undefined;
       return allPages.length * limit;
     },
     staleTime: 5 * 60 * 1000,
