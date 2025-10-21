@@ -9,6 +9,17 @@ export const useSpotifyArtists = (query: string, page = 0, limit = 20) => {
     enabled: query.length > 0,
     staleTime: 5 * 60 * 1000,
     gcTime: 10 * 60 * 1000,
+    select: (data) => ({
+      artists: data.artists,
+      pagination: {
+        currentPage: page,
+        totalPages: Math.ceil(data.total / limit),
+        totalItems: data.total,
+        hasNext: data.hasNext,
+        hasPrevious: data.hasPrevious,
+        limit,
+      },
+    }),
   });
 };
 

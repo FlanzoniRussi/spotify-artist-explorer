@@ -85,19 +85,59 @@ class SpotifyService {
     query: string,
     limit = 20,
     offset = 0
-  ): Promise<SpotifyArtist[]> {
+  ): Promise<{ artists: SpotifyArtist[]; total: number; hasNext: boolean; hasPrevious: boolean }> {
     try {
-      const response: AxiosResponse<{ artists: { items: SpotifyArtist[] } }> =
-        await this.api.get('/search', {
-          params: {
-            q: query,
-            type: 'artist',
-            limit,
-            offset,
-          },
-        });
+      // Query otimizada para busca mais precisa
+      const searchQuery = `artist:"${query}"`;
+      
+      const response: AxiosResponse<{ 
+        artists: { 
+          items: SpotifyArtist[];
+          total: number;
+          limit: number;
+          offset: number;
+          next: string | null;
+          previous: string | null;
+        } 
+      }> = await this.api.get('/search', {
+        params: {
+          q: searchQuery,
+          type: 'artist',
+          limit,
+          offset,
+        },
+      });
 
-      return response.data.artists.items;
+      // Filtrar resultados para garantir precisão
+      const artists = response.data.artists.items;
+      const queryLower = query.toLowerCase().trim();
+      
+      // Filtrar apenas artistas que realmente correspondem à busca
+      const filteredArtists = artists.filter(artist => {
+        const artistName = artist.name.toLowerCase();
+        
+        // Correspondência exata
+        if (artistName === queryLower) return true;
+        
+        // Correspondência que começa com a query
+        if (artistName.startsWith(queryLower)) return true;
+        
+        // Para queries com múltiplas palavras, verificar se todas estão presentes
+        const queryWords = queryLower.split(' ');
+        if (queryWords.length > 1) {
+          return queryWords.every(word => artistName.includes(word));
+        }
+        
+        // Para queries de uma palavra, ser mais restritivo
+        return artistName.includes(queryLower) && queryLower.length >= 3;
+      });
+
+      return {
+        artists: filteredArtists,
+        total: response.data.artists.total,
+        hasNext: !!response.data.artists.next,
+        hasPrevious: !!response.data.artists.previous,
+      };
     } catch (error) {
       console.error('Error searching artists:', error);
       throw this.handleError(error);
@@ -263,7 +303,7 @@ class SpotifyService {
     }
   }
 
-  private handleError(error: any): Error {
+  private handleError(error: unknown): Error {
     if (error.response?.data) {
       const spotifyError: SpotifyError = error.response.data;
       return new Error(`Spotify API Error: ${spotifyError.error.message}`);

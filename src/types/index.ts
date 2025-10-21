@@ -1,14 +1,5 @@
 export * from './spotify';
-
-export interface UserFavorite {
-  id: string;
-  name: string;
-  artist: string;
-  album: string;
-  duration: number;
-  addedAt: string;
-  type: 'track' | 'album' | 'artist';
-}
+import type { UserFavorite } from './spotify';
 
 export interface CustomTrack {
   id: string;

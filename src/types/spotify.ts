@@ -81,3 +81,13 @@ export interface SpotifyError {
     message: string;
   };
 }
+
+export interface UserFavorite {
+  id: string;
+  name: string;
+  artist: string;
+  album: string;
+  duration: number;
+  type: 'track' | 'album' | 'artist';
+  addedAt: string;
+}
