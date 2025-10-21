@@ -44,7 +44,7 @@ export const ArtistDetailsPage: React.FC = () => {
     toggleFavorite(favoriteData);
   };
 
-  const handleToggleAlbumFavorite = (album: any) => {
+  const handleToggleAlbumFavorite = (album: { name: string }) => {
     const favoriteData = {
       name: album.name,
       artist: artist?.name || 'Unknown',
@@ -63,7 +63,7 @@ export const ArtistDetailsPage: React.FC = () => {
     );
   };
 
-  const isAlbumFavorite = (album: any) => {
+  const isAlbumFavorite = (album: { name: string }) => {
     return favorites.some(fav => 
       fav.type === 'album' && 
       fav.name === album.name && 
@@ -93,7 +93,7 @@ export const ArtistDetailsPage: React.FC = () => {
               onClick={() => window.history.back()}
               className="btn-primary"
             >
-              {t('common.back')}
+              {t('buttons.back')}
             </button>
           }
         />
@@ -150,7 +150,7 @@ export const ArtistDetailsPage: React.FC = () => {
           className="inline-flex items-center text-primary-500 hover:text-primary-600 dark:text-primary-400 dark:hover:text-primary-300 mb-8 transition-colors duration-200"
         >
           <ArrowLeft className="w-5 h-5 mr-2" />
-          {t('common.back')}
+          {t('buttons.back')}
         </Link>
 
         {/* Artist Header */}

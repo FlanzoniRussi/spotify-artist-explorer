@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from 'react';
-import { Heart, Search, Filter, Trash2 } from 'lucide-react';
+import { Heart, Search, Trash2 } from 'lucide-react';
 import { useFavorites } from '../../hooks/useFavorites';
 import { useTranslation } from '../../hooks/useTranslation';
 import { FavoriteItem } from '../../components/favorites/favorite-item';
@@ -119,7 +119,7 @@ export const FavoritesPage: React.FC = () => {
                   <span className="text-white text-xs font-bold">A</span>
                 </div>
                 <div>
-                  <p className="text-sm text-gray-600 dark:text-gray-400">Artistas</p>
+                  <p className="text-sm text-gray-600 dark:text-gray-400">{t('sections.artists')}</p>
                   <p className="text-xl font-bold text-gray-900 dark:text-white">
                     {favoritesByType.artist}
                   </p>
@@ -133,7 +133,7 @@ export const FavoritesPage: React.FC = () => {
                   <span className="text-white text-xs font-bold">Á</span>
                 </div>
                 <div>
-                  <p className="text-sm text-gray-600 dark:text-gray-400">Álbuns</p>
+                  <p className="text-sm text-gray-600 dark:text-gray-400">{t('sections.albums')}</p>
                   <p className="text-xl font-bold text-gray-900 dark:text-white">
                     {favoritesByType.album}
                   </p>
@@ -187,7 +187,7 @@ export const FavoritesPage: React.FC = () => {
                   : 'bg-gray-100 dark:bg-dark-400 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-dark-300'
               }`}
             >
-              Artistas ({favoritesByType.artist})
+{t('sections.artists')} ({favoritesByType.artist})
             </button>
             <button
               onClick={() => setSelectedType('album')}
@@ -197,7 +197,7 @@ export const FavoritesPage: React.FC = () => {
                   : 'bg-gray-100 dark:bg-dark-400 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-dark-300'
               }`}
             >
-              Álbuns ({favoritesByType.album})
+{t('sections.albums')} ({favoritesByType.album})
             </button>
             <button
               onClick={() => setSelectedType('track')}
@@ -224,7 +224,7 @@ export const FavoritesPage: React.FC = () => {
               href="/"
               className="btn-primary"
             >
-              Explorar Artistas
+{t('navigation.artists')}
             </a>
           }
         />

@@ -39,6 +39,9 @@
     "noTracksDescription": "This artist doesn't have any top tracks available.",
     "noAlbums": "No albums available",
     "noAlbumsDescription": "This artist doesn't have any albums available.",
+    "releaseDate": "Release Date",
+    "tracks": "Tracks",
+    "duration": "Duration",
     "chart": {
       "veryLow": "Very Low",
       "low": "Low",
@@ -57,6 +60,11 @@
       "popularity": "Popularity",
       "name": "Name",
       "followers": "Followers"
+    },
+    "types": {
+      "all": "All",
+      "artists": "Artists",
+      "albums": "Albums"
     }
   }
 }
