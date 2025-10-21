@@ -6,6 +6,7 @@ import { CustomTracksProvider } from './contexts/custom-tracks-context';
 import { MainLayout } from './components/layout/main-layout';
 import { ArtistListPage } from './pages/artists/artist-list-page';
 import { ArtistDetailsPage } from './pages/artists/artist-details-page';
+import { AlbumDetailsPage } from './pages/albums/album-details-page';
 import { FavoritesPage } from './pages/favorites/favorites-page';
 import { TrackRegistrationPage } from './pages/tracks/track-registration-page';
 
@@ -33,6 +34,7 @@ function App() {
                 <Routes>
                   <Route path='/' element={<ArtistListPage />} />
                   <Route path='/artist/:id' element={<ArtistDetailsPage />} />
+                  <Route path='/album/:id' element={<AlbumDetailsPage />} />
                   <Route path='/favorites' element={<FavoritesPage />} />
                   <Route path='/register-track' element={<TrackRegistrationPage />} />
                 </Routes>

@@ -291,6 +291,18 @@ class SpotifyService {
     }
   }
 
+  async getAlbumTracks(id: string): Promise<{ items: SpotifyTrack[] }> {
+    try {
+      const response: AxiosResponse<{ items: SpotifyTrack[] }> = await this.api.get(
+        `/albums/${id}/tracks`
+      );
+      return response.data;
+    } catch (error) {
+      console.error('Error getting album tracks:', error);
+      throw this.handleError(error);
+    }
+  }
+
   async getTrack(id: string): Promise<SpotifyTrack> {
     try {
       const response: AxiosResponse<SpotifyTrack> = await this.api.get(
@@ -304,9 +316,12 @@ class SpotifyService {
   }
 
   private handleError(error: unknown): Error {
-    if (error.response?.data) {
-      const spotifyError: SpotifyError = error.response.data;
-      return new Error(`Spotify API Error: ${spotifyError.error.message}`);
+    if (error && typeof error === 'object' && 'response' in error) {
+      const axiosError = error as { response?: { data?: SpotifyError } };
+      if (axiosError.response?.data) {
+        const spotifyError: SpotifyError = axiosError.response.data;
+        return new Error(`Spotify API Error: ${spotifyError.error.message}`);
+      }
     }
     return new Error('An unexpected error occurred');
   }
