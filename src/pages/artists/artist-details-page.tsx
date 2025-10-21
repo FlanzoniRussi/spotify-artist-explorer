@@ -15,7 +15,7 @@ import { PopularityChart } from '../../components/charts/popularity-chart';
 export const ArtistDetailsPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const { t } = useTranslation();
-  const { addFavorite, isFavorite } = useFavorites();
+  const { favorites, toggleFavorite } = useFavorites();
 
   const {
     data: artist,
@@ -33,7 +33,7 @@ export const ArtistDetailsPage: React.FC = () => {
     isLoading: albumsLoading,
   } = useSpotifyArtistAlbums(id || '', 0, 20);
 
-  const handleAddTrackToFavorites = (track: SpotifyTrack) => {
+  const handleToggleTrackFavorite = (track: SpotifyTrack) => {
     const favoriteData = {
       name: track.name,
       artist: track.artists[0]?.name || artist?.name || 'Unknown',
@@ -41,7 +41,34 @@ export const ArtistDetailsPage: React.FC = () => {
       duration: track.duration_ms,
       type: 'track' as const,
     };
-    addFavorite(favoriteData);
+    toggleFavorite(favoriteData);
+  };
+
+  const handleToggleAlbumFavorite = (album: any) => {
+    const favoriteData = {
+      name: album.name,
+      artist: artist?.name || 'Unknown',
+      album: album.name,
+      duration: 0,
+      type: 'album' as const,
+    };
+    toggleFavorite(favoriteData);
+  };
+
+  const isTrackFavorite = (track: SpotifyTrack) => {
+    return favorites.some(fav => 
+      fav.type === 'track' && 
+      fav.name === track.name && 
+      fav.artist === (track.artists[0]?.name || artist?.name || 'Unknown')
+    );
+  };
+
+  const isAlbumFavorite = (album: any) => {
+    return favorites.some(fav => 
+      fav.type === 'album' && 
+      fav.name === album.name && 
+      fav.artist === (artist?.name || 'Unknown')
+    );
   };
 
   const formatFollowers = (count: number): string => {
@@ -209,8 +236,8 @@ export const ArtistDetailsPage: React.FC = () => {
           ) : topTracks.length > 0 ? (
             <TrackList
               tracks={topTracks}
-              onAddToFavorites={handleAddTrackToFavorites}
-              isFavorite={(trackId: string) => isFavorite(trackId)}
+              onToggleFavorite={handleToggleTrackFavorite}
+              isFavorite={isTrackFavorite}
             />
           ) : (
             <EmptyState
@@ -235,17 +262,8 @@ export const ArtistDetailsPage: React.FC = () => {
           ) : albumsData?.items && albumsData.items.length > 0 ? (
             <AlbumGrid
               albums={albumsData.items}
-              onAddToFavorites={(album) => {
-                const favoriteData = {
-                  name: album.name,
-                  artist: artist.name,
-                  album: album.name,
-                  duration: 0,
-                  type: 'album' as const,
-                };
-                addFavorite(favoriteData);
-              }}
-              isFavorite={(albumId: string) => isFavorite(albumId)}
+              onToggleFavorite={handleToggleAlbumFavorite}
+              isFavorite={isAlbumFavorite}
             />
           ) : (
             <EmptyState

@@ -5,13 +5,13 @@ import { formatDate } from '../../utils/formatters';
 
 interface AlbumGridProps {
   albums: SpotifyAlbum[];
-  onAddToFavorites: (album: SpotifyAlbum) => void;
-  isFavorite: (albumId: string) => boolean;
+  onToggleFavorite: (album: SpotifyAlbum) => void;
+  isFavorite: (album: SpotifyAlbum) => boolean;
 }
 
 export const AlbumGrid: React.FC<AlbumGridProps> = ({
   albums,
-  onAddToFavorites,
+  onToggleFavorite,
   isFavorite,
 }) => {
   return (
@@ -39,15 +39,15 @@ export const AlbumGrid: React.FC<AlbumGridProps> = ({
             
             {/* Favorite Button */}
             <button
-              onClick={() => onAddToFavorites(album)}
+              onClick={() => onToggleFavorite(album)}
               className={`absolute top-3 right-3 p-2 rounded-full transition-all duration-200 ${
-                isFavorite(album.id)
+                isFavorite(album)
                   ? 'bg-red-500 text-white shadow-lg'
                   : 'bg-white/80 dark:bg-dark-600/80 text-gray-600 dark:text-gray-300 hover:bg-red-500 hover:text-white'
               }`}
-              aria-label={isFavorite(album.id) ? 'Remove from favorites' : 'Add to favorites'}
+              aria-label={isFavorite(album) ? 'Remove from favorites' : 'Add to favorites'}
             >
-              <Heart className={`w-4 h-4 ${isFavorite(album.id) ? 'fill-current' : ''}`} />
+              <Heart className={`w-4 h-4 ${isFavorite(album) ? 'fill-current' : ''}`} />
             </button>
           </div>
 

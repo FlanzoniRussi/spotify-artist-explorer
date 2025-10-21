@@ -2,20 +2,22 @@ import React from 'react';
 import { Play, Heart, ExternalLink } from 'lucide-react';
 import type { SpotifyTrack } from '../../types';
 import { formatDuration } from '../../utils/formatters';
+import { useTranslation } from '../../hooks/useTranslation';
 
 interface TrackListProps {
   tracks: SpotifyTrack[];
-  onAddToFavorites: (track: SpotifyTrack) => void;
-  isFavorite: (trackId: string) => boolean;
+  onToggleFavorite: (track: SpotifyTrack) => void;
+  isFavorite: (track: SpotifyTrack) => boolean;
   showAlbum?: boolean;
 }
 
 export const TrackList: React.FC<TrackListProps> = ({
   tracks,
-  onAddToFavorites,
+  onToggleFavorite,
   isFavorite,
   showAlbum = true,
 }) => {
+  const { t } = useTranslation();
   const handlePlayTrack = (track: SpotifyTrack) => {
     if (track.preview_url) {
       const audio = new Audio(track.preview_url);
@@ -30,24 +32,24 @@ export const TrackList: React.FC<TrackListProps> = ({
           <thead className="bg-gray-50 dark:bg-dark-600 border-b border-gray-200 dark:border-dark-300">
             <tr>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                #
+                {t('table.number')}
               </th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                Title
+                {t('table.title')}
               </th>
               {showAlbum && (
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                  Album
+                  {t('table.album')}
                 </th>
               )}
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                Popularity
+                {t('table.popularity')}
               </th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                Duration
+                {t('table.duration')}
               </th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                Actions
+                {t('table.actions')}
               </th>
             </tr>
           </thead>
@@ -120,15 +122,15 @@ export const TrackList: React.FC<TrackListProps> = ({
                       </button>
                     )}
                     <button
-                      onClick={() => onAddToFavorites(track)}
+                      onClick={() => onToggleFavorite(track)}
                       className={`transition-colors duration-200 ${
-                        isFavorite(track.id)
+                        isFavorite(track)
                           ? 'text-red-500 hover:text-red-600'
                           : 'text-gray-400 hover:text-red-500 dark:text-gray-500 dark:hover:text-red-400'
                       }`}
-                      aria-label={isFavorite(track.id) ? 'Remove from favorites' : 'Add to favorites'}
+                      aria-label={isFavorite(track) ? 'Remove from favorites' : 'Add to favorites'}
                     >
-                      <Heart className={`w-4 h-4 ${isFavorite(track.id) ? 'fill-current' : ''}`} />
+                      <Heart className={`w-4 h-4 ${isFavorite(track) ? 'fill-current' : ''}`} />
                     </button>
                     {track.external_urls?.spotify && (
                       <a
