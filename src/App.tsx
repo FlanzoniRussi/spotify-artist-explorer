@@ -6,6 +6,7 @@ import { useTranslation } from './hooks/useTranslation';
 import { MainLayout } from './components/layout/main-layout';
 import { ArtistListPage } from './pages/artists/artist-list-page';
 import { ArtistDetailsPage } from './pages/artists/artist-details-page';
+import { FavoritesPage } from './pages/favorites/favorites-page';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -18,18 +19,6 @@ const queryClient = new QueryClient({
   },
 });
 
-const FavoritesPage = () => {
-  const { t } = useTranslation();
-
-  return (
-    <div className='text-center py-12'>
-      <h1 className='text-3xl font-bold mb-4'>{t('navigation.favorites')}</h1>
-      <p className='text-gray-600 dark:text-gray-400'>
-        {t('empty.noFavorites')}
-      </p>
-    </div>
-  );
-};
 
 const RegisterTrackPage = () => {
   const { t } = useTranslation();
