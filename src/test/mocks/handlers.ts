@@ -3,7 +3,6 @@ import { http, HttpResponse } from 'msw';
 export const handlers = [
   http.get('https://api.spotify.com/v1/search', ({ request }) => {
     const url = new URL(request.url);
-    const query = url.searchParams.get('q');
     const type = url.searchParams.get('type');
 
     if (type === 'artist') {
