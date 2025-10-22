@@ -1,12 +1,16 @@
 import React, { useState, useMemo } from 'react';
 import { motion } from 'framer-motion';
-import { Heart, Search, Trash2 } from 'lucide-react';
+import { Heart, Search, Trash2, BarChart3, PieChart, TrendingUp, Clock } from 'lucide-react';
 import { useFavorites } from '../../hooks/useFavorites';
 import { useTranslation } from '../../hooks/useTranslation';
 import { FavoriteItem } from '../../components/favorites/favorite-item';
 import { SearchInput } from '../../components/ui/search-input';
 import { EmptyState } from '../../components/ui/empty-state';
 import { LoadingSkeleton } from '../../components/ui/loading-skeleton';
+import { FavoritesDistributionChart } from '../../components/charts/favorites-distribution-chart';
+import { ArtistsFavoritesChart } from '../../components/charts/artists-favorites-chart';
+import { DurationDistributionChart } from '../../components/charts/duration-distribution-chart';
+import { FavoritesTimelineChart } from '../../components/charts/favorites-timeline-chart';
 import type { UserFavorite } from '../../types';
 
 export const FavoritesPage: React.FC = () => {
@@ -14,16 +18,15 @@ export const FavoritesPage: React.FC = () => {
   const { favorites, removeFavorite, clearFavorites, isLoading } = useFavorites();
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedType, setSelectedType] = useState<UserFavorite['type'] | 'all'>('all');
+  const [showCharts, setShowCharts] = useState(false);
 
   const filteredFavorites = useMemo(() => {
     let filtered = favorites;
 
-    // Filter by type
     if (selectedType !== 'all') {
       filtered = filtered.filter(fav => fav.type === selectedType);
     }
 
-    // Filter by search query
     if (searchQuery.trim()) {
       const query = searchQuery.toLowerCase();
       filtered = filtered.filter(fav => 
@@ -71,15 +74,13 @@ export const FavoritesPage: React.FC = () => {
     );
   }
 
-  // Animation variants
   const pageVariants = {
     hidden: { opacity: 0, y: 20 },
     visible: { 
       opacity: 1, 
       y: 0,
       transition: {
-        duration: 0.5,
-        ease: "easeOut"
+        duration: 0.5
       }
     }
   };
@@ -231,6 +232,116 @@ export const FavoritesPage: React.FC = () => {
           </motion.div>
         )}
       </motion.div>
+
+      {/* Charts Section */}
+      {favorites.length > 0 && (
+        <motion.div 
+          className="mb-8"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.9, duration: 0.3 }}
+        >
+          <div className="flex items-center justify-between mb-6">
+            <motion.h2 
+              className="text-2xl font-bold text-gray-900 dark:text-white"
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 1.0, duration: 0.3 }}
+            >
+              Análise dos Favoritos
+            </motion.h2>
+            <motion.button
+              onClick={() => setShowCharts(!showCharts)}
+              className="flex items-center gap-2 px-4 py-2 bg-primary-500 hover:bg-primary-600 text-white rounded-lg transition-colors duration-200"
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 1.1, duration: 0.3 }}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              <BarChart3 className="w-4 h-4" />
+              {showCharts ? 'Ocultar Gráficos' : 'Mostrar Gráficos'}
+            </motion.button>
+          </div>
+
+          {showCharts && (
+            <motion.div 
+              className="grid grid-cols-1 lg:grid-cols-2 gap-6"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.1, duration: 0.3 }}
+            >
+              {/* Distribution Chart */}
+              <motion.div 
+                className="bg-white dark:bg-dark-500 rounded-xl p-6 shadow-sm border border-gray-200 dark:border-dark-300"
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ delay: 0.2, duration: 0.3 }}
+                whileHover={{ scale: 1.01 }}
+              >
+                <div className="flex items-center gap-2 mb-4">
+                  <PieChart className="w-5 h-5 text-blue-500" />
+                  <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+                    Distribuição por Tipo
+                  </h3>
+                </div>
+                <FavoritesDistributionChart favorites={favorites} />
+              </motion.div>
+
+              {/* Artists Chart */}
+              <motion.div 
+                className="bg-white dark:bg-dark-500 rounded-xl p-6 shadow-sm border border-gray-200 dark:border-dark-300"
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ delay: 0.3, duration: 0.3 }}
+                whileHover={{ scale: 1.01 }}
+              >
+                <div className="flex items-center gap-2 mb-4">
+                  <BarChart3 className="w-5 h-5 text-green-500" />
+                  <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+                    Artistas Mais Favoritados
+                  </h3>
+                </div>
+                <ArtistsFavoritesChart favorites={favorites} />
+              </motion.div>
+
+              {/* Duration Chart */}
+              <motion.div 
+                className="bg-white dark:bg-dark-500 rounded-xl p-6 shadow-sm border border-gray-200 dark:border-dark-300"
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ delay: 0.4, duration: 0.3 }}
+                whileHover={{ scale: 1.01 }}
+              >
+                <div className="flex items-center gap-2 mb-4">
+                  <Clock className="w-5 h-5 text-purple-500" />
+                  <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+                    Distribuição de Duração
+                  </h3>
+                </div>
+                <DurationDistributionChart favorites={favorites} />
+              </motion.div>
+
+              {/* Timeline Chart */}
+              <motion.div 
+                className="bg-white dark:bg-dark-500 rounded-xl p-6 shadow-sm border border-gray-200 dark:border-dark-300"
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ delay: 0.5, duration: 0.3 }}
+                whileHover={{ scale: 1.01 }}
+              >
+                <div className="flex items-center gap-2 mb-4">
+                  <TrendingUp className="w-5 h-5 text-orange-500" />
+                  <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+                    Evolução dos Favoritos
+                  </h3>
+                </div>
+                <FavoritesTimelineChart favorites={favorites} />
+              </motion.div>
+            </motion.div>
+          )}
+        </motion.div>
+      )}
 
       {/* Filters and Search */}
       {favorites.length > 0 && (

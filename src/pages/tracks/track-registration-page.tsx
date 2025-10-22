@@ -1,10 +1,15 @@
 import React, { useState } from 'react';
-import { Music, CheckCircle, AlertCircle, Plus, List, Edit, Trash2 } from 'lucide-react';
+import { motion } from 'framer-motion';
+import { Music, CheckCircle, AlertCircle, Plus, List, Edit, Trash2, BarChart3, PieChart, TrendingUp, Calendar } from 'lucide-react';
 import { useTranslation } from '../../hooks/useTranslation';
 import { useCustomTracks } from '../../hooks/useCustomTracks';
 import { TrackRegistrationForm } from '../../components/forms/track-registration-form';
 import { EmptyState } from '../../components/ui/empty-state';
 import { LoadingSkeleton } from '../../components/ui/loading-skeleton';
+import { GenreDistributionChart } from '../../components/charts/genre-distribution-chart';
+import { ReleaseStatusChart } from '../../components/charts/release-status-chart';
+import { YearDistributionChart } from '../../components/charts/year-distribution-chart';
+import { TracksTimelineChart } from '../../components/charts/tracks-timeline-chart';
 import type { CustomTrack } from '../../types';
 
 export const TrackRegistrationPage: React.FC = () => {
@@ -13,18 +18,15 @@ export const TrackRegistrationPage: React.FC = () => {
   const [showForm, setShowForm] = useState(false);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
   const [editingTrack, setEditingTrack] = useState<CustomTrack | null>(null);
+  const [showCharts, setShowCharts] = useState(false);
 
 
-  const handleFormSuccess = (track: CustomTrack) => {
-    console.log('handleFormSuccess called with track:', track);
-    console.log('Current customTracks in handleFormSuccess:', customTracks);
+  const handleFormSuccess = () => {
     setSuccessMessage(t('forms:trackRegistration.success'));
-    setShowForm(false); // Volta para a lista
+    setShowForm(false);
     
-    // Clear form draft after successful submission
     localStorage.removeItem('track-form-draft');
     
-    // Clear success message after 3 seconds
     setTimeout(() => {
       setSuccessMessage(null);
     }, 3000);
@@ -33,7 +35,6 @@ export const TrackRegistrationPage: React.FC = () => {
   const handleFormCancel = () => {
     setShowForm(false);
     setEditingTrack(null);
-    // Clear form draft when canceling
     localStorage.removeItem('track-form-draft');
   };
 
@@ -73,8 +74,6 @@ export const TrackRegistrationPage: React.FC = () => {
     });
   };
 
-  console.log('Render - showForm:', showForm, 'customTracks.length:', customTracks.length, 'isLoading:', isLoading);
-  console.log('customTracks array:', customTracks);
 
   if (isLoading) {
     return (
@@ -188,6 +187,116 @@ export const TrackRegistrationPage: React.FC = () => {
           </div>
         )}
       </div>
+
+      {/* Charts Section */}
+      {customTracks.length > 0 && (
+        <motion.div 
+          className="mb-8"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.1, duration: 0.3 }}
+        >
+          <div className="flex items-center justify-between mb-6">
+            <motion.h2 
+              className="text-2xl font-bold text-gray-900 dark:text-white"
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.2, duration: 0.3 }}
+            >
+              Análise das Músicas
+            </motion.h2>
+            <motion.button
+              onClick={() => setShowCharts(!showCharts)}
+              className="flex items-center gap-2 px-4 py-2 bg-primary-500 hover:bg-primary-600 text-white rounded-lg transition-colors duration-200"
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.3, duration: 0.3 }}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              <BarChart3 className="w-4 h-4" />
+              {showCharts ? 'Ocultar Gráficos' : 'Mostrar Gráficos'}
+            </motion.button>
+          </div>
+
+          {showCharts && (
+            <motion.div 
+              className="grid grid-cols-1 lg:grid-cols-2 gap-6"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.1, duration: 0.3 }}
+            >
+              {/* Genre Distribution Chart */}
+              <motion.div 
+                className="bg-white dark:bg-dark-500 rounded-xl p-6 shadow-sm border border-gray-200 dark:border-dark-300"
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ delay: 0.2, duration: 0.3 }}
+                whileHover={{ scale: 1.01 }}
+              >
+                <div className="flex items-center gap-2 mb-4">
+                  <BarChart3 className="w-5 h-5 text-blue-500" />
+                  <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+                    Distribuição por Gênero
+                  </h3>
+                </div>
+                <GenreDistributionChart tracks={customTracks} />
+              </motion.div>
+
+              {/* Release Status Chart */}
+              <motion.div 
+                className="bg-white dark:bg-dark-500 rounded-xl p-6 shadow-sm border border-gray-200 dark:border-dark-300"
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ delay: 0.3, duration: 0.3 }}
+                whileHover={{ scale: 1.01 }}
+              >
+                <div className="flex items-center gap-2 mb-4">
+                  <PieChart className="w-5 h-5 text-green-500" />
+                  <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+                    Status de Lançamento
+                  </h3>
+                </div>
+                <ReleaseStatusChart tracks={customTracks} />
+              </motion.div>
+
+              {/* Year Distribution Chart */}
+              <motion.div 
+                className="bg-white dark:bg-dark-500 rounded-xl p-6 shadow-sm border border-gray-200 dark:border-dark-300"
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ delay: 0.4, duration: 0.3 }}
+                whileHover={{ scale: 1.01 }}
+              >
+                <div className="flex items-center gap-2 mb-4">
+                  <Calendar className="w-5 h-5 text-purple-500" />
+                  <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+                    Distribuição por Ano
+                  </h3>
+                </div>
+                <YearDistributionChart tracks={customTracks} />
+              </motion.div>
+
+              {/* Timeline Chart */}
+              <motion.div 
+                className="bg-white dark:bg-dark-500 rounded-xl p-6 shadow-sm border border-gray-200 dark:border-dark-300"
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ delay: 0.5, duration: 0.3 }}
+                whileHover={{ scale: 1.01 }}
+              >
+                <div className="flex items-center gap-2 mb-4">
+                  <TrendingUp className="w-5 h-5 text-orange-500" />
+                  <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+                    Evolução do Cadastro
+                  </h3>
+                </div>
+                <TracksTimelineChart tracks={customTracks} />
+              </motion.div>
+            </motion.div>
+          )}
+        </motion.div>
+      )}
 
       {/* Form or List */}
       {showForm ? (
