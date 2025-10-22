@@ -27,7 +27,6 @@ export const CustomTracksProvider: React.FC<CustomTracksProviderProps> = ({ chil
   const [customTracks, setCustomTracks] = useState<CustomTrack[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
-  console.log('CustomTracksProvider - customTracks:', customTracks.length, customTracks);
 
   useEffect(() => {
     const loadCustomTracks = () => {
@@ -35,7 +34,6 @@ export const CustomTracksProvider: React.FC<CustomTracksProviderProps> = ({ chil
         const stored = localStorage.getItem(CUSTOM_TRACKS_KEY);
         if (stored) {
           const parsedTracks = JSON.parse(stored);
-          console.log('Loading tracks from localStorage:', parsedTracks.length);
           setCustomTracks(parsedTracks);
         }
       } catch (error) {
@@ -50,11 +48,8 @@ export const CustomTracksProvider: React.FC<CustomTracksProviderProps> = ({ chil
 
   const saveCustomTracks = useCallback((newTracks: CustomTrack[]) => {
     try {
-      console.log('saveCustomTracks called with:', newTracks);
       localStorage.setItem(CUSTOM_TRACKS_KEY, JSON.stringify(newTracks));
-      console.log('localStorage updated, setting state...');
       setCustomTracks(newTracks);
-      console.log('State updated to:', newTracks);
     } catch (error) {
       console.error('Error saving custom tracks:', error);
     }
@@ -62,20 +57,13 @@ export const CustomTracksProvider: React.FC<CustomTracksProviderProps> = ({ chil
 
   const addCustomTrack = useCallback(
     (trackData: Omit<CustomTrack, 'id' | 'createdAt'>) => {
-      console.log('addCustomTrack called with:', trackData);
-      console.log('Current customTracks before add:', customTracks);
-      
       const newTrack: CustomTrack = {
         ...trackData,
         id: generateId(),
         createdAt: new Date().toISOString(),
       };
 
-      console.log('New track created:', newTrack);
-
       const updatedTracks = [...customTracks, newTrack];
-      console.log('Updated tracks array:', updatedTracks);
-      
       saveCustomTracks(updatedTracks);
       return newTrack;
     },

@@ -48,7 +48,6 @@ export const TrackRegistrationForm: React.FC<TrackRegistrationFormProps> = ({
 
   const watchedDuration = watch('duration');
 
-  // Auto-save form data to localStorage
   useEffect(() => {
     const subscription = watch((value) => {
       try {
@@ -60,7 +59,6 @@ export const TrackRegistrationForm: React.FC<TrackRegistrationFormProps> = ({
     return () => subscription.unsubscribe();
   }, [watch]);
 
-  // Load draft from localStorage on mount (only if editing existing track)
   useEffect(() => {
     try {
       const draft = localStorage.getItem('track-form-draft');
@@ -79,8 +77,6 @@ export const TrackRegistrationForm: React.FC<TrackRegistrationFormProps> = ({
 
   const onSubmit = async (data: TrackFormData) => {
     try {
-      console.log('Form onSubmit called with data:', data);
-      
       const trackData = {
         name: data.name,
         artist: data.artist,
@@ -94,28 +90,16 @@ export const TrackRegistrationForm: React.FC<TrackRegistrationFormProps> = ({
         isReleased: data.isReleased,
       };
 
-      console.log('trackData to save:', trackData);
-
       let result;
       if (editingTrack) {
-        // Update existing track
-        console.log('Updating existing track:', editingTrack.id);
         updateCustomTrack(editingTrack.id, trackData);
         result = { ...editingTrack, ...trackData };
       } else {
-        // Create new track
-        console.log('Creating new track');
         result = addCustomTrack(trackData);
-        console.log('New track created:', result);
       }
       
-      // Clear draft after successful submission
       localStorage.removeItem('track-form-draft');
-      
-      // Reset form
       reset();
-      
-      console.log('Calling onSuccess with result:', result);
       onSuccess?.(result);
     } catch (error) {
       console.error('Error saving track:', error);
@@ -127,7 +111,6 @@ export const TrackRegistrationForm: React.FC<TrackRegistrationFormProps> = ({
     localStorage.removeItem('track-form-draft');
   };
 
-  // Clear draft when component mounts for new track
   useEffect(() => {
     if (!editingTrack && !initialData) {
       localStorage.removeItem('track-form-draft');
