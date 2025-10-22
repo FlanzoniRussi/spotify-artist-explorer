@@ -1,4 +1,5 @@
 import React, { useMemo } from 'react';
+import { motion } from 'framer-motion';
 import { 
   BarChart3, 
   TrendingUp, 
@@ -8,7 +9,8 @@ import {
   Calendar,
   Activity,
   Target,
-  Star
+  Star,
+  ArrowRight
 } from 'lucide-react';
 import { useFavorites } from '../../hooks/useFavorites';
 import { useCustomTracks } from '../../hooks/useCustomTracks';
@@ -18,6 +20,44 @@ import { GenreDistributionChart } from '../../components/charts/genre-distributi
 import { ReleaseStatusChart } from '../../components/charts/release-status-chart';
 import { FavoritesTimelineChart } from '../../components/charts/favorites-timeline-chart';
 import { TracksTimelineChart } from '../../components/charts/tracks-timeline-chart';
+
+interface ChartEmptyStateProps {
+  icon: React.ComponentType<{ className?: string }>;
+  title: string;
+  description: string;
+  actionLabel: string;
+  actionLink: string;
+}
+
+const ChartEmptyState: React.FC<ChartEmptyStateProps> = ({
+  icon: Icon,
+  title,
+  description,
+  actionLabel,
+  actionLink,
+}) => (
+  <motion.div
+    className="h-64 flex flex-col items-center justify-center text-center px-4"
+    initial={{ opacity: 0 }}
+    animate={{ opacity: 1 }}
+    transition={{ duration: 0.3 }}
+  >
+    <Icon className="w-12 h-12 text-gray-300 dark:text-gray-600 mb-3" />
+    <h4 className="text-sm font-semibold text-gray-900 dark:text-white mb-1">
+      {title}
+    </h4>
+    <p className="text-xs text-gray-500 dark:text-gray-400 mb-4 max-w-xs">
+      {description}
+    </p>
+    <a
+      href={actionLink}
+      className="inline-flex items-center gap-2 px-3 py-1.5 text-xs font-medium text-primary-600 dark:text-primary-400 hover:bg-primary-50 dark:hover:bg-primary-900/10 rounded-lg transition-colors"
+    >
+      {actionLabel}
+      <ArrowRight className="w-3 h-3" />
+    </a>
+  </motion.div>
+);
 
 export const DashboardPage: React.FC = () => {
   const { favorites } = useFavorites();
@@ -134,9 +174,13 @@ export const DashboardPage: React.FC = () => {
           {favorites.length > 0 ? (
             <FavoritesDistributionChart favorites={favorites} />
           ) : (
-            <div className="h-64 flex items-center justify-center text-gray-500 dark:text-gray-400">
-              <p>Nenhum favorito para visualizar</p>
-            </div>
+            <ChartEmptyState
+              icon={Heart}
+              title="Nenhum favorito para visualizar"
+              description="Adicione músicas aos seus favoritos para ver a distribuição detalhada."
+              actionLabel="Adicionar Favorito"
+              actionLink="/favorites"
+            />
           )}
         </div>
 
@@ -151,9 +195,13 @@ export const DashboardPage: React.FC = () => {
           {customTracks.length > 0 ? (
             <GenreDistributionChart tracks={customTracks} />
           ) : (
-            <div className="h-64 flex items-center justify-center text-gray-500 dark:text-gray-400">
-              <p>Nenhuma música cadastrada</p>
-            </div>
+            <ChartEmptyState
+              icon={Music}
+              title="Nenhuma música cadastrada"
+              description="Adicione músicas para ver a distribuição de gêneros."
+              actionLabel="Adicionar Música"
+              actionLink="/tracks"
+            />
           )}
         </div>
       </div>
@@ -171,9 +219,13 @@ export const DashboardPage: React.FC = () => {
           {favorites.length > 0 ? (
             <FavoritesTimelineChart favorites={favorites} />
           ) : (
-            <div className="h-64 flex items-center justify-center text-gray-500 dark:text-gray-400">
-              <p>Nenhum favorito para visualizar</p>
-            </div>
+            <ChartEmptyState
+              icon={TrendingUp}
+              title="Nenhum favorito para visualizar"
+              description="Adicione músicas aos seus favoritos para ver a evolução."
+              actionLabel="Adicionar Favorito"
+              actionLink="/favorites"
+            />
           )}
         </div>
 
@@ -188,9 +240,13 @@ export const DashboardPage: React.FC = () => {
           {customTracks.length > 0 ? (
             <TracksTimelineChart tracks={customTracks} />
           ) : (
-            <div className="h-64 flex items-center justify-center text-gray-500 dark:text-gray-400">
-              <p>Nenhuma música cadastrada</p>
-            </div>
+            <ChartEmptyState
+              icon={Calendar}
+              title="Nenhuma música cadastrada"
+              description="Adicione músicas para ver a evolução do cadastro."
+              actionLabel="Adicionar Música"
+              actionLink="/tracks"
+            />
           )}
         </div>
       </div>
@@ -208,9 +264,13 @@ export const DashboardPage: React.FC = () => {
           {favorites.length > 0 ? (
             <ArtistsFavoritesChart favorites={favorites} />
           ) : (
-            <div className="h-64 flex items-center justify-center text-gray-500 dark:text-gray-400">
-              <p>Nenhum favorito para visualizar</p>
-            </div>
+            <ChartEmptyState
+              icon={Users}
+              title="Nenhum favorito para visualizar"
+              description="Adicione músicas aos seus favoritos para ver os artistas mais favoritados."
+              actionLabel="Adicionar Favorito"
+              actionLink="/favorites"
+            />
           )}
         </div>
 
@@ -225,9 +285,13 @@ export const DashboardPage: React.FC = () => {
           {customTracks.length > 0 ? (
             <ReleaseStatusChart tracks={customTracks} />
           ) : (
-            <div className="h-64 flex items-center justify-center text-gray-500 dark:text-gray-400">
-              <p>Nenhuma música cadastrada</p>
-            </div>
+            <ChartEmptyState
+              icon={Target}
+              title="Nenhuma música cadastrada"
+              description="Adicione músicas para ver o status de lançamento."
+              actionLabel="Adicionar Música"
+              actionLink="/tracks"
+            />
           )}
         </div>
       </div>
