@@ -1,87 +1,157 @@
 import { Component, type ErrorInfo, type ReactNode } from 'react';
-import { AlertTriangle, RefreshCw } from 'lucide-react';
+import { AlertTriangle, RefreshCw, Home } from 'lucide-react';
+import { Button } from './ui/button';
 
-interface Props {
+/**
+ * Props for ErrorBoundary component
+ */
+interface ErrorBoundaryProps {
+  /** Child components to wrap */
   children: ReactNode;
+  /** Custom fallback UI to display on error */
   fallback?: ReactNode;
+  /** Callback when error occurs */
+  onError?: (error: Error, errorInfo: ErrorInfo) => void;
 }
 
-interface State {
+/**
+ * State for ErrorBoundary component
+ */
+interface ErrorBoundaryState {
+  /** Whether an error has been caught */
   hasError: boolean;
+  /** The caught error */
   error?: Error;
+  /** Error info from componentDidCatch */
+  errorInfo?: ErrorInfo;
 }
 
-export class ErrorBoundary extends Component<Props, State> {
-  constructor(props: Props) {
+/**
+ * ErrorBoundary Component
+ *
+ * Catches React component errors and displays a fallback UI.
+ * Logs errors for debugging and provides recovery options.
+ *
+ * @example
+ * ```tsx
+ * <ErrorBoundary fallback={<div>Error loading section</div>}>
+ *   <MyComponent />
+ * </ErrorBoundary>
+ * ```
+ */
+export class ErrorBoundary extends Component<
+  ErrorBoundaryProps,
+  ErrorBoundaryState
+> {
+  constructor(props: ErrorBoundaryProps) {
     super(props);
     this.state = { hasError: false };
   }
 
-  static getDerivedStateFromError(error: Error): State {
+  /**
+   * Update state when error is caught
+   */
+  static getDerivedStateFromError(error: Error): ErrorBoundaryState {
     return { hasError: true, error };
   }
 
+  /**
+   * Log error details for debugging
+   */
   componentDidCatch(error: Error, errorInfo: ErrorInfo) {
-    console.error('ErrorBoundary caught an error:', error, errorInfo);
+    // Log to console in development
+    if (import.meta.env.DEV) {
+      console.error('ErrorBoundary caught an error:', error, errorInfo);
+    }
+
+    // Could send to external error tracking service
+    // Example: Sentry.captureException(error, { contexts: { react: errorInfo } });
+
+    if (this.props.onError) {
+      this.props.onError(error, errorInfo);
+    }
+
+    this.setState({ errorInfo });
   }
 
+  /**
+   * Handle retry action
+   */
   handleRetry = () => {
-    this.setState({ hasError: false, error: undefined });
+    this.setState({ hasError: false, error: undefined, errorInfo: undefined });
+  };
+
+  /**
+   * Navigate to home page
+   */
+  handleGoHome = () => {
+    window.location.href = '/';
   };
 
   render() {
     if (this.state.hasError) {
+      // Use custom fallback if provided
       if (this.props.fallback) {
         return this.props.fallback;
       }
 
       return (
-        <div className='min-h-screen flex items-center justify-center bg-gray-50 dark:bg-dark-600'>
-          <div className='max-w-md w-full mx-4'>
-            <div className='bg-white dark:bg-dark-500 rounded-xl shadow-lg p-8 text-center'>
-              <div className='flex justify-center mb-4'>
-                <AlertTriangle
-                  size={48}
-                  className='text-red-500 dark:text-red-400'
-                />
+        <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-950 dark:to-gray-900">
+          <div className="max-w-md w-full mx-4">
+            <div className="bg-white dark:bg-slate-950 rounded-xl shadow-lg border border-gray-200 dark:border-gray-800 p-8 text-center">
+              <div className="flex justify-center mb-4">
+                <div className="bg-red-50 dark:bg-red-950 rounded-full p-4">
+                  <AlertTriangle
+                    size={48}
+                    className="text-red-500 dark:text-red-400"
+                  />
+                </div>
               </div>
 
-              <h2 className='text-xl font-semibold text-gray-900 dark:text-white mb-2'>
+              <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
                 Oops! Algo deu errado
               </h2>
 
-              <p className='text-gray-600 dark:text-gray-300 mb-6'>
+              <p className="text-gray-600 dark:text-gray-300 mb-6">
                 Ocorreu um erro inesperado. Tente recarregar a página ou volte
-                mais tarde.
+                para a página inicial.
               </p>
 
               {import.meta.env.DEV && this.state.error && (
-                <details className='mb-6 text-left'>
-                  <summary className='cursor-pointer text-sm text-gray-500 dark:text-gray-400 mb-2'>
-                    Detalhes do erro (desenvolvimento)
+                <details className="mb-6 text-left">
+                  <summary className="cursor-pointer text-sm font-semibold text-gray-600 dark:text-gray-400 mb-2 hover:text-gray-900 dark:hover:text-gray-200">
+                    📋 Detalhes do erro (desenvolvimento)
                   </summary>
-                  <pre className='text-xs bg-gray-100 dark:bg-dark-400 p-3 rounded overflow-auto'>
-                    {this.state.error.message}
-                    {this.state.error.stack}
-                  </pre>
+                  <div className="bg-gray-100 dark:bg-gray-900 p-3 rounded-lg overflow-auto max-h-48">
+                    <p className="text-xs text-gray-700 dark:text-gray-300 font-mono mb-2">
+                      <strong>Mensagem:</strong> {this.state.error.message}
+                    </p>
+                    {this.state.error.stack && (
+                      <pre className="text-xs text-gray-600 dark:text-gray-400 font-mono overflow-auto">
+                        {this.state.error.stack}
+                      </pre>
+                    )}
+                  </div>
                 </details>
               )}
 
-              <div className='flex gap-3 justify-center'>
-                <button
+              <div className="flex gap-3 justify-center flex-wrap">
+                <Button
                   onClick={this.handleRetry}
-                  className='btn-primary flex items-center gap-2'
+                  className="flex items-center gap-2"
                 >
                   <RefreshCw size={16} />
                   Tentar novamente
-                </button>
+                </Button>
 
-                <button
-                  onClick={() => window.location.reload()}
-                  className='btn-secondary'
+                <Button
+                  onClick={this.handleGoHome}
+                  variant="outline"
+                  className="flex items-center gap-2"
                 >
-                  Recarregar página
-                </button>
+                  <Home size={16} />
+                  Ir para início
+                </Button>
               </div>
             </div>
           </div>
