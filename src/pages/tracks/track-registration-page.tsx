@@ -6,6 +6,7 @@ import { useCustomTracks } from '../../hooks/useCustomTracks';
 import { TrackRegistrationForm } from '../../components/forms/track-registration-form';
 import { EmptyState } from '../../components/ui/empty-state';
 import { LoadingSkeleton } from '../../components/ui/loading-skeleton';
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogHeader, AlertDialogTitle } from '../../components/ui/alert-dialog';
 import { GenreDistributionChart } from '../../components/charts/genre-distribution-chart';
 import { ReleaseStatusChart } from '../../components/charts/release-status-chart';
 import { YearDistributionChart } from '../../components/charts/year-distribution-chart';
@@ -19,6 +20,7 @@ export const TrackRegistrationPage: React.FC = () => {
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
   const [editingTrack, setEditingTrack] = useState<CustomTrack | null>(null);
   const [showCharts, setShowCharts] = useState(false);
+  const [showClearDialog, setShowClearDialog] = useState(false);
 
 
   const handleFormSuccess = () => {
@@ -55,9 +57,7 @@ export const TrackRegistrationPage: React.FC = () => {
   };
 
   const handleClearAll = () => {
-    if (window.confirm('Tem certeza que deseja remover todas as músicas cadastradas?')) {
-      clearCustomTracks();
-    }
+    clearCustomTracks();
   };
 
   const formatDuration = (minutes: number, seconds: number): string => {
@@ -106,22 +106,29 @@ export const TrackRegistrationPage: React.FC = () => {
           </div>
           
           <div className="flex gap-3">
-            <button
-              onClick={showForm ? () => setShowForm(false) : handleNewTrack}
-              className="flex items-center gap-2 px-4 py-2 bg-primary-500 hover:bg-primary-600 text-white rounded-lg transition-colors duration-200"
-            >
-              <Plus className="w-4 h-4" />
-              {showForm ? 'Ver Lista' : 'Nova Música'}
-            </button>
+            {/* Only show "+ Nova Música" button when there are tracks */}
+            {customTracks.length > 0 && (
+              <motion.button
+                onClick={showForm ? () => setShowForm(false) : handleNewTrack}
+                className="flex items-center gap-2 px-4 py-2 bg-primary-500 hover:bg-primary-600 text-white rounded-lg transition-colors duration-200"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                <Plus className="w-4 h-4 flex-shrink-0" />
+                <span>{showForm ? 'Ver Lista' : 'Nova Música'}</span>
+              </motion.button>
+            )}
             
             {customTracks.length > 0 && (
-              <button
-                onClick={handleClearAll}
+              <motion.button
+                onClick={() => setShowClearDialog(true)}
                 className="flex items-center gap-2 px-4 py-2 text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-colors duration-200"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
               >
-                <AlertCircle className="w-4 h-4" />
-                Limpar Tudo
-              </button>
+                <AlertCircle className="w-4 h-4 flex-shrink-0" />
+                <span>Limpar Tudo</span>
+              </motion.button>
             )}
           </div>
         </div>
@@ -324,13 +331,15 @@ export const TrackRegistrationPage: React.FC = () => {
               title="Nenhuma música cadastrada"
               description="Comece adicionando sua primeira música personalizada."
               action={
-                <button
+                <motion.button
                   onClick={handleNewTrack}
-                  className="btn-primary"
+                  className="flex items-center gap-2 px-6 py-3 bg-primary-500 hover:bg-primary-600 text-white font-medium rounded-lg transition-colors duration-200"
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
                 >
-                  <Plus className="w-4 h-4 mr-2" />
-                  Cadastrar Primeira Música
-                </button>
+                  <Plus className="w-5 h-5" />
+                  <span>Cadastrar Primeira Música</span>
+                </motion.button>
               }
             />
           ) : (
@@ -390,6 +399,20 @@ export const TrackRegistrationPage: React.FC = () => {
           )}
         </div>
       )}
+
+      <AlertDialog open={showClearDialog} onOpenChange={setShowClearDialog}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Tem certeza que deseja remover todas as músicas cadastradas?</AlertDialogTitle>
+            <AlertDialogDescription>
+              Esta ação removerá todas as músicas da sua lista de músicas personalizadas.
+              Esta operação não pode ser desfeita.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogAction onClick={handleClearAll}>Remover Tudo</AlertDialogAction>
+          <AlertDialogCancel onClick={() => setShowClearDialog(false)}>Cancelar</AlertDialogCancel>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 };
