@@ -89,6 +89,23 @@ export const ArtistCard: React.FC<ArtistCardProps> = ({
     }
   };
 
+  /**
+   * Animation for the heart when favorited
+   */
+  const heartBeatVariants = {
+    unfavorited: {
+      scale: 1,
+      rotate: 0,
+    },
+    favorited: {
+      scale: [1, 1.3, 1.15, 1.3, 1.1],
+      rotate: [0, -10, 10, -10, 0],
+      transition: {
+        duration: 0.6,
+      },
+    },
+  };
+
   return (
     <motion.div 
       className="group bg-white dark:bg-dark-500 rounded-xl shadow-sm border border-gray-200 dark:border-dark-300 hover:shadow-lg transition-all duration-300 overflow-hidden"
@@ -130,7 +147,7 @@ export const ArtistCard: React.FC<ArtistCardProps> = ({
           onClick={onToggleFavorite}
           className={`absolute top-3 right-3 p-2 rounded-full transition-all duration-200 ${
             isFavorite
-              ? 'bg-red-500 text-white shadow-lg'
+              ? 'bg-red-500 text-white shadow-lg scale-110'
               : 'bg-white/80 dark:bg-dark-600/80 text-gray-600 dark:text-gray-300 hover:bg-red-500 hover:text-white'
           }`}
           aria-label={isFavorite ? t('actions.removeFromFavorites') : t('actions.addToFavorites')}
@@ -142,10 +159,11 @@ export const ArtistCard: React.FC<ArtistCardProps> = ({
           transition={{ delay: 0.3, duration: 0.2 }}
         >
           <motion.div
-            animate={isFavorite ? { scale: [1, 1.2, 1] } : {}}
-            transition={{ duration: 0.3 }}
+            animate={isFavorite ? 'favorited' : 'unfavorited'}
+            variants={heartBeatVariants}
+            key={isFavorite ? 'favorited' : 'unfavorited'}
           >
-            <Heart className={`w-4 h-4 ${isFavorite ? 'fill-current' : ''}`} />
+            <Heart className={`w-5 h-5 ${isFavorite ? 'fill-current' : ''}`} />
           </motion.div>
         </motion.button>
       </div>
