@@ -7,6 +7,7 @@ import { FavoriteItem } from '../../components/favorites/favorite-item';
 import { SearchInput } from '../../components/ui/search-input';
 import { EmptyState } from '../../components/ui/empty-state';
 import { LoadingSkeleton } from '../../components/ui/loading-skeleton';
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogHeader, AlertDialogTitle } from '../../components/ui/alert-dialog';
 import { FavoritesDistributionChart } from '../../components/charts/favorites-distribution-chart';
 import { ArtistsFavoritesChart } from '../../components/charts/artists-favorites-chart';
 import { DurationDistributionChart } from '../../components/charts/duration-distribution-chart';
@@ -19,6 +20,7 @@ export const FavoritesPage: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedType, setSelectedType] = useState<UserFavorite['type'] | 'all'>('all');
   const [showCharts, setShowCharts] = useState(false);
+  const [showClearDialog, setShowClearDialog] = useState(false);
 
   const filteredFavorites = useMemo(() => {
     let filtered = favorites;
@@ -53,9 +55,7 @@ export const FavoritesPage: React.FC = () => {
   };
 
   const handleClearAll = () => {
-    if (window.confirm('Tem certeza que deseja remover todos os favoritos?')) {
-      clearFavorites();
-    }
+    setShowClearDialog(true);
   };
 
   if (isLoading) {
@@ -459,6 +459,19 @@ export const FavoritesPage: React.FC = () => {
           ))}
         </motion.div>
       )}
+
+      <AlertDialog open={showClearDialog} onOpenChange={setShowClearDialog}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Tem certeza que deseja remover todos os favoritos?</AlertDialogTitle>
+            <AlertDialogDescription>
+              Esta ação removerá todos os favoritos salvos. Esta operação não pode ser desfeita.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogAction onClick={clearFavorites}>Sim, remover todos</AlertDialogAction>
+          <AlertDialogCancel onClick={() => setShowClearDialog(false)}>Cancelar</AlertDialogCancel>
+        </AlertDialogContent>
+      </AlertDialog>
     </motion.div>
   );
 };
