@@ -32,7 +32,7 @@ export const EmptyState: React.FC<EmptyStateProps> = ({
         {description}
       </p>
 
-      {action && <div>{action}</div>}
+      {action && <div className="flex justify-center">{action}</div>}
     </div>
   );
 };
