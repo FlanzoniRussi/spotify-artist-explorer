@@ -9,7 +9,6 @@ interface PopularityChartProps {
 export const PopularityChart: React.FC<PopularityChartProps> = ({ popularity }) => {
   const { t } = useTranslation();
   
-  // Create mock data for visualization
   const data = [
     { name: t('artists:details.chart.veryLow'), value: 0, fill: '#ef4444' },
     { name: t('artists:details.chart.low'), value: 0, fill: '#f97316' },
@@ -18,14 +17,12 @@ export const PopularityChart: React.FC<PopularityChartProps> = ({ popularity }) 
     { name: t('artists:details.chart.veryHigh'), value: 0, fill: '#3b82f6' },
   ];
 
-  // Determine which category the popularity falls into
   let categoryIndex = 0;
   if (popularity >= 80) categoryIndex = 4;
   else if (popularity >= 60) categoryIndex = 3;
   else if (popularity >= 40) categoryIndex = 2;
   else if (popularity >= 20) categoryIndex = 1;
 
-  // Set the value for the current category
   data[categoryIndex].value = popularity;
 
   const CustomTooltip = ({ active, payload }: { active?: boolean; payload?: Array<{ payload: { name: string; value: number } }> }) => {
@@ -46,8 +43,8 @@ export const PopularityChart: React.FC<PopularityChartProps> = ({ popularity }) 
   };
 
   return (
-    <div className="h-64">
-      <ResponsiveContainer width="100%" height="100%">
+    <div className="h-64 w-full">
+      <ResponsiveContainer width="100%" height="100%" minWidth={300} minHeight={200}>
         <BarChart data={data} margin={{ top: 20, right: 30, left: 20, bottom: 5 }}>
           <CartesianGrid strokeDasharray="3 3" stroke="#374151" opacity={0.3} />
           <XAxis 

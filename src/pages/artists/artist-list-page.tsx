@@ -33,13 +33,12 @@ export const ArtistListPage: React.FC = () => {
 
   const handleSearchChange = (value: string) => {
     setSearchQuery(value);
-    setCurrentPage(1); // Reset to first page when searching
+    setCurrentPage(1);
     debouncedSearch(value);
   };
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
-    // Scroll to top when changing pages
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
@@ -59,11 +58,9 @@ export const ArtistListPage: React.FC = () => {
 
   const pagination = searchData?.pagination;
 
-  // Usar os artistas diretamente da API (já filtrados e ordenados pelo SpotifyService)
   const artists = useMemo(() => searchData?.artists || [], [searchData?.artists]);
   const albums = useMemo(() => albumsData || [], [albumsData]);
 
-  // Estados de loading e erro combinados
   const isLoading = artistsLoading || albumsLoading;
   const isFetching = artistsFetching || albumsFetching;
   const error = artistsError || albumsError;
@@ -80,7 +77,6 @@ export const ArtistListPage: React.FC = () => {
   };
 
   const handleIsFavorite = (artist: SpotifyArtist) => {
-    // Verificar se o artista já está nos favoritos pelo nome
     return favorites.some(fav => fav.type === 'artist' && fav.name === artist.name);
   };
 
@@ -103,7 +99,6 @@ export const ArtistListPage: React.FC = () => {
     );
   };
 
-  // Resultados filtrados baseados no tipo de busca
   const filteredResults = useMemo(() => {
     if (searchType === 'artist') return { artists, albums: [] };
     if (searchType === 'album') return { artists: [], albums };
