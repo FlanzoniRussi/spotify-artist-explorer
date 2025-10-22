@@ -56,16 +56,14 @@ export const ArtistCard: React.FC<ArtistCardProps> = ({
       scale: 1,
       transition: {
         duration: 0.5,
-        delay: index * 0.1,
-        ease: "easeOut"
+        delay: index * 0.1
       }
     },
     hover: {
       y: -5,
       scale: 1.02,
       transition: {
-        duration: 0.2,
-        ease: "easeOut"
+        duration: 0.2
       }
     }
   };
@@ -74,8 +72,7 @@ export const ArtistCard: React.FC<ArtistCardProps> = ({
     hover: {
       scale: 1.1,
       transition: {
-        duration: 0.3,
-        ease: "easeOut"
+        duration: 0.3
       }
     }
   };
