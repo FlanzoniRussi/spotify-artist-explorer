@@ -9,6 +9,7 @@ import { ArtistDetailsPage } from './pages/artists/artist-details-page';
 import { AlbumDetailsPage } from './pages/albums/album-details-page';
 import { FavoritesPage } from './pages/favorites/favorites-page';
 import { TrackRegistrationPage } from './pages/tracks/track-registration-page';
+import { DashboardPage } from './pages/dashboard/dashboard-page';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -37,6 +38,7 @@ function App() {
                   <Route path='/album/:id' element={<AlbumDetailsPage />} />
                   <Route path='/favorites' element={<FavoritesPage />} />
                   <Route path='/register-track' element={<TrackRegistrationPage />} />
+                  <Route path='/dashboard' element={<DashboardPage />} />
                 </Routes>
               </MainLayout>
             </Router>

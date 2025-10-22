@@ -1,5 +1,5 @@
 import React from 'react';
-import { Music, Search, Heart, Plus } from 'lucide-react';
+import { Music, Search, Heart, Plus, BarChart3 } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { ThemeToggle } from '../../features/theme/theme-toggle';
 import { LanguageSwitcher } from '../../features/i18n/language-switcher';
@@ -19,8 +19,7 @@ export const Header: React.FC<HeaderProps> = ({ className = '' }) => {
       y: 0, 
       opacity: 1,
       transition: {
-        duration: 0.5,
-        ease: "easeOut"
+        duration: 0.5
       }
     }
   };
@@ -32,8 +31,7 @@ export const Header: React.FC<HeaderProps> = ({ className = '' }) => {
       y: 0,
       transition: {
         duration: 0.3,
-        delay: 0.2,
-        ease: "easeOut"
+        delay: 0.2
       }
     }
   };
@@ -42,8 +40,7 @@ export const Header: React.FC<HeaderProps> = ({ className = '' }) => {
     hover: {
       y: -2,
       transition: {
-        duration: 0.2,
-        ease: "easeOut"
+        duration: 0.2
       }
     }
   };
@@ -112,6 +109,15 @@ export const Header: React.FC<HeaderProps> = ({ className = '' }) => {
               >
                 <Plus size={16} />
                 <span>{t('navigation.register')}</span>
+              </Link>
+            </motion.div>
+            <motion.div variants={linkVariants} whileHover="hover">
+              <Link
+                to='/dashboard'
+                className='flex items-center space-x-1 text-gray-700 dark:text-gray-300 hover:text-primary-500 dark:hover:text-primary-400 transition-colors font-medium'
+              >
+                <BarChart3 size={16} />
+                <span>Dashboard</span>
               </Link>
             </motion.div>
           </motion.nav>
@@ -195,6 +201,20 @@ export const Header: React.FC<HeaderProps> = ({ className = '' }) => {
                 <Plus size={20} />
                 <span className='text-xs font-medium'>
                   {t('navigation.register')}
+                </span>
+              </Link>
+            </motion.div>
+            <motion.div
+              whileHover={{ scale: 1.05, y: -2 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              <Link
+                to='/dashboard'
+                className='flex flex-col items-center space-y-1 text-gray-600 dark:text-gray-400 hover:text-primary-500 transition-colors'
+              >
+                <BarChart3 size={20} />
+                <span className='text-xs font-medium'>
+                  Dashboard
                 </span>
               </Link>
             </motion.div>
