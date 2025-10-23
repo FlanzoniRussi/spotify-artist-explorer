@@ -87,14 +87,6 @@ export const Header: React.FC<HeaderProps> = ({ className = '' }) => {
           >
             <motion.div variants={linkVariants} whileHover="hover">
               <Link
-                to='/'
-                className='text-gray-700 dark:text-gray-300 hover:text-primary-500 dark:hover:text-primary-400 transition-colors font-medium'
-              >
-                {t('navigation.artists')}
-              </Link>
-            </motion.div>
-            <motion.div variants={linkVariants} whileHover="hover">
-              <Link
                 to='/search-artists'
                 className='flex items-center space-x-1 text-gray-700 dark:text-gray-300 hover:text-primary-500 dark:hover:text-primary-400 transition-colors font-medium'
               >
@@ -169,10 +161,10 @@ export const Header: React.FC<HeaderProps> = ({ className = '' }) => {
               whileTap={{ scale: 0.95 }}
             >
               <Link
-                to='/'
+                to='/search-artists'
                 className='flex flex-col items-center space-y-1 text-gray-600 dark:text-gray-400 hover:text-primary-500 transition-colors'
               >
-                <Music size={20} />
+                <Search size={20} />
                 <span className='text-xs font-medium'>
                   {t('navigation.artists')}
                 </span>

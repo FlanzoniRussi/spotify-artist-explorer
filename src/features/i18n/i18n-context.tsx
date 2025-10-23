@@ -17,12 +17,14 @@ import ptForms from '../../locales/pt/forms.json';
 import ptDashboard from '../../locales/pt/dashboard.json';
 import ptTracks from '../../locales/pt/tracks.json';
 import ptFavorites from '../../locales/pt/favorites.json';
+import ptHome from '../../locales/pt/home.json';
 import enCommon from '../../locales/en/common.json';
 import enArtists from '../../locales/en/artists.json';
 import enForms from '../../locales/en/forms.json';
 import enDashboard from '../../locales/en/dashboard.json';
 import enTracks from '../../locales/en/tracks.json';
 import enFavorites from '../../locales/en/favorites.json';
+import enHome from '../../locales/en/home.json';
 
 const initialState: I18nState = {
   language: (localStorage.getItem('i18nextLng') as SupportedLanguage) || 'pt',
@@ -56,6 +58,7 @@ const resources = {
     dashboard: ptDashboard,
     tracks: ptTracks,
     favorites: ptFavorites,
+    home: ptHome,
   },
   en: {
     common: enCommon,
@@ -64,6 +67,7 @@ const resources = {
     dashboard: enDashboard,
     tracks: enTracks,
     favorites: enFavorites,
+    home: enHome,
   },
 };
 
@@ -75,7 +79,7 @@ i18n
     lng: 'pt',
     fallbackLng: 'pt',
     defaultNS: 'common',
-    ns: ['common', 'artists', 'forms', 'dashboard', 'tracks', 'favorites'],
+    ns: ['common', 'artists', 'forms', 'dashboard', 'tracks', 'favorites', 'home'],
     interpolation: {
       escapeValue: false,
     },
