@@ -37,7 +37,7 @@ export const FavoritesPage: React.FC = () => {
   const { t } = useTranslation();
   const { favorites, removeFavorite, clearFavorites, isLoading } =
     useFavorites();
-  const { getRating, getRatingStats, clearRatings } = useRatingsContext();
+  const { getRating, getRatingStats } = useRatingsContext();
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedType, setSelectedType] = useState<
     UserFavorite['type'] | 'all'
@@ -389,23 +389,11 @@ export const FavoritesPage: React.FC = () => {
                   transition={{ delay: 0.6, duration: 0.3 }}
                   whileHover={{ scale: 1.01 }}
                 >
-                  <div className='flex items-center justify-between gap-2 mb-4'>
-                    <div className='flex items-center gap-2'>
-                      <Star className='w-5 h-5 text-yellow-500' />
-                      <h3 className='text-lg font-semibold text-gray-900 dark:text-white'>
-                        {t('favorites:analysis.ratingsDistribution')}
-                      </h3>
-                    </div>
-                    <button
-                      onClick={() => {
-                        clearRatings();
-                        alert(t('common:messages.ratingsCleared') || 'Avaliações limpas com sucesso!');
-                      }}
-                      className='text-xs px-3 py-1 rounded bg-gray-100 dark:bg-dark-400 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-dark-300 transition-colors'
-                      title='Limpar histórico de avaliações'
-                    >
-                      {t('common:buttons.clear') || 'Limpar'}
-                    </button>
+                  <div className='flex items-center gap-2 mb-4'>
+                    <Star className='w-5 h-5 text-yellow-500' />
+                    <h3 className='text-lg font-semibold text-gray-900 dark:text-white'>
+                      {t('favorites:analysis.ratingsDistribution')}
+                    </h3>
                   </div>
                   <RatingsDistributionChart
                     distribution={getRatingStats().distribution}
