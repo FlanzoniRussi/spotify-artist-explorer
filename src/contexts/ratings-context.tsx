@@ -261,6 +261,7 @@ export const RatingsProvider: React.FC<{ children: ReactNode }> = ({ children })
   );
 };
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const useRatingsContext = (): RatingsContextType => {
   const context = useContext(RatingsContext);
   if (context === undefined) {
