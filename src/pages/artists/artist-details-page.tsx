@@ -32,6 +32,8 @@ export const ArtistDetailsPage: React.FC = () => {
   const { favorites, toggleFavorite } = useFavorites();
   const [currentTracksPage, setCurrentTracksPage] = React.useState(1);
   const [currentAlbumsPage, setCurrentAlbumsPage] = React.useState(1);
+  const albumsTableRef = React.useRef<HTMLDivElement>(null);
+  const tracksTableRef = React.useRef<HTMLDivElement>(null);
   const ITEMS_PER_PAGE = 20;
 
   const {
@@ -99,12 +101,22 @@ export const ArtistDetailsPage: React.FC = () => {
     );
   };
 
-  const isAlbumFavorite = (album: { name: string }) => {
+  const isAlbumFavorite = (album: SpotifyAlbum) => {
     return favorites.some(fav => 
       fav.type === 'album' && 
       fav.name === album.name && 
       fav.artist === (artist?.name || t('fallbacks.unknown'))
     );
+  };
+
+  const handleTracksPageChange = (page: number) => {
+    setCurrentTracksPage(page);
+    tracksTableRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  };
+
+  const handleAlbumsPageChange = (page: number) => {
+    setCurrentAlbumsPage(page);
+    albumsTableRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   };
 
   const formatFollowers = (count: number): string => {
@@ -368,6 +380,7 @@ export const ArtistDetailsPage: React.FC = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.5, duration: 0.5 }}
+          ref={tracksTableRef}
         >
           <motion.h2 
             className="text-2xl font-bold text-gray-900 dark:text-white mb-6"
@@ -425,10 +438,7 @@ export const ArtistDetailsPage: React.FC = () => {
                   <Pagination
                     currentPage={currentTracksPage}
                     totalPages={totalTracksPages}
-                    onPageChange={(page) => {
-                      setCurrentTracksPage(page);
-                      window.scrollTo({ top: 0, behavior: 'smooth' });
-                    }}
+                    onPageChange={handleTracksPageChange}
                   />
                 </div>
               )}
@@ -447,6 +457,7 @@ export const ArtistDetailsPage: React.FC = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.7, duration: 0.5 }}
+          ref={albumsTableRef}
         >
           <motion.h2 
             className="text-2xl font-bold text-gray-900 dark:text-white mb-6"
@@ -512,10 +523,7 @@ export const ArtistDetailsPage: React.FC = () => {
                   <Pagination
                     currentPage={currentAlbumsPage}
                     totalPages={totalAlbumsPages}
-                    onPageChange={(page) => {
-                      setCurrentAlbumsPage(page);
-                      window.scrollTo({ top: 0, behavior: 'smooth' });
-                    }}
+                    onPageChange={handleAlbumsPageChange}
                   />
                 </div>
               )}
