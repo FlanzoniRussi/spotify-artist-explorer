@@ -1,5 +1,5 @@
 import '@testing-library/jest-dom';
-import { beforeAll, afterEach, afterAll, vi } from 'vitest';
+import { beforeAll, afterEach, afterAll } from 'vitest';
 import { cleanup } from '@testing-library/react';
 import { server } from './mocks/server';
 
@@ -10,6 +10,8 @@ beforeAll(() => {
 afterEach(() => {
   cleanup();
   server.resetHandlers();
+  localStorage.clear();
+  sessionStorage.clear();
 });
 
 afterAll(() => {
@@ -30,22 +32,42 @@ Object.defineProperty(window, 'matchMedia', {
   }),
 });
 
+// Create in-memory storage implementations for tests
+class StorageMock {
+  private store: Record<string, string> = {};
+
+  getItem(key: string): string | null {
+    return this.store[key] ?? null;
+  }
+
+  setItem(key: string, value: string): void {
+    this.store[key] = value;
+  }
+
+  removeItem(key: string): void {
+    delete this.store[key];
+  }
+
+  clear(): void {
+    this.store = {};
+  }
+
+  get length(): number {
+    return Object.keys(this.store).length;
+  }
+
+  key(index: number): string | null {
+    const keys = Object.keys(this.store);
+    return keys[index] ?? null;
+  }
+}
+
 Object.defineProperty(window, 'localStorage', {
-  value: {
-    getItem: vi.fn(),
-    setItem: vi.fn(),
-    removeItem: vi.fn(),
-    clear: vi.fn(),
-  },
+  value: new StorageMock(),
   writable: true,
 });
 
 Object.defineProperty(window, 'sessionStorage', {
-  value: {
-    getItem: vi.fn(),
-    setItem: vi.fn(),
-    removeItem: vi.fn(),
-    clear: vi.fn(),
-  },
+  value: new StorageMock(),
   writable: true,
 });

@@ -1,6 +1,5 @@
 import React from 'react';
 import { Music, Search, Heart, AlertCircle } from 'lucide-react';
-import { useTranslation } from '../../hooks/useTranslation';
 
 interface EmptyStateProps {
   icon?: React.ReactNode;
@@ -33,7 +32,7 @@ export const EmptyState: React.FC<EmptyStateProps> = ({
         {description}
       </p>
 
-      {action && <div className="flex justify-center">{action}</div>}
+      {action && <div className='flex justify-center'>{action}</div>}
     </div>
   );
 };
@@ -77,7 +76,6 @@ export const ErrorState: React.FC<{
   description = 'Ocorreu um erro inesperado. Tente novamente.',
   onRetry,
 }) => {
-  const { t } = useTranslation();
   return (
     <EmptyState
       icon={<AlertCircle size={48} className='text-red-400' />}

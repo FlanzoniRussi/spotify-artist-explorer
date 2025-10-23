@@ -5,7 +5,10 @@ import type { ReactNode } from 'react';
 import { useFavorites } from '../../hooks/useFavorites';
 import { useTheme } from '../../hooks/useTheme';
 import { ThemeProvider } from '../../features/theme/theme-context';
-import { CustomTracksProvider, useCustomTracks } from '../../contexts/custom-tracks-context';
+import {
+  CustomTracksProvider,
+  useCustomTracks,
+} from '../../contexts/custom-tracks-context';
 import type { CustomTrack } from '../../types';
 
 const createQueryWrapper = () => {
@@ -18,17 +21,13 @@ const createQueryWrapper = () => {
   });
 
   return ({ children }: { children: ReactNode }) => (
-    <QueryClientProvider client={queryClient}>
-      {children}
-    </QueryClientProvider>
+    <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
   );
 };
 
 const createThemeWrapper = () => {
   return ({ children }: { children: ReactNode }) => (
-    <ThemeProvider>
-      {children}
-    </ThemeProvider>
+    <ThemeProvider>{children}</ThemeProvider>
   );
 };
 
@@ -269,9 +268,7 @@ describe('useCustomTracks', () => {
 
   const createCustomTracksWrapper = () => {
     return ({ children }: { children: ReactNode }) => (
-      <CustomTracksProvider>
-        {children}
-      </CustomTracksProvider>
+      <CustomTracksProvider>{children}</CustomTracksProvider>
     );
   };
 
@@ -410,16 +407,21 @@ describe('useCustomTracks', () => {
 
     act(() => {
       result.current.addCustomTrack(track1);
+    });
+
+    await waitFor(() => expect(result.current.customTracks).toHaveLength(1));
+
+    act(() => {
       result.current.addCustomTrack(track2);
     });
 
-    expect(result.current.customTracks).toHaveLength(2);
+    await waitFor(() => expect(result.current.customTracks).toHaveLength(2));
 
     act(() => {
       result.current.clearCustomTracks();
     });
 
-    expect(result.current.customTracks).toHaveLength(0);
+    await waitFor(() => expect(result.current.customTracks).toHaveLength(0));
   });
 
   it('should get custom tracks by genre', async () => {
@@ -451,8 +453,15 @@ describe('useCustomTracks', () => {
 
     act(() => {
       result.current.addCustomTrack(rockTrack);
+    });
+
+    await waitFor(() => expect(result.current.customTracks).toHaveLength(1));
+
+    act(() => {
       result.current.addCustomTrack(popTrack);
     });
+
+    await waitFor(() => expect(result.current.customTracks).toHaveLength(2));
 
     const rockTracks = result.current.getCustomTracksByGenre('Rock');
     expect(rockTracks).toHaveLength(1);
@@ -488,8 +497,15 @@ describe('useCustomTracks', () => {
 
     act(() => {
       result.current.addCustomTrack(track2024);
+    });
+
+    await waitFor(() => expect(result.current.customTracks).toHaveLength(1));
+
+    act(() => {
       result.current.addCustomTrack(track2023);
     });
+
+    await waitFor(() => expect(result.current.customTracks).toHaveLength(2));
 
     const tracksByYear = result.current.getCustomTracksByYear(2024);
     expect(tracksByYear).toHaveLength(1);
@@ -525,8 +541,15 @@ describe('useCustomTracks', () => {
 
     act(() => {
       result.current.addCustomTrack(releasedTrack);
+    });
+
+    await waitFor(() => expect(result.current.customTracks).toHaveLength(1));
+
+    act(() => {
       result.current.addCustomTrack(pendingTrack);
     });
+
+    await waitFor(() => expect(result.current.customTracks).toHaveLength(2));
 
     const releasedTracks = result.current.getCustomTracksByStatus(true);
     expect(releasedTracks).toHaveLength(1);
@@ -562,7 +585,7 @@ describe('useCustomTracks', () => {
 
     const stored = localStorage.getItem('spotify-artists-custom-tracks');
     expect(stored).toBeTruthy();
-    
+
     const parsed = JSON.parse(stored!);
     expect(parsed).toHaveLength(1);
     expect(parsed[0]).toMatchObject(trackData);
