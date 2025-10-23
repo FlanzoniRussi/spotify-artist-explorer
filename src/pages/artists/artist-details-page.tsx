@@ -413,7 +413,7 @@ export const ArtistDetailsPage: React.FC = () => {
                           initial="unfavorited"
                           animate={isTrackFavorite(track) ? "favorited" : "unfavorited"}
                         >
-                          <Heart className="w-5 h-5" />
+                          <Heart className={`w-5 h-5 ${isTrackFavorite(track) ? 'fill-current' : ''}`} />
                         </motion.button>
                       </TableCell>
                     </TableRow>
@@ -500,7 +500,7 @@ export const ArtistDetailsPage: React.FC = () => {
                           initial="unfavorited"
                           animate={isAlbumFavorite(album) ? "favorited" : "unfavorited"}
                         >
-                          <Heart className="w-5 h-5" />
+                          <Heart className={`w-5 h-5 ${isAlbumFavorite(album) ? 'fill-current' : ''}`} />
                         </motion.button>
                       </TableCell>
                     </TableRow>
