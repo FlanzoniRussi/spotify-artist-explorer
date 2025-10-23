@@ -14,7 +14,12 @@
     "placeholder": "Search artists...",
     "placeholderCombined": "Search artists and albums...",
     "noResults": "No results found",
-    "searching": "Searching..."
+    "searching": "Searching...",
+    "results": {
+      "showing": "Showing {{artists}} artists and {{albums}} albums on this page",
+      "onThisPage": "on this page",
+      "moreResults": "Browse to see more results"
+    }
   },
   "buttons": {
     "search": "Search",
@@ -105,7 +110,8 @@
     "openInSpotify": "Open in Spotify",
     "editTrack": "Edit track",
     "deleteTrack": "Delete track",
-    "removeFavorite": "Remove from favorites"
+    "removeFavorite": "Remove from favorites",
+    "noImage": "No Image"
   },
   "errorBoundary": {
     "title": "Oops! Something went wrong",

@@ -278,9 +278,8 @@ export const ArtistListPage: React.FC = () => {
         {stats && debouncedQuery && (
           <div className='mb-4'>
             <p className='text-sm text-gray-500 dark:text-gray-400 text-center'>
-              Mostrando {stats.currentPageArtists} artistas e{' '}
-              {stats.currentPageAlbums} álbuns nesta página
-              {stats.hasMorePages && ' • Navegue para ver mais resultados'}
+              {t('search.results.showing', { artists: stats.currentPageArtists, albums: stats.currentPageAlbums })}
+              {stats.hasMorePages && ` • ${t('search.results.moreResults')}`}
             </p>
           </div>
         )}
@@ -434,7 +433,7 @@ export const ArtistListPage: React.FC = () => {
                   <Users className='w-5 h-5' />
                   {t('sections.artists')}
                   <span className='text-sm font-normal text-gray-500 dark:text-gray-400'>
-                    ({filteredResults.artists.length} nesta página)
+                    ({filteredResults.artists.length} {t('search.results.onThisPage')})
                   </span>
                 </h2>
 
@@ -444,7 +443,7 @@ export const ArtistListPage: React.FC = () => {
                     <div className='flex flex-col items-center gap-2'>
                       <div className='animate-spin rounded-full h-8 w-8 border-b-2 border-primary-500'></div>
                       <p className='text-sm text-gray-600 dark:text-gray-400'>
-                        Carregando artistas...
+                        {t('artists:loading.artists')}
                       </p>
                     </div>
                   </div>
@@ -482,7 +481,7 @@ export const ArtistListPage: React.FC = () => {
                   <Disc className='w-5 h-5' />
                   {t('sections.albums')}
                   <span className='text-sm font-normal text-gray-500 dark:text-gray-400'>
-                    ({filteredResults.albums.length} nesta página)
+                    ({filteredResults.albums.length} {t('search.results.onThisPage')})
                   </span>
                 </h2>
 
@@ -492,7 +491,7 @@ export const ArtistListPage: React.FC = () => {
                     <div className='flex flex-col items-center gap-2'>
                       <div className='animate-spin rounded-full h-8 w-8 border-b-2 border-primary-500'></div>
                       <p className='text-sm text-gray-600 dark:text-gray-400'>
-                        Carregando álbuns...
+                        {t('artists:loading.albums')}
                       </p>
                     </div>
                   </div>

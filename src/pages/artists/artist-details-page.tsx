@@ -483,7 +483,7 @@ export const ArtistDetailsPage: React.FC = () => {
                           <img src={album.images[0].url} alt={album.name} className="w-full h-full object-cover" />
                         ) : (
                           <div className="w-full h-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center">
-                            <span className="text-gray-500 dark:text-gray-400">No Image</span>
+                            <span className="text-gray-500 dark:text-gray-400">{t('labels.noImage')}</span>
                           </div>
                         )}
                       </TableCell>
