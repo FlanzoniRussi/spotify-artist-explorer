@@ -37,7 +37,7 @@ export const FavoritesPage: React.FC = () => {
   const { t } = useTranslation();
   const { favorites, removeFavorite, clearFavorites, isLoading } =
     useFavorites();
-  const { getRating, getRatingStats } = useRatingsContext();
+  const { getRating, getRatingStats, clearRatings } = useRatingsContext();
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedType, setSelectedType] = useState<
     UserFavorite['type'] | 'all'
@@ -560,7 +560,7 @@ export const FavoritesPage: React.FC = () => {
               {t('favorites:dialogs.clearAllDescription')}
             </AlertDialogDescription>
           </AlertDialogHeader>
-          <AlertDialogAction onClick={clearFavorites}>
+          <AlertDialogAction onClick={() => { clearFavorites(); clearRatings(); }}>
             {t('favorites:dialogs.confirmRemove')}
           </AlertDialogAction>
           <AlertDialogCancel onClick={() => setShowClearDialog(false)}>
