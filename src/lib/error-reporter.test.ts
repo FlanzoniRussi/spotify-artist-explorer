@@ -1,0 +1,133 @@
+import { describe, it, expect, beforeEach, vi } from 'vitest';
+import { errorReporter } from './error-reporter';
+
+describe('ErrorReporter', () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+    errorReporter.clearStoredErrors();
+  });
+
+  describe('error reporting', () => {
+    it('should report an Error object', () => {
+      const error = new Error('Test error');
+      expect(() => {
+        errorReporter.reportError(error);
+      }).not.toThrow();
+    });
+
+    it('should report a string error', () => {
+      expect(() => {
+        errorReporter.reportError('String error');
+      }).not.toThrow();
+    });
+
+    it('should report an object error', () => {
+      const error = { message: 'Object error', code: 500 };
+      expect(() => {
+        errorReporter.reportError(error);
+      }).not.toThrow();
+    });
+
+    it('should report with context', () => {
+      const error = new Error('Test error');
+      const context = { component: 'TestComponent', action: 'test-action' };
+
+      expect(() => {
+        errorReporter.reportError(error, context);
+      }).not.toThrow();
+    });
+  });
+
+  describe('API error reporting', () => {
+    it('should report API errors with status code', () => {
+      const error = new Error('API Error');
+
+      expect(() => {
+        errorReporter.reportApiError(error, '/api/endpoint', 500, {
+          component: 'SpotifyService',
+        });
+      }).not.toThrow();
+    });
+
+    it('should store API error context', () => {
+      const error = new Error('API Error');
+      errorReporter.reportApiError(error, '/api/endpoint', 404);
+
+      const stored = errorReporter.getStoredErrors();
+      expect(stored.length).toBeGreaterThan(0);
+      expect(stored[0].message).toContain('API Error');
+    });
+  });
+
+  describe('validation error reporting', () => {
+    it('should report validation errors', () => {
+      expect(() => {
+        errorReporter.reportValidationError('Invalid input', {
+          component: 'FormComponent',
+          field: 'email',
+        });
+      }).not.toThrow();
+    });
+
+    it('should mark validation errors correctly', () => {
+      errorReporter.reportValidationError('Invalid field');
+
+      const stored = errorReporter.getStoredErrors();
+      expect(stored.length).toBeGreaterThan(0);
+    });
+  });
+
+  describe('error normalization', () => {
+    it('should normalize Error objects', () => {
+      const error = new Error('Test');
+      errorReporter.reportError(error);
+
+      const stored = errorReporter.getStoredErrors();
+      expect(stored[0].name).toBe('Error');
+      expect(stored[0].message).toBe('Test');
+    });
+
+    it('should normalize string errors to Error objects', () => {
+      errorReporter.reportError('String error');
+
+      const stored = errorReporter.getStoredErrors();
+      expect(stored[0].message).toContain('String error');
+    });
+
+    it('should normalize object errors', () => {
+      const obj = { code: 500, status: 'error' };
+      errorReporter.reportError(obj);
+
+      const stored = errorReporter.getStoredErrors();
+      expect(stored[0].message).toContain('code');
+    });
+
+    it('should handle unknown error types', () => {
+      errorReporter.reportError(null);
+
+      const stored = errorReporter.getStoredErrors();
+      expect(stored[0].message).toBe('Unknown error');
+    });
+  });
+
+  describe('error storage', () => {
+    it('should store reported errors', () => {
+      const error1 = new Error('Error 1');
+      const error2 = new Error('Error 2');
+
+      errorReporter.reportError(error1);
+      errorReporter.reportError(error2);
+
+      const stored = errorReporter.getStoredErrors();
+      expect(stored.length).toBeGreaterThanOrEqual(2);
+    });
+
+    it('should clear stored errors', () => {
+      errorReporter.reportError(new Error('Test'));
+      expect(errorReporter.getStoredErrors().length).toBeGreaterThan(0);
+
+      errorReporter.clearStoredErrors();
+      expect(errorReporter.getStoredErrors()).toHaveLength(0);
+    });
+  });
+});
