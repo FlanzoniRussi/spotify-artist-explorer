@@ -401,12 +401,12 @@ export const ArtistDetailsPage: React.FC = () => {
               <Table>
                 <TableHead>
                   <TableRow>
-                    <TableCell className="font-semibold text-gray-900 dark:text-white">#</TableCell>
-                    <TableCell className="font-semibold text-gray-900 dark:text-white">Title</TableCell>
-                    <TableCell className="font-semibold text-gray-900 dark:text-white">Album</TableCell>
-                    <TableCell className="font-semibold text-gray-900 dark:text-white">Duration</TableCell>
-                    <TableCell className="font-semibold text-gray-900 dark:text-white">Popularity</TableCell>
-                    <TableCell className="font-semibold text-gray-900 dark:text-white">Favorite</TableCell>
+                    <TableCell className="font-semibold text-gray-900 dark:text-white">{t('artists:details.tableHeaders.number')}</TableCell>
+                    <TableCell className="font-semibold text-gray-900 dark:text-white">{t('artists:details.tableHeaders.title')}</TableCell>
+                    <TableCell className="font-semibold text-gray-900 dark:text-white">{t('artists:details.tableHeaders.album')}</TableCell>
+                    <TableCell className="font-semibold text-gray-900 dark:text-white">{t('artists:details.tableHeaders.duration')}</TableCell>
+                    <TableCell className="font-semibold text-gray-900 dark:text-white">{t('artists:details.tableHeaders.popularity')}</TableCell>
+                    <TableCell className="font-semibold text-gray-900 dark:text-white">{t('artists:details.tableHeaders.favorite')}</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
@@ -478,12 +478,12 @@ export const ArtistDetailsPage: React.FC = () => {
               <Table>
                 <TableHead>
                   <TableRow>
-                    <TableCell className="font-semibold text-gray-900 dark:text-white">Image</TableCell>
-                    <TableCell className="font-semibold text-gray-900 dark:text-white">Title</TableCell>
-                    <TableCell className="font-semibold text-gray-900 dark:text-white">Artist</TableCell>
-                    <TableCell className="font-semibold text-gray-900 dark:text-white">Date</TableCell>
-                    <TableCell className="font-semibold text-gray-900 dark:text-white">Tracks</TableCell>
-                    <TableCell className="font-semibold text-gray-900 dark:text-white">Favorite</TableCell>
+                    <TableCell className="font-semibold text-gray-900 dark:text-white">{t('artists:details.tableHeaders.image')}</TableCell>
+                    <TableCell className="font-semibold text-gray-900 dark:text-white">{t('artists:details.tableHeaders.title')}</TableCell>
+                    <TableCell className="font-semibold text-gray-900 dark:text-white">{t('artists:details.tableHeaders.artist')}</TableCell>
+                    <TableCell className="font-semibold text-gray-900 dark:text-white">{t('artists:details.tableHeaders.date')}</TableCell>
+                    <TableCell className="font-semibold text-gray-900 dark:text-white">{t('artists:details.tableHeaders.tracksCount')}</TableCell>
+                    <TableCell className="font-semibold text-gray-900 dark:text-white">{t('artists:details.tableHeaders.favorite')}</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>

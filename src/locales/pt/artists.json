@@ -42,6 +42,18 @@
     "releaseDate": "Data de Lançamento",
     "tracks": "Músicas",
     "duration": "Duração",
+    "tableHeaders": {
+      "number": "#",
+      "title": "Título",
+      "album": "Álbum",
+      "duration": "Duração",
+      "popularity": "Popularidade",
+      "favorite": "Favorito",
+      "image": "Imagem",
+      "artist": "Artista",
+      "date": "Data",
+      "tracksCount": "Faixas"
+    },
     "chart": {
       "veryLow": "Muito Baixa",
       "low": "Baixa",
