@@ -13,7 +13,14 @@
     "favoritesEvolution": "Evolução dos Favoritos",
     "tracksEvolution": "Evolução do Cadastro",
     "topArtists": "Artistas Mais Favoritados",
-    "releaseStatus": "Status de Lançamento"
+    "releaseStatus": "Status de Lançamento",
+    "ratingsDistribution": "Distribuição de Avaliações",
+    "ratingsLabels": {
+      "total": "Total",
+      "average": "Média",
+      "quantity": "Quantidade",
+      "rating": "avaliação"
+    }
   },
   "empty": {
     "noFavoritesToView": "Nenhum favorito para visualizar",

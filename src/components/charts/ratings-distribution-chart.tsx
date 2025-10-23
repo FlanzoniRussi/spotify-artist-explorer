@@ -10,6 +10,7 @@ import {
   ResponsiveContainer,
 } from 'recharts';
 import { useTheme } from '../../hooks/useTheme';
+import { useTranslation } from '../../hooks/useTranslation';
 
 interface RatingsDistributionChartProps {
   distribution: { 1: number; 2: number; 3: number; 4: number; 5: number };
@@ -23,6 +24,7 @@ export const RatingsDistributionChart: React.FC<RatingsDistributionChartProps> =
   total,
 }) => {
   const { isDark } = useTheme();
+  const { t } = useTranslation();
 
   const data = useMemo(() => {
     return [
@@ -42,10 +44,10 @@ export const RatingsDistributionChart: React.FC<RatingsDistributionChartProps> =
       <div className="mb-4 flex items-center justify-between">
         <div>
           <h3 className="text-sm font-semibold text-gray-900 dark:text-white">
-            Distribuição de Avaliações
+            {t('dashboard:charts.ratingsDistribution')}
           </h3>
           <p className="text-xs text-gray-500 dark:text-gray-400">
-            Total: {total} • Média: {average.toFixed(1)} ⭐
+            {t('dashboard:charts.ratingsLabels.total')}: {total} • {t('dashboard:charts.ratingsLabels.average')}: {average.toFixed(1)} ⭐
           </p>
         </div>
       </div>
@@ -70,7 +72,7 @@ export const RatingsDistributionChart: React.FC<RatingsDistributionChartProps> =
               borderRadius: '8px',
               color: textColor,
             }}
-            formatter={(value) => `${value} avaliação${value !== 1 ? 's' : ''}`}
+            formatter={(value) => `${value} ${t('dashboard:charts.ratingsLabels.rating')}${value !== 1 ? 's' : ''}`}
             labelStyle={{ color: textColor }}
           />
           <Legend
@@ -81,7 +83,7 @@ export const RatingsDistributionChart: React.FC<RatingsDistributionChartProps> =
             dataKey="count"
             fill="#f97316"
             radius={[8, 8, 0, 0]}
-            name="Quantidade"
+            name={t('dashboard:charts.ratingsLabels.quantity')}
           />
         </BarChart>
       </ResponsiveContainer>

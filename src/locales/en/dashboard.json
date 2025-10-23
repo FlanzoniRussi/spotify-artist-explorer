@@ -11,9 +11,16 @@
     "favoritesDistribution": "Favorites Distribution",
     "genreFavorites": "Favorite Genres",
     "favoritesEvolution": "Favorites Evolution",
-    "tracksEvolution": "Tracks Evolution",
-    "topArtists": "Top Favorited Artists",
-    "releaseStatus": "Release Status"
+    "tracksEvolution": "Track Registration Evolution",
+    "topArtists": "Top Favorite Artists",
+    "releaseStatus": "Release Status",
+    "ratingsDistribution": "Ratings Distribution",
+    "ratingsLabels": {
+      "total": "Total",
+      "average": "Average",
+      "quantity": "Quantity",
+      "rating": "rating"
+    }
   },
   "empty": {
     "noFavoritesToView": "No favorites to view",
