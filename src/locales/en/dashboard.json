@@ -20,6 +20,11 @@
       "average": "Average",
       "quantity": "Quantity",
       "rating": "rating"
+    },
+    "releaseStatusLabels": {
+      "released": "Released",
+      "pending": "Pending",
+      "noData": "No data available for visualization"
     }
   },
   "empty": {

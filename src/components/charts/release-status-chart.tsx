@@ -1,12 +1,14 @@
 import React, { useMemo } from 'react';
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip, Legend } from 'recharts';
 import type { CustomTrack } from '../../types';
+import { useTranslation } from '../../hooks/useTranslation';
 
 interface ReleaseStatusChartProps {
   tracks: CustomTrack[];
 }
 
 export const ReleaseStatusChart: React.FC<ReleaseStatusChartProps> = ({ tracks }) => {
+  const { t } = useTranslation();
 
   const data = useMemo(() => {
     const released = tracks.filter(track => track.isReleased).length;
@@ -14,17 +16,17 @@ export const ReleaseStatusChart: React.FC<ReleaseStatusChartProps> = ({ tracks }
 
     return [
       {
-        name: 'Lançadas',
+        name: t('dashboard:charts.releaseStatusLabels.released'),
         value: released,
         color: '#10b981'
       },
       {
-        name: 'Pendentes',
+        name: t('dashboard:charts.releaseStatusLabels.pending'),
         value: pending,
         color: '#f59e0b'
       }
     ].filter(item => item.value > 0);
-  }, [tracks]);
+  }, [tracks, t]);
 
   const CustomTooltip = ({ active, payload }: { active?: boolean; payload?: Array<{ payload: { name: string; value: number; color: string } }> }) => {
     if (active && payload && payload.length) {
@@ -69,7 +71,7 @@ export const ReleaseStatusChart: React.FC<ReleaseStatusChartProps> = ({ tracks }
   if (data.length === 0) {
     return (
       <div className="h-64 flex items-center justify-center text-gray-500 dark:text-gray-400">
-        <p>Nenhum dado disponível para visualização</p>
+        <p>{t('dashboard:charts.releaseStatusLabels.noData')}</p>
       </div>
     );
   }

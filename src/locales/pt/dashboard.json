@@ -20,6 +20,11 @@
       "average": "Média",
       "quantity": "Quantidade",
       "rating": "avaliação"
+    },
+    "releaseStatusLabels": {
+      "released": "Lançadas",
+      "pending": "Pendentes",
+      "noData": "Nenhum dado disponível para visualização"
     }
   },
   "empty": {
