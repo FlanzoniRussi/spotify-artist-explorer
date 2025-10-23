@@ -52,7 +52,7 @@ export const TrackRegistrationForm: React.FC<TrackRegistrationFormProps> = ({
     const subscription = watch((value) => {
       try {
         localStorage.setItem('track-form-draft', JSON.stringify(value));
-      } catch (error) {
+      } catch {
         // Silent fail
       }
     });
@@ -70,7 +70,7 @@ export const TrackRegistrationForm: React.FC<TrackRegistrationFormProps> = ({
           }
         });
       }
-    } catch (error) {
+    } catch {
       // Silent fail
     }
   }, [setValue, initialData, editingTrack]);
@@ -101,7 +101,7 @@ export const TrackRegistrationForm: React.FC<TrackRegistrationFormProps> = ({
       localStorage.removeItem('track-form-draft');
       reset();
       onSuccess?.(result);
-    } catch (error) {
+    } catch {
       // Silent fail
     }
   };

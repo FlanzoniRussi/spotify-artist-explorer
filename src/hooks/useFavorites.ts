@@ -55,7 +55,7 @@ export const useFavorites = () => {
             localStorage.setItem(FAVORITES_KEY, JSON.stringify(migrated));
           }
         }
-      } catch (error) {
+      } catch {
         // Silent fail
       } finally {
         setIsLoading(false);
@@ -75,7 +75,7 @@ export const useFavorites = () => {
     try {
       localStorage.setItem(FAVORITES_KEY, JSON.stringify(newFavorites));
       setFavorites(newFavorites);
-    } catch (error) {
+    } catch {
       // Silent fail
     }
   }, []);

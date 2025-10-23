@@ -103,7 +103,7 @@ export function I18nProvider({ children }: I18nProviderProps) {
         const detectedLanguage = i18n.language as SupportedLanguage;
         dispatch({ type: 'SET_LANGUAGE', payload: detectedLanguage });
         dispatch({ type: 'SET_LOADING', payload: false });
-      } catch (error) {
+      } catch {
         dispatch({ type: 'SET_LOADING', payload: false });
       }
     };
@@ -117,7 +117,7 @@ export function I18nProvider({ children }: I18nProviderProps) {
       await i18n.changeLanguage(language);
       dispatch({ type: 'SET_LANGUAGE', payload: language });
       localStorage.setItem('i18nextLng', language);
-    } catch (error) {
+    } catch {
       // Silent fail
     } finally {
       dispatch({ type: 'SET_LOADING', payload: false });

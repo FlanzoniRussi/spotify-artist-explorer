@@ -54,7 +54,7 @@ export const useSearchHistory = () => {
         if (stored) {
           setHistory(JSON.parse(stored));
         }
-      } catch (error) {
+      } catch {
         // Silent fail
       }
     };
@@ -91,7 +91,7 @@ export const useSearchHistory = () => {
       
       try {
         localStorage.setItem(SEARCH_HISTORY_KEY, JSON.stringify(updated));
-      } catch (error) {
+      } catch {
         // Silent fail
       }
 
@@ -124,7 +124,7 @@ export const useSearchHistory = () => {
     try {
       localStorage.removeItem(SEARCH_HISTORY_KEY);
       setHistory([]);
-    } catch (error) {
+    } catch {
       // Silent fail
     }
   }, []);

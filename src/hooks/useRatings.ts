@@ -44,7 +44,7 @@ export const useRatings = () => {
       if (stored) {
         setRatings(JSON.parse(stored));
       }
-    } catch (error) {
+    } catch {
       // Silent fail
     } finally {
       setIsLoading(false);
