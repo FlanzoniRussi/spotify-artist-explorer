@@ -110,7 +110,6 @@ O objetivo era criar uma **aplicação frontend de nível profissional** que dem
 
 ## 🛠️ Tech Stack
 
-
 ### 🧩 **Framework Principal**
 - **React 19.1.1** – Biblioteca de UI com hooks
 - **TypeScript 5.9.3** – JavaScript type-safe
