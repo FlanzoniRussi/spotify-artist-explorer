@@ -1,6 +1,6 @@
 # 🎵 Spotify Artists Explorer
 
-> A modern, performant React application for discovering and exploring Spotify artists — built with **TypeScript**, **React Query**, **Vite**, and a polished design system inspired by Spotify's aesthetics.
+> Uma aplicação React moderna e performática para descobrir e explorar artistas do Spotify — construída com **TypeScript**, **React Query**, **Vite** e um polido sistema de design inspirado na estética do Spotify.
 
 [![React](https://img.shields.io/badge/React-19.1.1-61DAFB?style=flat-square&logo=react)](https://react.dev)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.9.3-3178C6?style=flat-square&logo=typescript)](https://www.typescriptlang.org)
@@ -9,310 +9,313 @@
 
 ---
 
-## 📋 Table of Contents
+## 📋 Índice
 
-- [Overview](#-project-overview)
-- [Features](#-features)
+- [Visão Geral](#-visão-geral)
+- [Funcionalidades](#-funcionalidades)
 - [Tech Stack](#-tech-stack)
-- [Getting Started](#-getting-started)
-- [Project Structure](#-project-structure)
-- [Available Scripts](#-available-scripts)
-- [Architecture & Patterns](#-architecture--patterns)
-- [Contributing](#-contributing)
-- [License](#-license)
+- [Começando](#-começando)
+- [Estrutura do Projeto](#-estrutura-do-projeto)
+- [Scripts Disponíveis](#-scripts-disponíveis)
+- [Arquitetura e Padrões](#-arquitetura-e-padrões)
+- [Requisitos Atendidos](#-requisitos-atendidos)
+- [Licença](#-licença)
 
 ---
 
-## 💡 Project Overview
+## 💡 Visão Geral
 
-This project was built as part of a **technical challenge for Kanastra**, with a focus on:
+Este projeto foi desenvolvido como parte de um **desafio técnico para a Kanastra**, com foco em:
 
-✨ **Clean Architecture** – Separation of concerns, scalable structure  
-⚡ **Performance** – Optimized rendering, caching, code splitting  
-🎨 **User Experience** – Responsive design, smooth animations, dark mode  
-🧠 **Code Quality** – Type-safe, well-tested, ESLint/Prettier configured  
-🌍 **Internationalization** – Full PT-BR and EN-US support  
+✨ **Arquitetura Limpa** – Separação de responsabilidades, estrutura escalável  
+⚡ **Performance** – Renderização otimizada, cache inteligente, code splitting  
+🎨 **Experiência do Usuário** – Design responsivo, animações suaves, modo escuro  
+🧠 **Qualidade de Código** – Type-safe, bem testado, ESLint/Prettier configurado  
+🌍 **Internacionalização** – Suporte completo PT-BR e EN-US  
 
-The goal was to create a **professional-grade frontend application** that demonstrates technical proficiency while maintaining thoughtful UX and attention to detail.
+O objetivo era criar uma **aplicação frontend de nível profissional** que demonstrasse proficiência técnica mantendo uma UX cuidadosa e atenção aos detalhes.
 
 ---
 
-## ✨ Features
+## ✨ Funcionalidades
 
-### 🔍 **Search & Discovery**
-- Search artists by name with intelligent filtering
-- Filter by album name
-- Pagination (20 items per page)
-- Responsive search input with debouncing
-- Real-time search history
+### 🔍 **Busca e Descoberta**
+- Buscar artistas por nome com filtro inteligente
+- Filtrar por nome de álbum
+- Paginação (20 itens por página)
+- Input de busca responsivo com debounce
+- Histórico de buscas em tempo real
 
-### 👤 **Artist Details**
-- Comprehensive artist profile page
-- Top 10 tracks with popularity metrics
-- Complete album/single discography
-- Artist follower count and genres
-- Direct link to Spotify artist page
+### 👤 **Detalhes do Artista**
+- Página de perfil completo do artista
+- Top 10 faixas com métricas de popularidade
+- Discografia completa de álbuns/singles
+- Contagem de seguidores e gêneros
+- Link direto para página do artista no Spotify
 
-### 📊 **Analytics & Visualization**
-- 13+ interactive charts including:
-  - Artist popularity trends
-  - Track popularity distribution
-  - Genre breakdown
-  - Release status analysis
-  - Timeline visualizations
-  - Favorites distribution by metrics
+### 📊 **Análise e Visualização**
+- 13+ gráficos interativos incluindo:
+  - Tendências de popularidade de artistas
+  - Distribuição de popularidade de faixas
+  - Análise de gêneros
+  - Análise de status de lançamento
+  - Visualizações em linhas do tempo
+  - Distribuição de favoritos por métricas
 
-### ❤️ **Favorites & Ratings**
-- Add/remove favorite tracks
-- Rate tracks (1-5 stars)
-- Persistent storage (LocalStorage)
-- Favorites with search and filters
-- Rating statistics dashboard
-- Detailed distribution charts
+### ❤️ **Favoritos e Avaliações**
+- Adicionar/remover faixas favoritas
+- Avaliar faixas (1-5 estrelas)
+- Armazenamento persistente (LocalStorage)
+- Favoritos com busca e filtros
+- Dashboard de estatísticas de avaliações
+- Gráficos detalhados de distribuição
 
-### 🎵 **Custom Tracks**
-- Register your own music tracks
-- Form validation with real-time feedback
-- Track metadata: name, artist, album, year, genre, duration
-- Release status toggle
-- Manage and edit custom tracks
-- View statistics on custom tracks
+### 🎵 **Faixas Personalizadas**
+- Registre suas próprias faixas musicais
+- Validação de formulário com feedback em tempo real
+- Metadados de faixa: nome, artista, álbum, ano, gênero, duração
+- Toggle de status de lançamento
+- Gerenciar e editar faixas personalizadas
+- Visualizar estatísticas de faixas personalizadas
 
-### 🌍 **Internationalization (i18n)**
-- Full PT-BR and EN-US support
-- Language switcher in header
-- All content translated
-- Locale-aware date/number formatting
-- Persistent language preference
+### 🌍 **Internacionalização (i18n)**
+- Suporte completo PT-BR e EN-US
+- Seletor de idioma no header
+- Todo conteúdo traduzido
+- Formatação de data/número sensível à localidade
+- Preferência de idioma persistente
 
-### 🎨 **Theme System**
-- Light/Dark mode with auto-detection
-- Respects system preferences
-- Smooth theme transitions
-- Persistent theme selection
-- Beautiful UI in both modes
+### 🎨 **Sistema de Temas**
+- Modo claro/escuro com autodetecção
+- Respeita preferências do sistema
+- Transições suaves de tema
+- Seleção de tema persistente
+- UI linda em ambos os modos
 
-### 📱 **Responsive Design**
-- Mobile-first approach
-- Optimized for all screen sizes
-- Touch-friendly interactions
-- Fluid grid layout
-- Adaptive chart sizing
+### 📱 **Design Responsivo**
+- Abordagem mobile-first
+- Otimizado para todos os tamanhos de tela
+- Interações touch-friendly
+- Layout grid fluido
+- Dimensionamento adaptativo de gráficos
 
 ### ⚡ **Performance**
-- Server state caching with React Query
-- Lazy loading of components
-- Code splitting for faster loads
-- Optimized bundle size (332KB gzip)
-- Efficient re-rendering with memoization
+- Cache de estado de servidor com React Query
+- Lazy loading de componentes
+- Code splitting para carregamentos mais rápidos
+- Tamanho de bundle otimizado (332KB gzip)
+- Re-renderização eficiente com memoização
 
 ---
 
 ## 🛠️ Tech Stack
 
-### 🧩 **Core Framework**
-- **React 19.1.1** – UI library with hooks
-- **TypeScript 5.9.3** – Type-safe JavaScript
-- **Vite 7.1.7** – Lightning-fast build tool
-- **React Router 7.9.4** – Client-side routing
 
-### 🧭 **State Management & Data**
-- **React Query 5.90.5** – Server state management & caching
-- **Context API + useReducer** – Client state management
-- **Axios 1.12.2** – HTTP client
+### 🧩 **Framework Principal**
+- **React 19.1.1** – Biblioteca de UI com hooks
+- **TypeScript 5.9.3** – JavaScript type-safe
+- **Vite 7.1.7** – Ferramenta de build ultra-rápida
+- **React Router 7.9.4** – Roteamento no lado cliente
 
-### 🎨 **UI & Styling**
-- **Tailwind CSS 3.4.18** – Utility-first CSS framework
-- **Lucide React 0.546.0** – Beautiful icon library
-- **Framer Motion 12.23.24** – Smooth animations
-- **Recharts 3.3.0** – Composable charts
+### 🧭 **Gerenciamento de Estado e Dados**
+- **React Query 5.90.5** – Gerenciamento de estado de servidor & cache
+- **Context API + useReducer** – Gerenciamento de estado cliente
+- **Axios 1.12.2** – Cliente HTTP
 
-### 🧾 **Forms & Validation**
-- **React Hook Form 7.65.0** – Performant forms
-- **Zod 4.1.12** – TypeScript-first schema validation
-- **@hookform/resolvers** – Form resolver integration
+### 🎨 **UI e Styling**
+- **Tailwind CSS 3.4.18** – Framework CSS utility-first
+- **Lucide React 0.546.0** – Biblioteca de ícones bela
+- **Framer Motion 12.23.24** – Animações suaves
+- **Recharts 3.3.0** – Gráficos componíveis
 
-### 🌍 **Internationalization**
-- **react-i18next 16.1.2** – i18n framework
-- **i18next-browser-languagedetector** – Auto language detection
+### 🧾 **Formulários e Validação**
+- **React Hook Form 7.65.0** – Formulários performáticos
+- **Zod 4.1.12** – Validação schema-first com TypeScript
+- **@hookform/resolvers** – Integração de form resolver
 
-### ⚙️ **Developer Experience**
-- **ESLint 9.38.0** – Code quality linting
-- **Prettier 3.6.2** – Code formatting
+### 🌍 **Internacionalização**
+- **react-i18next 16.1.2** – Framework i18n
+- **i18next-browser-languagedetector** – Autodetecção de idioma
+
+### ⚙️ **Experiência do Desenvolvedor**
+- **ESLint 9.38.0** – Linting de qualidade de código
+- **Prettier 3.6.2** – Formatação de código
 - **Husky 9.1.7** – Git hooks
-- **Commitlint 20.1.0** – Commit message validation
-- **Vitest 3.2.4** – Unit testing
-- **Playwright 1.56.1** – E2E testing
+- **Commitlint 20.1.0** – Validação de mensagens de commit
+- **Vitest 3.2.4** – Testes unitários
+- **Playwright 1.56.1** – Testes E2E
 
 ---
 
-## 🚀 Getting Started
+## 🚀 Começando
 
-### ✅ Prerequisites
+### ✅ Pré-requisitos
 
 - **Node.js** 18+ ([Download](https://nodejs.org))
-- **npm** 9+ or **yarn** 3+ (comes with Node)
-- **Git** for cloning the repository
+- **npm** 9+ ou **yarn** 3+ (vem com Node)
+- **Git** para clonar o repositório
 
-### ⚡ Installation
+### ⚡ Instalação
 
-#### 1. Clone the repository
+#### 1. Clone o repositório
 ```bash
-git clone https://github.com/YOUR_USERNAME/spotify-artists-explorer.git
+git clone https://github.com/SEU_USUARIO/spotify-artists-explorer.git
 cd spotify-artists-explorer
 ```
 
-#### 2. Install dependencies
+#### 2. Instale as dependências
 ```bash
 npm install
-# or
+# ou
 yarn install
 ```
 
-#### 3. Environment setup
-Create a `.env` file in the root directory (copy from `.env.example`):
+#### 3. Configuração de ambiente
+Crie um arquivo `.env` no diretório raiz (copie de `.env.example`):
 
 ```env
-# Spotify API Configuration
-VITE_SPOTIFY_CLIENT_ID=your_client_id_here
-VITE_SPOTIFY_CLIENT_SECRET=your_client_secret_here
+# Configuração da API do Spotify
+VITE_SPOTIFY_CLIENT_ID=seu_client_id_aqui
+VITE_SPOTIFY_CLIENT_SECRET=seu_client_secret_aqui
 
-# Development Configuration
+# Configuração de Desenvolvimento
 VITE_APP_ENV=development
 VITE_APP_VERSION=1.0.0
 ```
 
-**How to get Spotify API credentials:**
-1. Go to [Spotify Developer Dashboard](https://developer.spotify.com/dashboard)
-2. Create a new application
-3. Accept the terms and create
-4. Copy your **Client ID** and **Client Secret**
-5. Paste them in your `.env` file
+**Como obter credenciais da API do Spotify:**
+1. Acesse [Spotify Developer Dashboard](https://developer.spotify.com/dashboard)
+2. Crie uma nova aplicação
+3. Aceite os termos e crie
+4. Copie seu **Client ID** e **Client Secret**
+5. Cole no seu arquivo `.env`
 
-#### 4. Start development server
+#### 4. Inicie o servidor de desenvolvimento
 ```bash
 npm run dev
 ```
 
-Open [http://localhost:5173](http://localhost:5173) in your browser.
+Abra [http://localhost:3000](http://localhost:3000) no seu navegador.
 
 ---
 
-## 📁 Project Structure
+## 📁 Estrutura do Projeto
 
 ```
 src/
-├── assets/              # Images and static files
+├── assets/              # Imagens e arquivos estáticos
 ├── components/
-│   ├── albums/          # Album components
-│   ├── artists/         # Artist components
-│   ├── charts/          # Chart visualizations (13+)
-│   ├── favorites/       # Favorites management
-│   ├── forms/           # Form components
-│   ├── layout/          # Layout wrapper
-│   ├── tracks/          # Track components
-│   └── ui/              # Reusable UI components
-├── contexts/            # React Context providers
+│   ├── albums/          # Componentes de álbum
+│   ├── artists/         # Componentes de artista
+│   ├── charts/          # Visualizações de gráficos (13+)
+│   ├── favorites/       # Gerenciamento de favoritos
+│   ├── forms/           # Componentes de formulário
+│   ├── layout/          # Wrapper de layout
+│   ├── tracks/          # Componentes de faixa
+│   ├── error-boundary/  # Tratamento de erros
+│   └── ui/              # Componentes base reutilizáveis
+├── contexts/            # Provedores React Context
 │   ├── custom-tracks-context.tsx
 │   └── ratings-context.tsx
 ├── features/
-│   ├── i18n/            # Internationalization setup
-│   └── theme/           # Theme management
+│   ├── i18n/            # Setup de internacionalização
+│   └── theme/           # Gerenciamento de tema
 ├── hooks/               # Custom React hooks
 │   ├── useFavorites.ts
 │   ├── useRatings.ts
 │   ├── useSpotify.ts
 │   └── useTheme.ts
-├── locales/             # Translation files (PT-BR, EN-US)
-├── pages/               # Page components
+├── locales/             # Arquivos de tradução (PT-BR, EN-US)
+├── lib/                 # Utilitários e libs (logger, error-reporter, etc)
+├── pages/               # Componentes de página
 │   ├── albums/
 │   ├── artists/
 │   ├── dashboard/
 │   ├── favorites/
 │   └── tracks/
 ├── services/
-│   └── spotifyService.ts  # Spotify API service
-├── types/               # TypeScript type definitions
-├── utils/               # Utility functions
-└── App.tsx              # Root component
+│   └── spotifyService.ts  # Serviço de API do Spotify
+├── types/               # Definições de tipos TypeScript
+├── utils/               # Funções utilitárias
+└── App.tsx              # Componente raiz
 ```
 
 ---
 
-## 📝 Available Scripts
+## 📝 Scripts Disponíveis
 
-### Development
+### Desenvolvimento
 ```bash
-npm run dev          # Start dev server
-npm run build        # Build for production
-npm run preview      # Preview production build
+npm run dev          # Inicie o servidor de desenvolvimento
+npm run build        # Construa para produção
+npm run preview      # Visualize a construção de produção
 ```
 
-### Code Quality
+### Qualidade de Código
 ```bash
-npm run lint         # Run ESLint
-npm run lint:fix     # Fix ESLint issues
-npm run format       # Format with Prettier
-npm run format:check # Check formatting
-npm run type-check   # TypeScript type checking
+npm run lint         # Execute ESLint
+npm run lint:fix     # Corrija problemas de ESLint
+npm run format       # Formate com Prettier
+npm run format:check # Verifique formatação
+npm run type-check   # Verificação de tipo TypeScript
 ```
 
-### Testing
+### Testes
 ```bash
-npm run test         # Run unit tests
-npm run test:ui      # Run tests with UI
-npm run test:coverage # Generate coverage report
-npm run test:e2e     # Run E2E tests
-npm run test:e2e:ui  # Run E2E tests with UI
-npm run test:all     # Run all tests
+npm run test         # Execute testes unitários
+npm run test:ui      # Execute testes com UI
+npm run test:coverage # Gere relatório de cobertura
+npm run test:e2e     # Execute testes E2E
+npm run test:e2e:ui  # Execute testes E2E com UI
+npm run test:all     # Execute todos os testes
 ```
 
 ---
 
-## 🏗️ Architecture & Patterns
+## 🏗️ Arquitetura e Padrões
 
-### State Management
+### Gerenciamento de Estado
 
-**Server State (React Query)**
-- Caches Spotify API responses
-- Handles loading/error states
-- Automatic refetching and revalidation
+**Estado de Servidor (React Query)**
+- Cache de respostas da API do Spotify
+- Manipulação de estados loading/error
+- Refetching e revalidação automática
 
-**Client State (Context API + useReducer)**
+**Estado Cliente (Context API + useReducer)**
 ```
-📦 RatingsContext    → User ratings (add, update, remove, stats)
-📦 CustomTracksContext → Custom tracks (CRUD operations)
-📦 ThemeContext      → Light/Dark mode preference
-📦 I18nContext       → Language selection (PT-BR/EN-US)
+📦 RatingsContext        → Avaliações do usuário (add, update, remove, stats)
+📦 CustomTracksContext   → Faixas personalizadas (operações CRUD)
+📦 ThemeContext          → Preferência de modo claro/escuro
+📦 I18nContext           → Seleção de idioma (PT-BR/EN-US)
 ```
 
-### Component Patterns
+### Padrões de Componentes
 
-**Page Components** – Route-level containers  
-**Feature Components** – Reusable feature containers  
-**UI Components** – Presentational, unstyled base components  
-**Hook Components** – Custom React hooks for logic reuse  
+**Componentes de Página** – Contêineres no nível de rota  
+**Componentes de Recurso** – Contêineres de recurso reutilizáveis  
+**Componentes UI** – Base apresentacional reutilizável  
+**Componentes de Hook** – Custom React hooks para reutilização de lógica  
 
-### Form Handling
+### Manipulação de Formulários
 
 **React Hook Form + Zod**
-- Client-side validation with schema-first approach
-- Real-time field validation
-- Type-safe form data
-- Automatic error handling and display
+- Validação no lado cliente com abordagem schema-first
+- Validação de campo em tempo real
+- Dados de formulário type-safe
+- Manipulação e exibição automática de erros
 
-### API Integration
+### Integração de API
 
-**Spotify Service** – Centralized API client
-- Axios instance with base URL
-- Error handling with custom messages
-- Methods for artists, albums, tracks, search
+**Serviço Spotify** – Cliente API centralizado
+- Instância Axios com URL base
+- Tratamento de erros com mensagens customizadas
+- Métodos para artistas, álbuns, faixas, busca
 
 ---
 
 ## 🎯 Requisitos Atendidos
 
-### ✅ Functional Requirements (Obrigatórios)
+### ✅ Requisitos Funcionais (Obrigatórios)
 - [x] Demo funcional com requisições funcionando
 - [x] Listagem artistas com paginação (20 itens/página)
 - [x] Filtros por nome e álbum
@@ -323,7 +326,7 @@ npm run test:all     # Run all tests
 - [x] Formulário cadastro de músicas favoritas
 - [x] Listagem de músicas favoritadas
 
-### ✅ Technical Requirements (Obrigatórios)
+### ✅ Requisitos Técnicos (Obrigatórios)
 - [x] React
 - [x] Vite (SPA)
 - [x] TypeScript
@@ -347,54 +350,22 @@ npm run test:all     # Run all tests
 - [x] Recharts (13 gráficos)
 - [x] Framer Motion (animações)
 - [x] Error Boundary
-- [x] Responsive design
-- [x] Search history
-- [x] Rating system
-- [x] Custom track registration
+- [x] Design responsivo
+- [x] Histórico de busca
+- [x] Sistema de avaliações
+- [x] Registro de faixas personalizadas
+- [x] JSDoc Documentation completo
+- [x] Structured Logging (Logger, ErrorReporter, RequestLogger)
+- [x] Testes abrangentes (unitários, integração, E2E)
 
 ---
 
-## 🤝 Contributing
+## 📄 Licença
 
-We welcome contributions! Here's how:
-
-1. **Fork** the repository
-2. **Create** a feature branch (`git checkout -b feature/amazing-feature`)
-3. **Commit** your changes (`git commit -m 'Add amazing feature'`)
-4. **Push** to the branch (`git push origin feature/amazing-feature`)
-5. **Open** a Pull Request
-
-### Code Standards
-- Run `npm run lint:fix` before committing
-- Run `npm run format` to format code
-- Write meaningful commit messages
-- Include tests for new features
+Este projeto está licenciado sob a **Licença MIT** - veja o arquivo [LICENSE](LICENSE) para detalhes.
 
 ---
 
-## 📞 Support
+**Feito com ❤️ por Fabiano Lanzoni**
 
-For questions or issues:
-- 📧 Email: [your-email@example.com]
-- 🐛 Issues: [GitHub Issues](https://github.com/YOUR_USERNAME/spotify-artists-explorer/issues)
-- 💬 Discussions: [GitHub Discussions](https://github.com/YOUR_USERNAME/spotify-artists-explorer/discussions)
-
----
-
-## 📄 License
-
-This project is licensed under the **MIT License** - see [LICENSE](LICENSE) file for details.
-
----
-
-## 🙏 Acknowledgments
-
-- **Kanastra** for the technical challenge
-- **Spotify** for the amazing API
-- **Open Source Community** for the fantastic libraries
-
----
-
-**Made with ❤️ by [Your Name]**
-
-Last updated: 2025
+Última atualização: 2025
