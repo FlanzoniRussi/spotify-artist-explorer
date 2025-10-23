@@ -7,34 +7,50 @@
         "label": "Track Name",
         "placeholder": "Enter track name",
         "required": "Name is required",
-        "minLength": "Name must have at least 2 characters"
+        "minLength": "Name must have at least 2 characters",
+        "maxLength": "Name must have at most 100 characters"
       },
       "artist": {
         "label": "Artist",
         "placeholder": "Enter artist name",
-        "required": "Artist is required"
+        "required": "Artist is required",
+        "minLength": "Artist must have at least 2 characters",
+        "maxLength": "Artist must have at most 100 characters"
       },
       "album": {
         "label": "Album",
-        "placeholder": "Enter album name"
+        "placeholder": "Enter album name",
+        "required": "Album is required",
+        "minLength": "Album must have at least 2 characters",
+        "maxLength": "Album must have at most 100 characters"
       },
       "year": {
         "label": "Release Year",
         "placeholder": "Ex: 2023",
         "required": "Year is required",
         "min": "Year must be greater than 1900",
-        "max": "Year cannot be greater than current year"
+        "max": "Year cannot be greater than current year",
+        "integer": "Year must be an integer"
       },
       "genre": {
         "label": "Genre",
         "placeholder": "Select a genre",
-        "required": "Genre is required"
+        "required": "Genre is required",
+        "minLength": "Genre must have at least 2 characters",
+        "maxLength": "Genre must have at most 50 characters"
       },
       "duration": {
         "label": "Duration",
         "minutes": "Minutes",
         "seconds": "Seconds",
-        "required": "Duration is required"
+        "required": "Duration is required",
+        "minutesInteger": "Minutes must be an integer",
+        "minutesMin": "Minutes must be at least 0",
+        "minutesMax": "Minutes must be at most 59",
+        "secondsInteger": "Seconds must be an integer",
+        "secondsMin": "Seconds must be at least 0",
+        "secondsMax": "Seconds must be at most 59",
+        "minDuration": "Duration must be greater than 0"
       },
       "isReleased": {
         "label": "Already released?",

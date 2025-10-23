@@ -24,6 +24,17 @@ export const TrackRegistrationForm: React.FC<TrackRegistrationFormProps> = ({
   const { t } = useTranslation();
   const { addCustomTrack, updateCustomTrack } = useCustomTracks();
 
+  /**
+   * Traduz mensagens de erro que são chaves i18n
+   */
+  const translateErrorMessage = (message: string): string => {
+    // Se a mensagem é uma chave i18n (começa com 'forms:'), traduz
+    if (message?.startsWith('forms:')) {
+      return t(message);
+    }
+    return message;
+  };
+
   const {
     register,
     handleSubmit,
@@ -45,8 +56,6 @@ export const TrackRegistrationForm: React.FC<TrackRegistrationFormProps> = ({
     },
     mode: 'onChange',
   });
-
-  const watchedDuration = watch('duration');
 
   useEffect(() => {
     const subscription = watch((value) => {
@@ -117,10 +126,6 @@ export const TrackRegistrationForm: React.FC<TrackRegistrationFormProps> = ({
     }
   }, [editingTrack, initialData]);
 
-  const formatDuration = (minutes: number, seconds: number): string => {
-    return `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-  };
-
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
       {/* Track Name */}
@@ -142,7 +147,7 @@ export const TrackRegistrationForm: React.FC<TrackRegistrationFormProps> = ({
         />
         {errors.name && (
           <p className="mt-1 text-sm text-red-600 dark:text-red-400">
-            {errors.name.message}
+            {translateErrorMessage(errors.name.message || '')}
           </p>
         )}
       </div>
@@ -166,7 +171,7 @@ export const TrackRegistrationForm: React.FC<TrackRegistrationFormProps> = ({
         />
         {errors.artist && (
           <p className="mt-1 text-sm text-red-600 dark:text-red-400">
-            {errors.artist.message}
+            {translateErrorMessage(errors.artist.message || '')}
           </p>
         )}
       </div>
@@ -190,7 +195,7 @@ export const TrackRegistrationForm: React.FC<TrackRegistrationFormProps> = ({
         />
         {errors.album && (
           <p className="mt-1 text-sm text-red-600 dark:text-red-400">
-            {errors.album.message}
+            {translateErrorMessage(errors.album.message || '')}
           </p>
         )}
       </div>
@@ -217,7 +222,7 @@ export const TrackRegistrationForm: React.FC<TrackRegistrationFormProps> = ({
           />
           {errors.year && (
             <p className="mt-1 text-sm text-red-600 dark:text-red-400">
-              {errors.year.message}
+              {translateErrorMessage(errors.year.message || '')}
             </p>
           )}
         </div>
@@ -245,143 +250,106 @@ export const TrackRegistrationForm: React.FC<TrackRegistrationFormProps> = ({
           </select>
           {errors.genre && (
             <p className="mt-1 text-sm text-red-600 dark:text-red-400">
-              {errors.genre.message}
+              {translateErrorMessage(errors.genre.message || '')}
             </p>
           )}
         </div>
       </div>
 
       {/* Duration */}
-      <div>
-        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-          <Clock className="inline w-4 h-4 mr-2" />
-          {t('forms:trackRegistration.fields.duration.label')}
-        </label>
-        <div className="grid grid-cols-2 gap-4">
-          <div>
-            <label htmlFor="minutes" className="block text-sm text-gray-600 dark:text-gray-400 mb-1">
-              {t('forms:trackRegistration.fields.duration.minutes')}
-            </label>
-            <input
-              {...register('duration.minutes', { valueAsNumber: true })}
-              type="number"
-              id="minutes"
-              min="0"
-              max="59"
-              className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-colors duration-200 ${
-                errors.duration?.minutes
-                  ? 'border-red-500 bg-red-50 dark:bg-red-900/20'
-                  : 'border-gray-300 dark:border-dark-300 bg-white dark:bg-dark-600'
-              }`}
-            />
-            {errors.duration?.minutes && (
-              <p className="mt-1 text-sm text-red-600 dark:text-red-400">
-                {errors.duration.minutes.message}
-              </p>
-            )}
-          </div>
-          <div>
-            <label htmlFor="seconds" className="block text-sm text-gray-600 dark:text-gray-400 mb-1">
-              {t('forms:trackRegistration.fields.duration.seconds')}
-            </label>
-            <input
-              {...register('duration.seconds', { valueAsNumber: true })}
-              type="number"
-              id="seconds"
-              min="0"
-              max="59"
-              className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-colors duration-200 ${
-                errors.duration?.seconds
-                  ? 'border-red-500 bg-red-50 dark:bg-red-900/20'
-                  : 'border-gray-300 dark:border-dark-300 bg-white dark:bg-dark-600'
-              }`}
-            />
-            {errors.duration?.seconds && (
-              <p className="mt-1 text-sm text-red-600 dark:text-red-400">
-                {errors.duration.seconds.message}
-              </p>
-            )}
-          </div>
+      <div className="grid grid-cols-2 gap-4">
+        <div>
+          <label htmlFor="duration-minutes" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+            <Clock className="inline w-4 h-4 mr-2" />
+            {t('forms:trackRegistration.fields.duration.minutes')}
+          </label>
+          <input
+            {...register('duration.minutes', { valueAsNumber: true })}
+            type="number"
+            id="duration-minutes"
+            min="0"
+            max="59"
+            className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-colors duration-200 ${
+              errors.duration?.minutes
+                ? 'border-red-500 bg-red-50 dark:bg-red-900/20'
+                : 'border-gray-300 dark:border-dark-300 bg-white dark:bg-dark-600'
+            }`}
+          />
+          {errors.duration?.minutes && (
+            <p className="mt-1 text-sm text-red-600 dark:text-red-400">
+              {translateErrorMessage(errors.duration.minutes.message || '')}
+            </p>
+          )}
         </div>
-        {watchedDuration && (
-          <p className="mt-2 text-sm text-gray-600 dark:text-gray-400">
-            Total: {formatDuration(watchedDuration.minutes, watchedDuration.seconds)}
-          </p>
-        )}
-        {errors.duration && (
-          <p className="mt-1 text-sm text-red-600 dark:text-red-400">
-            {errors.duration.message}
-          </p>
-        )}
+
+        <div>
+          <label htmlFor="duration-seconds" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+            {t('forms:trackRegistration.fields.duration.seconds')}
+          </label>
+          <input
+            {...register('duration.seconds', { valueAsNumber: true })}
+            type="number"
+            id="duration-seconds"
+            min="0"
+            max="59"
+            className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-colors duration-200 ${
+              errors.duration?.seconds
+                ? 'border-red-500 bg-red-50 dark:bg-red-900/20'
+                : 'border-gray-300 dark:border-dark-300 bg-white dark:bg-dark-600'
+            }`}
+          />
+          {errors.duration?.seconds && (
+            <p className="mt-1 text-sm text-red-600 dark:text-red-400">
+              {translateErrorMessage(errors.duration.seconds.message || '')}
+            </p>
+          )}
+        </div>
       </div>
+
+      {errors.duration?.root && (
+        <p className="text-sm text-red-600 dark:text-red-400">
+          {translateErrorMessage(errors.duration.root.message || '')}
+        </p>
+      )}
 
       {/* Release Status */}
-      <div>
-        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
+      <div className="flex items-center space-x-3">
+        <input
+          {...register('isReleased')}
+          type="checkbox"
+          id="isReleased"
+          className="w-4 h-4 rounded border-gray-300 text-primary-500 focus:ring-primary-500 cursor-pointer"
+        />
+        <label htmlFor="isReleased" className="text-sm font-medium text-gray-700 dark:text-gray-300 cursor-pointer">
           {t('forms:trackRegistration.fields.isReleased.label')}
         </label>
-        <Controller
-          name="isReleased"
-          control={control}
-          render={({ field }) => (
-            <div className="flex items-center space-x-4">
-              <label className="flex items-center">
-                <input
-                  type="radio"
-                  checked={field.value === true}
-                  onChange={() => field.onChange(true)}
-                  className="mr-2 text-primary-500 focus:ring-primary-500"
-                />
-                <span className="text-sm text-gray-700 dark:text-gray-300">
-                  {t('forms:trackRegistration.fields.isReleased.yes')}
-                </span>
-              </label>
-              <label className="flex items-center">
-                <input
-                  type="radio"
-                  checked={field.value === false}
-                  onChange={() => field.onChange(false)}
-                  className="mr-2 text-primary-500 focus:ring-primary-500"
-                />
-                <span className="text-sm text-gray-700 dark:text-gray-300">
-                  {t('forms:trackRegistration.fields.isReleased.no')}
-                </span>
-              </label>
-            </div>
-          )}
-        />
-        {errors.isReleased && (
-          <p className="mt-1 text-sm text-red-600 dark:text-red-400">
-            {errors.isReleased.message}
-          </p>
-        )}
       </div>
 
-      {/* Form Actions */}
-      <div className="flex flex-col sm:flex-row gap-4 pt-6 border-t border-gray-200 dark:border-dark-300">
+      {/* Action Buttons */}
+      <div className="flex gap-4 pt-6">
         <button
           type="submit"
           disabled={isSubmitting || !isValid}
-          className="flex-1 bg-primary-500 hover:bg-primary-600 disabled:bg-gray-400 disabled:cursor-not-allowed text-white px-6 py-3 rounded-lg font-medium transition-colors duration-200 flex items-center justify-center"
+          className="flex-1 bg-primary-500 hover:bg-primary-600 disabled:bg-gray-400 text-white font-medium py-3 px-4 rounded-lg transition-colors duration-200 flex items-center justify-center gap-2"
         >
-          <Save className="w-4 h-4 mr-2" />
-          {isSubmitting ? t('common.loading') : t('forms:trackRegistration.buttons.save')}
+          <Save className="w-4 h-4" />
+          {t('forms:trackRegistration.buttons.save')}
         </button>
-        
+
         <button
           type="button"
           onClick={handleReset}
-          className="flex-1 bg-gray-500 hover:bg-gray-600 text-white px-6 py-3 rounded-lg font-medium transition-colors duration-200 flex items-center justify-center"
+          className="flex-1 bg-gray-300 hover:bg-gray-400 dark:bg-gray-600 dark:hover:bg-gray-700 text-gray-800 dark:text-gray-100 font-medium py-3 px-4 rounded-lg transition-colors duration-200 flex items-center justify-center gap-2"
         >
-          <RotateCcw className="w-4 h-4 mr-2" />
+          <RotateCcw className="w-4 h-4" />
           {t('forms:trackRegistration.buttons.reset')}
         </button>
-        
+
         {onCancel && (
           <button
             type="button"
             onClick={onCancel}
-            className="flex-1 border border-gray-300 dark:border-dark-300 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-dark-400 px-6 py-3 rounded-lg font-medium transition-colors duration-200"
+            className="flex-1 border-2 border-gray-300 dark:border-dark-300 text-gray-700 dark:text-gray-300 font-medium py-3 px-4 rounded-lg hover:bg-gray-50 dark:hover:bg-dark-500 transition-colors duration-200"
           >
             {t('forms:trackRegistration.buttons.cancel')}
           </button>

@@ -7,34 +7,50 @@
         "label": "Nome da Música",
         "placeholder": "Digite o nome da música",
         "required": "Nome é obrigatório",
-        "minLength": "Nome deve ter pelo menos 2 caracteres"
+        "minLength": "Nome deve ter pelo menos 2 caracteres",
+        "maxLength": "Nome deve ter no máximo 100 caracteres"
       },
       "artist": {
         "label": "Artista",
         "placeholder": "Digite o nome do artista",
-        "required": "Artista é obrigatório"
+        "required": "Artista é obrigatório",
+        "minLength": "Artista deve ter pelo menos 2 caracteres",
+        "maxLength": "Artista deve ter no máximo 100 caracteres"
       },
       "album": {
         "label": "Álbum",
-        "placeholder": "Digite o nome do álbum"
+        "placeholder": "Digite o nome do álbum",
+        "required": "Álbum é obrigatório",
+        "minLength": "Álbum deve ter pelo menos 2 caracteres",
+        "maxLength": "Álbum deve ter no máximo 100 caracteres"
       },
       "year": {
         "label": "Ano de Lançamento",
         "placeholder": "Ex: 2023",
         "required": "Ano é obrigatório",
         "min": "Ano deve ser maior que 1900",
-        "max": "Ano não pode ser maior que o atual"
+        "max": "Ano não pode ser maior que o atual",
+        "integer": "Ano deve ser um número inteiro"
       },
       "genre": {
         "label": "Gênero",
         "placeholder": "Selecione um gênero",
-        "required": "Gênero é obrigatório"
+        "required": "Gênero é obrigatório",
+        "minLength": "Gênero deve ter pelo menos 2 caracteres",
+        "maxLength": "Gênero deve ter no máximo 50 caracteres"
       },
       "duration": {
         "label": "Duração",
         "minutes": "Minutos",
         "seconds": "Segundos",
-        "required": "Duração é obrigatória"
+        "required": "Duração é obrigatória",
+        "minutesInteger": "Minutos devem ser um número inteiro",
+        "minutesMin": "Minutos devem ser pelo menos 0",
+        "minutesMax": "Minutos devem ser no máximo 59",
+        "secondsInteger": "Segundos devem ser um número inteiro",
+        "secondsMin": "Segundos devem ser pelo menos 0",
+        "secondsMax": "Segundos devem ser no máximo 59",
+        "minDuration": "Duração deve ser maior que 0"
       },
       "isReleased": {
         "label": "Já foi lançada?",

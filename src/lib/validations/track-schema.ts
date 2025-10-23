@@ -1,50 +1,54 @@
 import { z } from 'zod';
 
+/**
+ * Track validation schema com mensagens de erro genéricas
+ * As mensagens serão traduzidas no component usando a chave i18n
+ */
 export const trackSchema = z.object({
   name: z
     .string()
-    .min(1, 'Name is required')
-    .min(2, 'Name must have at least 2 characters')
-    .max(100, 'Name must have at most 100 characters'),
+    .min(1, 'forms:trackRegistration.fields.name.required')
+    .min(2, 'forms:trackRegistration.fields.name.minLength')
+    .max(100, 'forms:trackRegistration.fields.name.maxLength'),
   
   artist: z
     .string()
-    .min(1, 'Artist is required')
-    .min(2, 'Artist must have at least 2 characters')
-    .max(100, 'Artist must have at most 100 characters'),
+    .min(1, 'forms:trackRegistration.fields.artist.required')
+    .min(2, 'forms:trackRegistration.fields.artist.minLength')
+    .max(100, 'forms:trackRegistration.fields.artist.maxLength'),
   
   album: z
     .string()
-    .min(1, 'Album is required')
-    .min(2, 'Album must have at least 2 characters')
-    .max(100, 'Album must have at most 100 characters'),
+    .min(1, 'forms:trackRegistration.fields.album.required')
+    .min(2, 'forms:trackRegistration.fields.album.minLength')
+    .max(100, 'forms:trackRegistration.fields.album.maxLength'),
   
   year: z
     .number()
-    .int('Year must be an integer')
-    .min(1900, 'Year must be greater than 1900')
-    .max(new Date().getFullYear(), 'Year cannot be greater than current year'),
+    .int('forms:trackRegistration.fields.year.integer')
+    .min(1900, 'forms:trackRegistration.fields.year.min')
+    .max(new Date().getFullYear(), 'forms:trackRegistration.fields.year.max'),
   
   genre: z
     .string()
-    .min(1, 'Genre is required')
-    .min(2, 'Genre must have at least 2 characters')
-    .max(50, 'Genre must have at most 50 characters'),
+    .min(1, 'forms:trackRegistration.fields.genre.required')
+    .min(2, 'forms:trackRegistration.fields.genre.minLength')
+    .max(50, 'forms:trackRegistration.fields.genre.maxLength'),
   
   duration: z.object({
     minutes: z
       .number()
-      .int('Minutes must be an integer')
-      .min(0, 'Minutes must be at least 0')
-      .max(59, 'Minutes must be at most 59'),
+      .int('forms:trackRegistration.fields.duration.minutesInteger')
+      .min(0, 'forms:trackRegistration.fields.duration.minutesMin')
+      .max(59, 'forms:trackRegistration.fields.duration.minutesMax'),
     seconds: z
       .number()
-      .int('Seconds must be an integer')
-      .min(0, 'Seconds must be at least 0')
-      .max(59, 'Seconds must be at most 59'),
+      .int('forms:trackRegistration.fields.duration.secondsInteger')
+      .min(0, 'forms:trackRegistration.fields.duration.secondsMin')
+      .max(59, 'forms:trackRegistration.fields.duration.secondsMax'),
   }).refine(
     (duration) => duration.minutes > 0 || duration.seconds > 0,
-    'Duration must be greater than 0'
+    'forms:trackRegistration.fields.duration.minDuration'
   ),
   
   isReleased: z.boolean(),
