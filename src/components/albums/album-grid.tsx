@@ -35,7 +35,7 @@ export const AlbumGrid: React.FC<AlbumGridProps> = ({
       {albums.map((album, index) => (
         <motion.div
           key={album.id}
-          className="group bg-white dark:bg-dark-500 rounded-xl shadow-sm border border-gray-200 dark:border-dark-300 hover:shadow-lg transition-all duration-300 overflow-hidden"
+          className="group bg-white dark:bg-dark-500 rounded-xl shadow-sm border border-gray-200 dark:border-dark-300 hover:shadow-lg transition-all duration-300 overflow-hidden flex flex-col h-full"
           initial={{ opacity: 0, y: 20, scale: 0.95 }}
           animate={{ opacity: 1, y: 0, scale: 1 }}
           transition={{ duration: 0.5, delay: index * 0.05 }}
@@ -96,7 +96,7 @@ export const AlbumGrid: React.FC<AlbumGridProps> = ({
 
           {/* Album Info */}
           <motion.div
-            className="p-6"
+            className="p-6 flex flex-col flex-1"
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3, duration: 0.3 }}
@@ -122,7 +122,7 @@ export const AlbumGrid: React.FC<AlbumGridProps> = ({
 
             {/* Album Details */}
             <motion.div
-              className="space-y-2 mb-4"
+              className="space-y-2 mb-4 flex-1"
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.6, duration: 0.3 }}
