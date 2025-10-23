@@ -199,6 +199,26 @@ export interface SpotifyError {
 }
 
 /**
+ * New releases response from Spotify browse API.
+ *
+ * @typedef {Object} SpotifyNewReleases
+ * @property {SpotifyAlbum[]} items - Array of new release albums
+ * @property {number} total - Total number of new releases
+ * @property {number} limit - Number of results per request
+ * @property {number} offset - Current offset in results
+ * @property {string | null} next - URL to next page or null
+ * @property {string | null} previous - URL to previous page or null
+ */
+export interface SpotifyNewReleases {
+  items: SpotifyAlbum[];
+  total: number;
+  limit: number;
+  offset: number;
+  next: string | null;
+  previous: string | null;
+}
+
+/**
  * User-favorited item from Spotify.
  *
  * Represents a track, album, or artist that a user has marked as favorite.

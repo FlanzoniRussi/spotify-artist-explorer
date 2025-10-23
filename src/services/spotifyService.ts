@@ -6,6 +6,7 @@ import type {
   SpotifySearchResult,
   SpotifyArtistTopTracks,
   SpotifyArtistAlbums,
+  SpotifyNewReleases,
   SpotifyError,
   SearchFilters,
 } from '../types';
@@ -440,9 +441,9 @@ class SpotifyService {
     }
   }
 
-  async getNewReleases(limit = 20, offset = 0): Promise<SpotifyArtistAlbums> {
+  async getNewReleases(limit = 20, offset = 0): Promise<SpotifyNewReleases> {
     try {
-      const response: AxiosResponse<SpotifyArtistAlbums> = await this.api.get(
+      const response: AxiosResponse<{ albums: SpotifyNewReleases }> = await this.api.get(
         '/browse/new-releases',
         {
           params: {
@@ -452,7 +453,7 @@ class SpotifyService {
         }
       );
       logger.info('New releases retrieved', { limit, offset });
-      return response.data;
+      return response.data.albums;
     } catch (error) {
       errorReporter.reportError(error, {
         component: 'SpotifyService',
