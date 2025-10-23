@@ -128,5 +128,15 @@
   },
   "failedToLoad": {
     "album": "Failed to load album. Please try again."
+  },
+  "footer": {
+    "copyright": "© 2025 Spotify Artists App",
+    "builtWith": "Built with React + TypeScript",
+    "challenge": "Staff Engineer Challenge",
+    "company": "Kanastra"
+  },
+  "ui": {
+    "selectYear": "Select year",
+    "search": "Search..."
   }
 }

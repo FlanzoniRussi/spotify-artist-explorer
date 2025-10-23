@@ -16,7 +16,7 @@ export const DatePicker: React.FC<DatePickerProps> = ({
   onChange,
   min = 1900,
   max = new Date().getFullYear(),
-  placeholder = 'Select year',
+  placeholder,
   className = '',
   error = false,
 }) => {
@@ -38,7 +38,7 @@ export const DatePicker: React.FC<DatePickerProps> = ({
               : 'border-gray-300 dark:border-dark-300 bg-white dark:bg-dark-600'
           }`}
         >
-          <option value="">{placeholder}</option>
+          <option value="">{placeholder || 'Select year'}</option>
           {years.map((year) => (
             <option key={year} value={year}>
               {year}

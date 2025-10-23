@@ -1,5 +1,6 @@
 import React from 'react';
 import { Header } from './header';
+import { useTranslation } from '../../hooks/useTranslation';
 
 interface MainLayoutProps {
   children: React.ReactNode;
@@ -10,6 +11,8 @@ export const MainLayout: React.FC<MainLayoutProps> = ({
   children,
   className = '',
 }) => {
+  const { t } = useTranslation();
+
   return (
     <div className='flex flex-col min-h-screen bg-gray-50 dark:bg-dark-600 transition-colors duration-300'>
       <Header />
@@ -27,15 +30,15 @@ export const MainLayout: React.FC<MainLayoutProps> = ({
         <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4'>
           <div className='flex flex-col md:flex-row items-center justify-between gap-2 md:gap-0'>
             <div className='flex items-center space-x-2 text-xs md:text-sm text-gray-500 dark:text-gray-400'>
-              <span>© 2025 Spotify Artists App</span>
+              <span>{t('footer.copyright')}</span>
               <span className='hidden md:inline'>•</span>
-              <span className='hidden md:inline'>Built with React + TypeScript</span>
+              <span className='hidden md:inline'>{t('footer.builtWith')}</span>
             </div>
 
             <div className='flex items-center space-x-2 md:space-x-4 text-xs md:text-sm text-gray-500 dark:text-gray-400'>
-              <span>Staff Engineer Challenge</span>
+              <span>{t('footer.challenge')}</span>
               <span className='hidden md:inline'>•</span>
-              <span className='hidden md:inline'>Kanastra</span>
+              <span className='hidden md:inline'>{t('footer.company')}</span>
             </div>
           </div>
         </div>
