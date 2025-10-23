@@ -7,7 +7,8 @@
     "home": "Início",
     "artists": "Artistas",
     "favorites": "Favoritos",
-    "register": "Cadastrar Música"
+    "register": "Cadastrar Música",
+    "dashboard": "Dashboard"
   },
   "search": {
     "placeholder": "Buscar artistas...",
@@ -63,7 +64,8 @@
   "sections": {
     "artists": "Artistas",
     "albums": "Álbuns",
-    "tracks": "Músicas"
+    "tracks": "Músicas",
+    "mostSearchedArtists": "Artistas Mais Buscados"
   },
   "filters": {
     "all": "Todos",
@@ -87,6 +89,13 @@
     "moderate": "Moderado",
     "emerging": "Emergente",
     "track": "música",
-    "tracks": "músicas"
+    "tracks": "músicas",
+    "genre": "Gênero",
+    "popularity": "Popularidade",
+    "type": "Tipo",
+    "faixa": "faixa",
+    "faixas": "faixas",
+    "today": "Hoje",
+    "yesterday": "Ontem"
   }
 }

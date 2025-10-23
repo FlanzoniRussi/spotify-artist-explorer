@@ -1,17 +1,5 @@
-/**
- * Web Vitals Monitoring
- *
- * This module provides utilities to measure and report Core Web Vitals metrics:
- * - Largest Contentful Paint (LCP)
- * - First Input Delay (FID)
- * - Cumulative Layout Shift (CLS)
- * - First Contentful Paint (FCP)
- * - Time to First Byte (TTFB)
- */
 
-/**
- * Web Vitals metric interface
- */
+
 interface WebVitalsMetric {
   name: string;
   value: number;
@@ -20,12 +8,7 @@ interface WebVitalsMetric {
   rating: 'good' | 'needsImprovement' | 'poor';
 }
 
-/**
- * Report a Web Vitals metric
- * Can be extended to send metrics to an analytics service
- */
 export const reportWebVitals = (metric: WebVitalsMetric): void => {
-  // Send to analytics service (e.g., Google Analytics, Sentry)
   if (typeof window !== 'undefined' && 'gtag' in window) {
     const gtag = (window as Record<string, unknown>).gtag as (
       action: string,
@@ -40,19 +23,8 @@ export const reportWebVitals = (metric: WebVitalsMetric): void => {
       non_interaction: true,
     });
   }
-
-  // Send to custom API endpoint
-  if (import.meta.env.PROD) {
-    // Optional: Send metrics to your backend
-    // fetch('/api/metrics', { method: 'POST', body: JSON.stringify(metric) });
-  }
 };
 
-/**
- * Measure Largest Contentful Paint (LCP)
- * Measures when the largest element becomes visible
- * Goal: < 2.5 seconds
- */
 export const measureLCP = (): void => {
   try {
     const observer = new PerformanceObserver((entryList) => {
@@ -74,11 +46,6 @@ export const measureLCP = (): void => {
   }
 };
 
-/**
- * Measure First Input Delay (FID)
- * Measures the time from user input to response
- * Goal: < 100 milliseconds
- */
 export const measureFID = (): void => {
   try {
     const observer = new PerformanceObserver((entryList) => {
@@ -101,11 +68,6 @@ export const measureFID = (): void => {
   }
 };
 
-/**
- * Measure Cumulative Layout Shift (CLS)
- * Measures unexpected layout shifts
- * Goal: < 0.1
- */
 export const measureCLS = (): void => {
   try {
     let clsValue = 0;
@@ -133,11 +95,6 @@ export const measureCLS = (): void => {
   }
 };
 
-/**
- * Measure First Contentful Paint (FCP)
- * Measures when first text or image is painted
- * Goal: < 1.8 seconds
- */
 export const measureFCP = (): void => {
   try {
     const observer = new PerformanceObserver((entryList) => {
@@ -160,11 +117,6 @@ export const measureFCP = (): void => {
   }
 };
 
-/**
- * Measure Time to First Byte (TTFB)
- * Measures server response time
- * Goal: < 600 milliseconds
- */
 export const measureTTFB = (): void => {
   try {
     const navigationTiming = performance.getEntriesByType('navigation')[0] as PerformanceNavigationTiming;
@@ -185,10 +137,6 @@ export const measureTTFB = (): void => {
   }
 };
 
-/**
- * Initialize all Web Vitals measurements
- * Call this once on app initialization
- */
 export const initWebVitals = (): void => {
   if (typeof window !== 'undefined' && 'PerformanceObserver' in window) {
     measureLCP();
@@ -199,9 +147,6 @@ export const initWebVitals = (): void => {
   }
 };
 
-/**
- * Type declaration for PerformanceEntry with value
- */
 interface PerformanceEntryWithValue extends PerformanceEntry {
   value?: number;
 }

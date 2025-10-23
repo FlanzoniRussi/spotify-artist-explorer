@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Music, CheckCircle, AlertCircle, Plus, List, Edit, Trash2, BarChart3, PieChart, TrendingUp, Calendar } from 'lucide-react';
+import { Music, CheckCircle, AlertCircle, Plus, List, BarChart3, PieChart, TrendingUp, Calendar } from 'lucide-react';
 import { useTranslation } from '../../hooks/useTranslation';
-import { useCustomTracks } from '../../hooks/useCustomTracks';
+import { useContext } from 'react';
+import { CustomTracksContext } from '../../contexts/custom-tracks-context';
+import { CustomTrackItemWithRating } from '../../components/tracks/custom-track-item-with-rating';
 import { TrackRegistrationForm } from '../../components/forms/track-registration-form';
 import { EmptyState } from '../../components/ui/empty-state';
 import { LoadingSkeleton } from '../../components/ui/loading-skeleton';
@@ -15,13 +17,12 @@ import type { CustomTrack } from '../../types';
 
 export const TrackRegistrationPage: React.FC = () => {
   const { t } = useTranslation();
-  const { customTracks, isLoading, clearCustomTracks, removeCustomTrack } = useCustomTracks();
+  const { customTracks, isLoading, clearCustomTracks, removeCustomTrack } = useContext(CustomTracksContext)!;
   const [showForm, setShowForm] = useState(false);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
   const [editingTrack, setEditingTrack] = useState<CustomTrack | null>(null);
   const [showCharts, setShowCharts] = useState(false);
   const [showClearDialog, setShowClearDialog] = useState(false);
-
 
   const handleFormSuccess = () => {
     setSuccessMessage(t('forms:trackRegistration.success'));
@@ -58,20 +59,6 @@ export const TrackRegistrationPage: React.FC = () => {
 
   const handleClearAll = () => {
     clearCustomTracks();
-  };
-
-  const formatDuration = (minutes: number, seconds: number): string => {
-    return `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-  };
-
-  const formatDate = (dateString: string): string => {
-    return new Date(dateString).toLocaleDateString('pt-BR', {
-      day: '2-digit',
-      month: '2-digit',
-      year: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit',
-    });
   };
 
 
@@ -162,7 +149,7 @@ export const TrackRegistrationPage: React.FC = () => {
                 <div>
                   <p className="text-sm text-gray-600 dark:text-gray-400">Lançadas</p>
                   <p className="text-xl font-bold text-gray-900 dark:text-white">
-                    {customTracks.filter(track => track.isReleased).length}
+                    {customTracks.filter((track: CustomTrack) => track.isReleased).length}
                   </p>
                 </div>
               </div>
@@ -174,7 +161,7 @@ export const TrackRegistrationPage: React.FC = () => {
                 <div>
                   <p className="text-sm text-gray-600 dark:text-gray-400">Pendentes</p>
                   <p className="text-xl font-bold text-gray-900 dark:text-white">
-                    {customTracks.filter(track => !track.isReleased).length}
+                    {customTracks.filter((track: CustomTrack) => !track.isReleased).length}
                   </p>
                 </div>
               </div>
@@ -186,7 +173,7 @@ export const TrackRegistrationPage: React.FC = () => {
                 <div>
                   <p className="text-sm text-gray-600 dark:text-gray-400">Gêneros</p>
                   <p className="text-xl font-bold text-gray-900 dark:text-white">
-                    {new Set(customTracks.map(track => track.genre)).size}
+                    {new Set(customTracks.map((track: CustomTrack) => track.genre)).size}
                   </p>
                 </div>
               </div>
@@ -344,56 +331,13 @@ export const TrackRegistrationPage: React.FC = () => {
             />
           ) : (
             <div className="space-y-4">
-              {customTracks.map((track) => (
-                <div
+              {customTracks.map((track: CustomTrack) => (
+                <CustomTrackItemWithRating
                   key={track.id}
-                  className="bg-white dark:bg-dark-500 rounded-lg p-6 shadow-sm border border-gray-200 dark:border-dark-300 hover:shadow-md transition-shadow duration-200"
-                >
-                  <div className="flex items-start justify-between">
-                    <div className="flex-1">
-                      <div className="flex items-center gap-2 mb-2">
-                        <Music className="w-4 h-4 text-primary-500" />
-                        <span className={`text-xs font-medium px-2 py-1 rounded-full ${
-                          track.isReleased
-                            ? 'bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200'
-                            : 'bg-yellow-100 dark:bg-yellow-900 text-yellow-800 dark:text-yellow-200'
-                        }`}>
-                          {track.isReleased ? 'Lançada' : 'Pendente'}
-                        </span>
-                      </div>
-                      
-                      <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-1">
-                        {track.name}
-                      </h3>
-                      
-                      <div className="space-y-1 text-sm text-gray-600 dark:text-gray-400">
-                        <p><span className="font-medium">Artista:</span> {track.artist || 'N/A'}</p>
-                        <p><span className="font-medium">Álbum:</span> {track.album || 'N/A'}</p>
-                        <p><span className="font-medium">Gênero:</span> {track.genre}</p>
-                        <p><span className="font-medium">Ano:</span> {track.year}</p>
-                        <p><span className="font-medium">Duração:</span> {formatDuration(track.duration.minutes, track.duration.seconds)}</p>
-                        <p><span className="font-medium">Cadastrada:</span> {formatDate(track.createdAt)}</p>
-                      </div>
-                    </div>
-                    
-                    <div className="flex items-center gap-2 ml-4">
-                      <button
-                        onClick={() => handleEditTrack(track)}
-                        className="p-2 text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded-lg transition-colors duration-200"
-                        aria-label="Editar música"
-                      >
-                        <Edit className="w-4 h-4" />
-                      </button>
-                      <button
-                        onClick={() => handleDeleteTrack(track.id)}
-                        className="p-2 text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-colors duration-200"
-                        aria-label="Remover música"
-                      >
-                        <Trash2 className="w-4 h-4" />
-                      </button>
-                    </div>
-                  </div>
-                </div>
+                  track={track}
+                  onEdit={handleEditTrack}
+                  onDelete={handleDeleteTrack}
+                />
               ))}
             </div>
           )}

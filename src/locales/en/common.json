@@ -7,7 +7,8 @@
     "home": "Home",
     "artists": "Artists",
     "favorites": "Favorites",
-    "register": "Register Track"
+    "register": "Register Track",
+    "dashboard": "Dashboard"
   },
   "search": {
     "placeholder": "Search artists...",
@@ -63,7 +64,8 @@
   "sections": {
     "artists": "Artists",
     "albums": "Albums",
-    "tracks": "Tracks"
+    "tracks": "Tracks",
+    "mostSearchedArtists": "Most Searched Artists"
   },
   "filters": {
     "all": "All",
@@ -87,6 +89,13 @@
     "moderate": "Moderate",
     "emerging": "Emerging",
     "track": "track",
-    "tracks": "tracks"
+    "tracks": "tracks",
+    "genre": "Genre",
+    "popularity": "Popularity",
+    "type": "Type",
+    "faixa": "track",
+    "faixas": "tracks",
+    "today": "Today",
+    "yesterday": "Yesterday"
   }
 }

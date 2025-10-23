@@ -19,6 +19,8 @@ interface CustomTracksContextType {
 
 const CustomTracksContext = createContext<CustomTracksContextType | undefined>(undefined);
 
+export { CustomTracksContext, type CustomTracksContextType };
+
 interface CustomTracksProviderProps {
   children: ReactNode;
 }
@@ -26,7 +28,6 @@ interface CustomTracksProviderProps {
 export const CustomTracksProvider: React.FC<CustomTracksProviderProps> = ({ children }) => {
   const [customTracks, setCustomTracks] = useState<CustomTrack[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-
 
   useEffect(() => {
     const loadCustomTracks = () => {

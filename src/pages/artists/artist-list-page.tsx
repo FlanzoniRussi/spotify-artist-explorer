@@ -3,6 +3,7 @@ import { Music, Users, TrendingUp, Disc, Filter } from 'lucide-react';
 import { useSpotifyArtists, useSpotifyAlbums } from '../../hooks/useSpotify';
 import { useTranslation } from '../../hooks/useTranslation';
 import { useFavorites } from '../../hooks/useFavorites';
+import { useSearchHistory } from '../../hooks/useSearchHistory';
 import type { SpotifyArtist, SpotifyAlbum } from '../../types';
 import { ArtistCard } from '../../components/artists/artist-card';
 import { AlbumGrid } from '../../components/albums/album-grid';
@@ -15,6 +16,7 @@ import { Pagination } from '../../components/ui/pagination';
 export const ArtistListPage: React.FC = () => {
   const { t } = useTranslation();
   const { favorites, toggleFavorite } = useFavorites();
+  const { addSearch, getTopSearches } = useSearchHistory();
   const [searchQuery, setSearchQuery] = useState('');
   const [debouncedQuery, setDebouncedQuery] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
@@ -25,10 +27,15 @@ export const ArtistListPage: React.FC = () => {
       let timeout: ReturnType<typeof setTimeout>;
       return (query: string) => {
         clearTimeout(timeout);
-        timeout = setTimeout(() => setDebouncedQuery(query), 300);
+        timeout = setTimeout(() => {
+          setDebouncedQuery(query);
+          if (query.trim()) {
+            addSearch(query, searchType);
+          }
+        }, 300);
       };
     },
-    []
+    [addSearch, searchType]
   );
 
   const handleSearchChange = (value: string) => {
@@ -72,6 +79,10 @@ export const ArtistListPage: React.FC = () => {
       album: 'Artist',
       duration: 0,
       type: 'artist' as const,
+      imageUrl: artist.images?.[0]?.url,
+      genre: artist.genres?.[0],
+      popularity: artist.popularity,
+      spotifyUrl: artist.external_urls?.spotify,
     };
     toggleFavorite(favoriteData);
   };
@@ -87,6 +98,10 @@ export const ArtistListPage: React.FC = () => {
       album: album.name,
       duration: 0,
       type: 'album' as const,
+      imageUrl: album.images?.[0]?.url,
+      trackCount: album.total_tracks,
+      releaseDate: album.release_date,
+      spotifyUrl: album.external_urls?.spotify,
     };
     toggleFavorite(favoriteData);
   };
@@ -282,14 +297,48 @@ export const ArtistListPage: React.FC = () => {
 
         {/* Results */}
         {!debouncedQuery ? (
-          <div className="text-center py-12">
-            <Music className="w-16 h-16 text-gray-400 dark:text-gray-600 mx-auto mb-4" />
-            <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">
-              {t('artists:listing.startSearch')}
-            </h3>
-            <p className="text-gray-600 dark:text-gray-400">
-              {t('artists:listing.searchHint')}
-            </p>
+          <div>
+            <div className="text-center py-12 mb-8">
+              <Music className="w-16 h-16 text-gray-400 dark:text-gray-600 mx-auto mb-4" />
+              <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">
+                {t('artists:listing.startSearch')}
+              </h3>
+              <p className="text-gray-600 dark:text-gray-400">
+                {t('artists:listing.searchHint')}
+              </p>
+            </div>
+
+            {/* Most Searched Artists Section */}
+            {getTopSearches(6).length > 0 && (
+              <div>
+                <div className="flex items-center gap-2 mb-6">
+                  <TrendingUp className="w-5 h-5 text-primary-500" />
+                  <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
+                    {t('sections.mostSearchedArtists')}
+                  </h2>
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
+                  {getTopSearches(6).map((search, index) => (
+                    <button
+                      key={`${search.query}-${index}`}
+                      onClick={() => {
+                        setSearchQuery(search.query);
+                        setCurrentPage(1);
+                        debouncedSearch(search.query);
+                      }}
+                      className="p-4 bg-white dark:bg-dark-500 rounded-lg border border-gray-200 dark:border-dark-300 hover:border-primary-500 dark:hover:border-primary-400 hover:shadow-md transition-all duration-200 text-left"
+                    >
+                      <p className="text-sm font-medium text-gray-600 dark:text-gray-400 mb-1">
+                        {search.type === 'artist' ? '🎤' : search.type === 'album' ? '💿' : '🎵'}
+                      </p>
+                      <p className="text-lg font-semibold text-gray-900 dark:text-white truncate">
+                        {search.query}
+                      </p>
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
           </div>
         ) : isLoading ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">

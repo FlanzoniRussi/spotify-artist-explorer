@@ -1,9 +1,10 @@
 import React, { useState, useMemo } from 'react';
 import { motion } from 'framer-motion';
-import { Heart, Search, Trash2, BarChart3, PieChart, TrendingUp, Clock } from 'lucide-react';
+import { Heart, Search, Trash2, BarChart3, PieChart, TrendingUp, Clock, Star } from 'lucide-react';
 import { useFavorites } from '../../hooks/useFavorites';
 import { useTranslation } from '../../hooks/useTranslation';
-import { FavoriteItem } from '../../components/favorites/favorite-item';
+import { useRatingsContext } from '../../contexts/ratings-context';
+import { FavoriteItemWithRating } from '../../components/favorites/favorite-item-with-rating';
 import { SearchInput } from '../../components/ui/search-input';
 import { EmptyState } from '../../components/ui/empty-state';
 import { LoadingSkeleton } from '../../components/ui/loading-skeleton';
@@ -12,13 +13,16 @@ import { FavoritesDistributionChart } from '../../components/charts/favorites-di
 import { ArtistsFavoritesChart } from '../../components/charts/artists-favorites-chart';
 import { DurationDistributionChart } from '../../components/charts/duration-distribution-chart';
 import { FavoritesTimelineChart } from '../../components/charts/favorites-timeline-chart';
+import { RatingsDistributionChart } from '../../components/charts/ratings-distribution-chart';
 import type { UserFavorite } from '../../types';
 
 export const FavoritesPage: React.FC = () => {
   const { t } = useTranslation();
   const { favorites, removeFavorite, clearFavorites, isLoading } = useFavorites();
+  const { getRating, getRatingStats } = useRatingsContext();
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedType, setSelectedType] = useState<UserFavorite['type'] | 'all'>('all');
+  const [minRating, setMinRating] = useState<number | null>(null);
   const [showCharts, setShowCharts] = useState(false);
   const [showClearDialog, setShowClearDialog] = useState(false);
 
@@ -27,6 +31,13 @@ export const FavoritesPage: React.FC = () => {
 
     if (selectedType !== 'all') {
       filtered = filtered.filter(fav => fav.type === selectedType);
+    }
+
+    if (minRating !== null) {
+      filtered = filtered.filter(fav => {
+        const rating = getRating(fav.id, fav.type);
+        return rating === minRating;
+      });
     }
 
     if (searchQuery.trim()) {
@@ -39,7 +50,7 @@ export const FavoritesPage: React.FC = () => {
     }
 
     return filtered;
-  }, [favorites, searchQuery, selectedType]);
+  }, [favorites, searchQuery, selectedType, minRating, getRating]);
 
   const favoritesByType = useMemo(() => {
     return {
@@ -338,6 +349,29 @@ export const FavoritesPage: React.FC = () => {
                 </div>
                 <FavoritesTimelineChart favorites={favorites} />
               </motion.div>
+
+              {/* Ratings Chart */}
+              {getRatingStats().total > 0 && (
+                <motion.div 
+                  className="bg-white dark:bg-dark-500 rounded-xl p-6 shadow-sm border border-gray-200 dark:border-dark-300"
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ delay: 0.6, duration: 0.3 }}
+                  whileHover={{ scale: 1.01 }}
+                >
+                  <div className="flex items-center gap-2 mb-4">
+                    <Star className="w-5 h-5 text-yellow-500" />
+                    <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+                      Distribuição de Avaliações
+                    </h3>
+                  </div>
+                  <RatingsDistributionChart 
+                    distribution={getRatingStats().distribution}
+                    average={getRatingStats().average}
+                    total={getRatingStats().total}
+                  />
+                </motion.div>
+              )}
             </motion.div>
           )}
         </motion.div>
@@ -412,6 +446,27 @@ export const FavoritesPage: React.FC = () => {
             >
               Músicas ({favoritesByType.track})
             </motion.button>
+
+            <motion.div 
+              className="flex items-center gap-2 px-4 py-2 rounded-lg bg-gray-100 dark:bg-dark-400"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.3 }}
+            >
+              <label className="text-xs font-medium text-gray-600 dark:text-gray-400">Avaliação:</label>
+              <select
+                value={minRating ?? ''}
+                onChange={(e) => setMinRating(e.target.value ? parseInt(e.target.value) : null)}
+                className="bg-transparent text-xs font-semibold text-gray-900 dark:text-white focus:outline-none cursor-pointer"
+              >
+                <option value="">Todas</option>
+                <option value="1">⭐</option>
+                <option value="2">⭐⭐</option>
+                <option value="3">⭐⭐⭐</option>
+                <option value="4">⭐⭐⭐⭐</option>
+                <option value="5">⭐⭐⭐⭐⭐</option>
+              </select>
+            </motion.div>
           </motion.div>
         </motion.div>
       )}
@@ -439,7 +494,7 @@ export const FavoritesPage: React.FC = () => {
         />
       ) : (
         <motion.div 
-          className="space-y-4"
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 1.1, duration: 0.3 }}
@@ -451,7 +506,7 @@ export const FavoritesPage: React.FC = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 1.2 + (index * 0.1), duration: 0.3 }}
             >
-              <FavoriteItem
+              <FavoriteItemWithRating
                 favorite={favorite}
                 onRemove={handleRemoveFavorite}
               />

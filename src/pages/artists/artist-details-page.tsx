@@ -5,7 +5,7 @@ import { ArrowLeft, ExternalLink, Play, Users, TrendingUp, Calendar } from 'luci
 import { useSpotifyArtist, useSpotifyArtistTopTracks, useSpotifyArtistAlbums } from '../../hooks/useSpotify';
 import { useTranslation } from '../../hooks/useTranslation';
 import { useFavorites } from '../../hooks/useFavorites';
-import type { SpotifyTrack } from '../../types';
+import type { SpotifyTrack, SpotifyAlbum } from '../../types';
 import { LoadingSkeleton } from '../../components/ui/loading-skeleton';
 import { EmptyState } from '../../components/ui/empty-state';
 import { ErrorBoundary } from '../../components/error-boundary';
@@ -41,17 +41,26 @@ export const ArtistDetailsPage: React.FC = () => {
       album: track.album?.name || 'Unknown',
       duration: track.duration_ms,
       type: 'track' as const,
+      imageUrl: track.album?.images?.[0]?.url,
+      genre: artist?.genres?.[0],
+      popularity: track.popularity,
+      spotifyUrl: track.external_urls?.spotify,
     };
     toggleFavorite(favoriteData);
   };
 
-  const handleToggleAlbumFavorite = (album: { name: string }) => {
+  const handleToggleAlbumFavorite = (album: SpotifyAlbum) => {
     const favoriteData = {
       name: album.name,
       artist: artist?.name || 'Unknown',
       album: album.name,
       duration: 0,
       type: 'album' as const,
+      imageUrl: album.images?.[0]?.url,
+      genre: artist?.genres?.[0],
+      trackCount: album.total_tracks,
+      releaseDate: album.release_date,
+      spotifyUrl: album.external_urls?.spotify,
     };
     toggleFavorite(favoriteData);
   };
@@ -141,8 +150,6 @@ export const ArtistDetailsPage: React.FC = () => {
       </div>
     );
   }
-
-  // Animation variants
   const pageVariants = {
     hidden: { opacity: 0, y: 20 },
     visible: { 

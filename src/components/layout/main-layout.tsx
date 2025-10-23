@@ -11,31 +11,31 @@ export const MainLayout: React.FC<MainLayoutProps> = ({
   className = '',
 }) => {
   return (
-    <div className='min-h-screen bg-gray-50 dark:bg-dark-600 transition-colors duration-300'>
+    <div className='flex flex-col min-h-screen bg-gray-50 dark:bg-dark-600 transition-colors duration-300'>
       <Header />
 
       <main
         className={`
-        max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8
+        flex-1 max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-8
         ${className}
       `}
       >
         {children}
       </main>
 
-      <footer className='mt-auto bg-white dark:bg-dark-600 border-t border-gray-200 dark:border-dark-300'>
-        <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6'>
-          <div className='flex flex-col md:flex-row items-center justify-between'>
-            <div className='flex items-center space-x-2 text-gray-500 dark:text-gray-400'>
+      <footer className='bg-white dark:bg-dark-600 border-t border-gray-200 dark:border-dark-300 mt-auto'>
+        <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4'>
+          <div className='flex flex-col md:flex-row items-center justify-between gap-2 md:gap-0'>
+            <div className='flex items-center space-x-2 text-xs md:text-sm text-gray-500 dark:text-gray-400'>
               <span>© 2025 Spotify Artists App</span>
-              <span>•</span>
-              <span>Built with React + TypeScript</span>
+              <span className='hidden md:inline'>•</span>
+              <span className='hidden md:inline'>Built with React + TypeScript</span>
             </div>
 
-            <div className='mt-4 md:mt-0 flex items-center space-x-4 text-sm text-gray-500 dark:text-gray-400'>
+            <div className='flex items-center space-x-2 md:space-x-4 text-xs md:text-sm text-gray-500 dark:text-gray-400'>
               <span>Staff Engineer Challenge</span>
-              <span>•</span>
-              <span>Kanastra</span>
+              <span className='hidden md:inline'>•</span>
+              <span className='hidden md:inline'>Kanastra</span>
             </div>
           </div>
         </div>

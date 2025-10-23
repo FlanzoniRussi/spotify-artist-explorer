@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useContext } from 'react';
 import { motion } from 'framer-motion';
 import { 
   BarChart3, 
@@ -13,13 +13,14 @@ import {
   ArrowRight
 } from 'lucide-react';
 import { useFavorites } from '../../hooks/useFavorites';
-import { useCustomTracks } from '../../hooks/useCustomTracks';
+import { CustomTracksContext } from '../../contexts/custom-tracks-context';
 import { FavoritesDistributionChart } from '../../components/charts/favorites-distribution-chart';
 import { ArtistsFavoritesChart } from '../../components/charts/artists-favorites-chart';
 import { GenreDistributionChart } from '../../components/charts/genre-distribution-chart';
 import { ReleaseStatusChart } from '../../components/charts/release-status-chart';
 import { FavoritesTimelineChart } from '../../components/charts/favorites-timeline-chart';
 import { TracksTimelineChart } from '../../components/charts/tracks-timeline-chart';
+import type { CustomTrack } from '../../types';
 
 interface ChartEmptyStateProps {
   icon: React.ComponentType<{ className?: string }>;
@@ -61,12 +62,13 @@ const ChartEmptyState: React.FC<ChartEmptyStateProps> = ({
 
 export const DashboardPage: React.FC = () => {
   const { favorites } = useFavorites();
-  const { customTracks } = useCustomTracks();
+  const ctx = useContext(CustomTracksContext)!;
+  const { customTracks } = ctx;
 
   const analytics = useMemo(() => {
     const totalFavorites = favorites.length;
     const totalTracks = customTracks.length;
-    const releasedTracks = customTracks.filter(track => track.isReleased).length;
+    const releasedTracks = customTracks.filter((track: CustomTrack) => track.isReleased).length;
     const uniqueGenres = new Set(customTracks.map(track => track.genre)).size;
     const uniqueArtists = new Set(favorites.map(fav => fav.artist)).size;
     
@@ -75,7 +77,7 @@ export const DashboardPage: React.FC = () => {
     const now = new Date();
     const lastWeek = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
     const recentFavorites = favorites.filter(fav => new Date(fav.addedAt) > lastWeek).length;
-    const recentTracks = customTracks.filter(track => new Date(track.createdAt) > lastWeek).length;
+    const recentTracks = customTracks.filter((track: CustomTrack) => new Date(track.createdAt) > lastWeek).length;
     const activityScore = Math.min(100, (recentFavorites + recentTracks) * 10);
 
     return {
@@ -200,7 +202,7 @@ export const DashboardPage: React.FC = () => {
               title="Nenhuma música cadastrada"
               description="Adicione músicas para ver a distribuição de gêneros."
               actionLabel="Adicionar Música"
-              actionLink="/tracks"
+              actionLink="/register-track"
             />
           )}
         </div>
@@ -245,7 +247,7 @@ export const DashboardPage: React.FC = () => {
               title="Nenhuma música cadastrada"
               description="Adicione músicas para ver a evolução do cadastro."
               actionLabel="Adicionar Música"
-              actionLink="/tracks"
+              actionLink="/register-track"
             />
           )}
         </div>
@@ -290,7 +292,7 @@ export const DashboardPage: React.FC = () => {
               title="Nenhuma música cadastrada"
               description="Adicione músicas para ver o status de lançamento."
               actionLabel="Adicionar Música"
-              actionLink="/tracks"
+              actionLink="/register-track"
             />
           )}
         </div>

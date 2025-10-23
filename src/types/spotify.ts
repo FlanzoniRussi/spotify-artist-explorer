@@ -90,4 +90,10 @@ export interface UserFavorite {
   duration: number;
   type: 'track' | 'album' | 'artist';
   addedAt: string;
+  imageUrl?: string;
+  genre?: string;
+  popularity?: number;
+  releaseDate?: string;
+  trackCount?: number;
+  spotifyUrl?: string;
 }

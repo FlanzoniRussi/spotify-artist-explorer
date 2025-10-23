@@ -17,3 +17,4 @@ export const ChartFallback: React.FC<ChartFallbackProps> = ({
     </div>
   );
 };
+
