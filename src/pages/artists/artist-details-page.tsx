@@ -14,6 +14,18 @@ import { PopularityChart } from '../../components/charts/popularity-chart';
 import { Pagination } from '../../components/ui/pagination';
 import { formatDate, formatDuration } from '../../utils/formatters';
 
+const heartBeatVariants = {
+  unfavorited: {
+    scale: 1,
+    rotate: 0,
+  },
+  favorited: {
+    scale: [1, 1.3, 1.15, 1.3, 1.1],
+    rotate: [0, -10, 10, -10, 0],
+    transition: { duration: 0.6 },
+  },
+};
+
 export const ArtistDetailsPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const { t } = useTranslation();
@@ -393,13 +405,16 @@ export const ArtistDetailsPage: React.FC = () => {
                       <TableCell className="text-gray-600 dark:text-gray-400">{formatDuration(track.duration_ms)}</TableCell>
                       <TableCell className="text-primary-600 dark:text-primary-400 font-medium">{track.popularity}%</TableCell>
                       <TableCell>
-                        <button
+                        <motion.button
                           onClick={() => handleToggleTrackFavorite(track)}
                           className={`p-2 rounded-full transition-colors duration-200 ${isTrackFavorite(track) ? 'text-red-500 dark:text-red-400' : 'text-gray-400 dark:text-gray-500 hover:text-red-600 dark:hover:text-red-300'}`}
                           title={isTrackFavorite(track) ? t('buttons.removeFavorite') : t('buttons.addFavorite')}
+                          variants={heartBeatVariants}
+                          initial="unfavorited"
+                          animate={isTrackFavorite(track) ? "favorited" : "unfavorited"}
                         >
                           <Heart className="w-5 h-5" />
-                        </button>
+                        </motion.button>
                       </TableCell>
                     </TableRow>
                   ))}
@@ -477,13 +492,16 @@ export const ArtistDetailsPage: React.FC = () => {
                       <TableCell className="text-gray-600 dark:text-gray-400">{formatDate(album.release_date)}</TableCell>
                       <TableCell className="text-gray-600 dark:text-gray-400">{album.total_tracks}</TableCell>
                       <TableCell>
-                        <button
+                        <motion.button
                           onClick={() => handleToggleAlbumFavorite(album)}
                           className={`p-2 rounded-full transition-colors duration-200 ${isAlbumFavorite(album) ? 'text-red-500 dark:text-red-400' : 'text-gray-400 dark:text-gray-500 hover:text-red-600 dark:hover:text-red-300'}`}
                           title={isAlbumFavorite(album) ? t('buttons.removeFavorite') : t('buttons.addFavorite')}
+                          variants={heartBeatVariants}
+                          initial="unfavorited"
+                          animate={isAlbumFavorite(album) ? "favorited" : "unfavorited"}
                         >
                           <Heart className="w-5 h-5" />
-                        </button>
+                        </motion.button>
                       </TableCell>
                     </TableRow>
                   ))}
