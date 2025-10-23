@@ -1,6 +1,7 @@
 import { Component, type ErrorInfo, type ReactNode } from 'react';
 import { AlertTriangle, RefreshCw, Home } from 'lucide-react';
 import { Button } from './ui/button';
+import { errorReporter } from '../lib/error-reporter';
 
 /**
  * Props for the ErrorBoundary component.
@@ -44,6 +45,7 @@ interface ErrorBoundaryState {
  * - Provides retry and home navigation buttons
  * - Supports custom fallback UI
  * - Optional error callback for logging/monitoring
+ * - Integrates with structured error reporting
  *
  * **Note:** Does NOT catch errors for:
  * - Event handlers (use try-catch instead)
@@ -94,6 +96,8 @@ export class ErrorBoundary extends Component<
    * If running in development, logs the error and component stack to console.
    * Also calls the optional onError callback if provided.
    *
+   * Integrates with structured error reporting system.
+   *
    * @param {Error} error - The error that was thrown
    * @param {ErrorInfo} errorInfo - Object containing the component stack
    */
@@ -101,6 +105,13 @@ export class ErrorBoundary extends Component<
     if (import.meta.env.DEV) {
       console.error('ErrorBoundary caught an error:', error, errorInfo);
     }
+
+    // Report error with structured logging
+    errorReporter.reportError(error, {
+      component: 'ErrorBoundary',
+      action: 'caught-component-error',
+      componentStack: errorInfo.componentStack,
+    });
 
     if (this.props.onError) {
       this.props.onError(error, errorInfo);
