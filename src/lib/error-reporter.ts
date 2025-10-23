@@ -126,7 +126,7 @@ class ErrorReporter {
    * @private
    */
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  private sendToTracking(error: Error, context?: ErrorContext): void {
+  private sendToTracking(_error: Error, _context?: ErrorContext): void {
     // This is where you would send to Sentry, Rollbar, etc.
     // For now, we just log it. Easy to extend later.
 
