@@ -1,7 +1,7 @@
 import React from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { ArrowLeft, ExternalLink, Play, Users, TrendingUp, Calendar } from 'lucide-react';
+import { ArrowLeft, ExternalLink, Play, Users, TrendingUp, Calendar, Heart } from 'lucide-react';
 import { useSpotifyArtist, useSpotifyArtistTopTracks, useSpotifyArtistAlbums } from '../../hooks/useSpotify';
 import { useTranslation } from '../../hooks/useTranslation';
 import { useFavorites } from '../../hooks/useFavorites';
@@ -9,10 +9,10 @@ import type { SpotifyTrack, SpotifyAlbum } from '../../types';
 import { LoadingSkeleton } from '../../components/ui/loading-skeleton';
 import { EmptyState } from '../../components/ui/empty-state';
 import { ErrorBoundary } from '../../components/error-boundary';
-import { TrackList } from '../../components/tracks/track-list';
-import { AlbumGrid } from '../../components/albums/album-grid';
+import { Table, TableHead, TableBody, TableRow, TableCell } from '../../components/ui/table';
 import { PopularityChart } from '../../components/charts/popularity-chart';
 import { Pagination } from '../../components/ui/pagination';
+import { formatDate, formatDuration } from '../../utils/formatters';
 
 export const ArtistDetailsPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -373,11 +373,38 @@ export const ArtistDetailsPage: React.FC = () => {
             </div>
           ) : paginatedTopTracks.length > 0 ? (
             <>
-              <TrackList
-                tracks={paginatedTopTracks}
-                onToggleFavorite={handleToggleTrackFavorite}
-                isFavorite={isTrackFavorite}
-              />
+              <Table>
+                <TableHead>
+                  <TableRow>
+                    <TableCell className="font-semibold text-gray-900 dark:text-white">#</TableCell>
+                    <TableCell className="font-semibold text-gray-900 dark:text-white">Title</TableCell>
+                    <TableCell className="font-semibold text-gray-900 dark:text-white">Album</TableCell>
+                    <TableCell className="font-semibold text-gray-900 dark:text-white">Duration</TableCell>
+                    <TableCell className="font-semibold text-gray-900 dark:text-white">Popularity</TableCell>
+                    <TableCell className="font-semibold text-gray-900 dark:text-white">Favorite</TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {paginatedTopTracks.map((track, index) => (
+                    <TableRow key={track.id}>
+                      <TableCell className="text-gray-600 dark:text-gray-400">{index + 1}</TableCell>
+                      <TableCell className="text-gray-900 dark:text-white">{track.name}</TableCell>
+                      <TableCell className="text-gray-600 dark:text-gray-400">{track.album?.name}</TableCell>
+                      <TableCell className="text-gray-600 dark:text-gray-400">{formatDuration(track.duration_ms)}</TableCell>
+                      <TableCell className="text-primary-600 dark:text-primary-400 font-medium">{track.popularity}%</TableCell>
+                      <TableCell>
+                        <button
+                          onClick={() => handleToggleTrackFavorite(track)}
+                          className={`p-2 rounded-full transition-colors duration-200 ${isTrackFavorite(track) ? 'text-red-500 dark:text-red-400' : 'text-gray-400 dark:text-gray-500 hover:text-red-600 dark:hover:text-red-300'}`}
+                          title={isTrackFavorite(track) ? t('buttons.removeFavorite') : t('buttons.addFavorite')}
+                        >
+                          <Heart className="w-5 h-5" />
+                        </button>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
               {totalTracksPages > 1 && (
                 <div className="mt-6 flex justify-center">
                   <Pagination
@@ -422,11 +449,46 @@ export const ArtistDetailsPage: React.FC = () => {
             </div>
           ) : albumsData?.items && albumsData.items.length > 0 ? (
             <>
-              <AlbumGrid
-                albums={albumsData.items}
-                onToggleFavorite={handleToggleAlbumFavorite}
-                isFavorite={isAlbumFavorite}
-              />
+              <Table>
+                <TableHead>
+                  <TableRow>
+                    <TableCell className="font-semibold text-gray-900 dark:text-white">Image</TableCell>
+                    <TableCell className="font-semibold text-gray-900 dark:text-white">Title</TableCell>
+                    <TableCell className="font-semibold text-gray-900 dark:text-white">Artist</TableCell>
+                    <TableCell className="font-semibold text-gray-900 dark:text-white">Date</TableCell>
+                    <TableCell className="font-semibold text-gray-900 dark:text-white">Tracks</TableCell>
+                    <TableCell className="font-semibold text-gray-900 dark:text-white">Favorite</TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {albumsData.items.map((album) => (
+                    <TableRow key={album.id}>
+                      <TableCell className="w-20 h-20 rounded-lg overflow-hidden">
+                        {album.images?.[0]?.url ? (
+                          <img src={album.images[0].url} alt={album.name} className="w-full h-full object-cover" />
+                        ) : (
+                          <div className="w-full h-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center">
+                            <span className="text-gray-500 dark:text-gray-400">No Image</span>
+                          </div>
+                        )}
+                      </TableCell>
+                      <TableCell className="text-gray-900 dark:text-white">{album.name}</TableCell>
+                      <TableCell className="text-gray-600 dark:text-gray-400">{artist?.name || 'Unknown'}</TableCell>
+                      <TableCell className="text-gray-600 dark:text-gray-400">{formatDate(album.release_date)}</TableCell>
+                      <TableCell className="text-gray-600 dark:text-gray-400">{album.total_tracks}</TableCell>
+                      <TableCell>
+                        <button
+                          onClick={() => handleToggleAlbumFavorite(album)}
+                          className={`p-2 rounded-full transition-colors duration-200 ${isAlbumFavorite(album) ? 'text-red-500 dark:text-red-400' : 'text-gray-400 dark:text-gray-500 hover:text-red-600 dark:hover:text-red-300'}`}
+                          title={isAlbumFavorite(album) ? t('buttons.removeFavorite') : t('buttons.addFavorite')}
+                        >
+                          <Heart className="w-5 h-5" />
+                        </button>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
               {totalAlbumsPages > 1 && (
                 <div className="mt-6 flex justify-center">
                   <Pagination
