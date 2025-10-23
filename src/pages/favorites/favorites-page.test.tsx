@@ -2,6 +2,7 @@ import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { render } from '@testing-library/react';
 import type { ReactNode } from 'react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { createUseFavoritesMock } from '../../__tests__/mocks/hook-mocks';
 
 // Mock the hooks and contexts BEFORE importing the component
 vi.mock('../../hooks/useFavorites', () => ({
@@ -53,11 +54,7 @@ describe('FavoritesPage', () => {
   });
 
   it('should render favorites page without crashing', () => {
-    vi.mocked(useFavorites).mockReturnValue({
-      favorites: [],
-      toggleFavorite: vi.fn(),
-      isFavorite: () => false,
-    });
+    vi.mocked(useFavorites).mockReturnValue(createUseFavoritesMock());
 
     const { container } = render(<FavoritesPage />, {
       wrapper: createTestWrapper(),
@@ -66,11 +63,7 @@ describe('FavoritesPage', () => {
   });
 
   it('should display empty state when no favorites', () => {
-    vi.mocked(useFavorites).mockReturnValue({
-      favorites: [],
-      toggleFavorite: vi.fn(),
-      isFavorite: () => false,
-    });
+    vi.mocked(useFavorites).mockReturnValue(createUseFavoritesMock());
 
     const { container } = render(<FavoritesPage />, {
       wrapper: createTestWrapper(),

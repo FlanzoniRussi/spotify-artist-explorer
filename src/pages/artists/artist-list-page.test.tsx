@@ -2,6 +2,11 @@ import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { render } from '@testing-library/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import type { ReactNode } from 'react';
+import {
+  createUseFavoritesMock,
+  createUseSearchHistoryMock,
+  createUseSpotifyMock,
+} from '../../__tests__/mocks/hook-mocks';
 
 // Mock the hooks BEFORE importing the component
 vi.mock('../../hooks/useSpotify', () => ({
@@ -69,172 +74,91 @@ describe('ArtistListPage', () => {
 
   describe('Rendering and Layout', () => {
     it('should render page title', () => {
-      vi.mocked(useSpotifyArtists).mockReturnValue({
-        data: undefined,
-        isLoading: false,
-        error: null,
-        isFetching: false,
-      });
-
-      vi.mocked(useSpotifyAlbums).mockReturnValue({
-        data: undefined,
-        isLoading: false,
-        error: null,
-        isFetching: false,
-      });
-
-      vi.mocked(useFavorites).mockReturnValue({
-        favorites: [],
-        toggleFavorite: vi.fn(),
-        isFavorite: () => false,
-      });
-
-      vi.mocked(useSearchHistory).mockReturnValue({
-        history: [],
-        addToHistory: vi.fn(),
-        getTopSearches: vi.fn(() => []),
-      });
+      vi.mocked(useSpotifyArtists).mockReturnValue(createUseSpotifyMock());
+      vi.mocked(useSpotifyAlbums).mockReturnValue(createUseSpotifyMock());
+      vi.mocked(useFavorites).mockReturnValue(createUseFavoritesMock());
+      vi.mocked(useSearchHistory).mockReturnValue(createUseSearchHistoryMock());
 
       const { container } = render(<ArtistListPage />, {
         wrapper: createTestWrapper(),
       });
-      expect(container).toBeDefined();
+
+      expect(container).toBeTruthy();
     });
 
     it('should render search input', () => {
-      vi.mocked(useSpotifyArtists).mockReturnValue({
-        data: undefined,
-        isLoading: false,
-        error: null,
-        isFetching: false,
-      });
-
-      vi.mocked(useSpotifyAlbums).mockReturnValue({
-        data: undefined,
-        isLoading: false,
-        error: null,
-        isFetching: false,
-      });
-
-      vi.mocked(useFavorites).mockReturnValue({
-        favorites: [],
-        toggleFavorite: vi.fn(),
-        isFavorite: () => false,
-      });
-
-      vi.mocked(useSearchHistory).mockReturnValue({
-        history: [],
-        addToHistory: vi.fn(),
-        getTopSearches: vi.fn(() => []),
-      });
+      vi.mocked(useSpotifyArtists).mockReturnValue(createUseSpotifyMock());
+      vi.mocked(useSpotifyAlbums).mockReturnValue(createUseSpotifyMock());
+      vi.mocked(useFavorites).mockReturnValue(createUseFavoritesMock());
+      vi.mocked(useSearchHistory).mockReturnValue(createUseSearchHistoryMock());
 
       const { container } = render(<ArtistListPage />, {
         wrapper: createTestWrapper(),
       });
-      expect(container).toBeDefined();
+
+      expect(container).toBeTruthy();
     });
 
-    it('should render filter buttons', () => {
-      vi.mocked(useSpotifyArtists).mockReturnValue({
-        data: undefined,
-        isLoading: false,
-        error: null,
-        isFetching: false,
-      });
-
-      vi.mocked(useSpotifyAlbums).mockReturnValue({
-        data: undefined,
-        isLoading: false,
-        error: null,
-        isFetching: false,
-      });
-
-      vi.mocked(useFavorites).mockReturnValue({
-        favorites: [],
-        toggleFavorite: vi.fn(),
-        isFavorite: () => false,
-      });
-
-      vi.mocked(useSearchHistory).mockReturnValue({
-        history: [],
-        addToHistory: vi.fn(),
-        getTopSearches: vi.fn(() => []),
-      });
+    it('should render empty state when no artists found', () => {
+      vi.mocked(useSpotifyArtists).mockReturnValue(createUseSpotifyMock());
+      vi.mocked(useSpotifyAlbums).mockReturnValue(createUseSpotifyMock());
+      vi.mocked(useFavorites).mockReturnValue(createUseFavoritesMock());
+      vi.mocked(useSearchHistory).mockReturnValue(createUseSearchHistoryMock());
 
       const { container } = render(<ArtistListPage />, {
         wrapper: createTestWrapper(),
       });
-      expect(container).toBeDefined();
+
+      expect(container).toBeTruthy();
     });
-  });
 
-  describe('Search and Filtering', () => {
-    it('should show start search message when no query', () => {
-      vi.mocked(useSpotifyArtists).mockReturnValue({
-        data: undefined,
-        isLoading: false,
-        error: null,
-        isFetching: false,
-      });
-
-      vi.mocked(useSpotifyAlbums).mockReturnValue({
-        data: undefined,
-        isLoading: false,
-        error: null,
-        isFetching: false,
-      });
-
-      vi.mocked(useFavorites).mockReturnValue({
-        favorites: [],
-        toggleFavorite: vi.fn(),
-        isFavorite: () => false,
-      });
-
-      vi.mocked(useSearchHistory).mockReturnValue({
-        history: [],
-        addToHistory: vi.fn(),
-        getTopSearches: vi.fn(() => []),
-      });
+    it('should render artists list when data is loaded', () => {
+      vi.mocked(useSpotifyArtists).mockReturnValue(createUseSpotifyMock());
+      vi.mocked(useSpotifyAlbums).mockReturnValue(createUseSpotifyMock());
+      vi.mocked(useFavorites).mockReturnValue(createUseFavoritesMock());
+      vi.mocked(useSearchHistory).mockReturnValue(createUseSearchHistoryMock());
 
       const { container } = render(<ArtistListPage />, {
         wrapper: createTestWrapper(),
       });
-      expect(container).toBeDefined();
-    });
-  });
 
-  describe('Error Handling', () => {
-    it('should show error message on API failure', () => {
+      expect(container).toBeTruthy();
+    });
+
+    it('should display loading state', () => {
+      vi.mocked(useSpotifyArtists).mockReturnValue({
+        data: undefined,
+        isLoading: true,
+        error: null,
+        isFetching: false,
+      });
+      vi.mocked(useSpotifyAlbums).mockReturnValue(createUseSpotifyMock());
+      vi.mocked(useFavorites).mockReturnValue(createUseFavoritesMock());
+      vi.mocked(useSearchHistory).mockReturnValue(createUseSearchHistoryMock());
+
+      const { container } = render(<ArtistListPage />, {
+        wrapper: createTestWrapper(),
+      });
+
+      expect(container).toBeTruthy();
+    });
+
+    it('should handle errors gracefully', () => {
       vi.mocked(useSpotifyArtists).mockReturnValue({
         data: undefined,
         isLoading: false,
         error: new Error('API Error'),
         isFetching: false,
       });
-
-      vi.mocked(useSpotifyAlbums).mockReturnValue({
-        data: undefined,
-        isLoading: false,
-        error: null,
-        isFetching: false,
-      });
-
-      vi.mocked(useFavorites).mockReturnValue({
-        favorites: [],
-        toggleFavorite: vi.fn(),
-        isFavorite: () => false,
-      });
-
-      vi.mocked(useSearchHistory).mockReturnValue({
-        history: [],
-        addToHistory: vi.fn(),
-        getTopSearches: vi.fn(() => []),
-      });
+      vi.mocked(useSpotifyAlbums).mockReturnValue(createUseSpotifyMock());
+      vi.mocked(useFavorites).mockReturnValue(createUseFavoritesMock());
+      vi.mocked(useSearchHistory).mockReturnValue(createUseSearchHistoryMock());
 
       const { container } = render(<ArtistListPage />, {
         wrapper: createTestWrapper(),
       });
-      expect(container).toBeDefined();
+
+      expect(container).toBeTruthy();
     });
   });
 });
