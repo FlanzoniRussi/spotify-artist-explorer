@@ -28,6 +28,9 @@
   },
   "dialogs": {
     "deleteTrack": "Tem certeza que deseja remover esta música?",
+    "deleteTrackTitle": "Deletar Música",
+    "deleteTrackDescription": "Tem certeza que deseja remover \"{{trackName}}\"? Esta ação não pode ser desfeita.",
+    "deleteTrackConfirm": "Deletar",
     "clearAllTitle": "Tem certeza que deseja remover todas as músicas cadastradas?",
     "clearAllDescription": "Esta ação removerá todas as músicas da sua lista de músicas personalizadas. Esta operação não pode ser desfeita.",
     "clearAllConfirm": "Remover Tudo",

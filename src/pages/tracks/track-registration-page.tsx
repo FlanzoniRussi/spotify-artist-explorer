@@ -42,6 +42,8 @@ export const TrackRegistrationPage: React.FC = () => {
   const [editingTrack, setEditingTrack] = useState<CustomTrack | null>(null);
   const [showCharts, setShowCharts] = useState(false);
   const [showClearDialog, setShowClearDialog] = useState(false);
+  const [showDeleteDialog, setShowDeleteDialog] = useState(false);
+  const [trackToDelete, setTrackToDelete] = useState<string | null>(null);
 
   const handleFormSuccess = () => {
     setSuccessMessage(t('forms:trackRegistration.success'));
@@ -66,9 +68,8 @@ export const TrackRegistrationPage: React.FC = () => {
   };
 
   const handleDeleteTrack = (trackId: string) => {
-    if (window.confirm(t('tracks:dialogs.deleteTrack'))) {
-      removeCustomTrack(trackId);
-    }
+    setTrackToDelete(trackId);
+    setShowDeleteDialog(true);
   };
 
   const handleNewTrack = () => {
@@ -410,6 +411,39 @@ export const TrackRegistrationPage: React.FC = () => {
             {t('tracks:dialogs.clearAllConfirm')}
           </AlertDialogAction>
           <AlertDialogCancel onClick={() => setShowClearDialog(false)}>
+            {t('tracks:dialogs.cancel')}
+          </AlertDialogCancel>
+        </AlertDialogContent>
+      </AlertDialog>
+
+      <AlertDialog
+        open={showDeleteDialog && trackToDelete !== null}
+        onOpenChange={setShowDeleteDialog}
+      >
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>
+              {t('tracks:dialogs.deleteTrackTitle')}
+            </AlertDialogTitle>
+            <AlertDialogDescription>
+              {t('tracks:dialogs.deleteTrackDescription', {
+                trackName:
+                  customTracks.find((track) => track.id === trackToDelete)?.name,
+              })}
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogAction
+            onClick={() => {
+              if (trackToDelete) {
+                removeCustomTrack(trackToDelete);
+              }
+              setShowDeleteDialog(false);
+              setTrackToDelete(null);
+            }}
+          >
+            {t('tracks:dialogs.deleteTrackConfirm')}
+          </AlertDialogAction>
+          <AlertDialogCancel onClick={() => setShowDeleteDialog(false)}>
             {t('tracks:dialogs.cancel')}
           </AlertDialogCancel>
         </AlertDialogContent>

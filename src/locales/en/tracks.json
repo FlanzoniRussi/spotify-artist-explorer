@@ -28,6 +28,9 @@
   },
   "dialogs": {
     "deleteTrack": "Are you sure you want to remove this track?",
+    "deleteTrackTitle": "Delete Track",
+    "deleteTrackDescription": "Are you sure you want to remove \"{{trackName}}\"? This action cannot be undone.",
+    "deleteTrackConfirm": "Delete",
     "clearAllTitle": "Are you sure you want to remove all registered tracks?",
     "clearAllDescription": "This action will remove all tracks from your custom track list. This operation cannot be undone.",
     "clearAllConfirm": "Remove All",
