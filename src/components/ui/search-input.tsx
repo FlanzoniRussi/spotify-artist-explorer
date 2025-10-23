@@ -25,8 +25,8 @@ export const SearchInput: React.FC<SearchInputProps> = ({
   return (
     <div className={cn('relative', className)}>
       <div className="relative group">
-        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400 dark:text-gray-500 pointer-events-none transition-colors duration-200 group-focus-within:text-orange-500" />
         <div className="relative">
+          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400 dark:text-gray-500 pointer-events-none transition-colors duration-200 group-focus-within:text-orange-500 z-10" />
           <Input
             type="text"
             value={value}
