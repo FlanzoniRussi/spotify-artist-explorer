@@ -1,18 +1,37 @@
 import React from 'react';
-import { Music, Heart, Plus, BarChart3, Search } from 'lucide-react';
+import { Music, Heart, Plus, BarChart3, Search, Disc3 } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { ThemeToggle } from '../../features/theme/theme-toggle';
 import { LanguageSwitcher } from '../../features/i18n/language-switcher';
 import { useTranslation } from '../../hooks/useTranslation';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 
 interface HeaderProps {
   className?: string;
 }
 
+interface NavLink {
+  to: string;
+  label: string;
+  icon: React.ReactNode;
+}
+
 export const Header: React.FC<HeaderProps> = ({ className = '' }) => {
   const { t } = useTranslation();
+  const location = useLocation();
   
+  const navLinks: NavLink[] = [
+    { to: '/', label: t('navigation.home') || 'Lançamentos', icon: <Disc3 size={16} /> },
+    { to: '/search-artists', label: t('navigation.artists') || 'Artistas', icon: <Search size={16} /> },
+    { to: '/favorites', label: t('navigation.favorites') || 'Favoritos', icon: <Heart size={16} /> },
+    { to: '/register-track', label: t('navigation.register') || 'Cadastrar', icon: <Plus size={16} /> },
+    { to: '/dashboard', label: t('navigation.dashboard') || 'Dashboard', icon: <BarChart3 size={16} /> },
+  ];
+
+  const isActive = (path: string): boolean => {
+    return location.pathname === path;
+  };
+
   const headerVariants = {
     hidden: { y: -100, opacity: 0 },
     visible: { 
@@ -85,42 +104,28 @@ export const Header: React.FC<HeaderProps> = ({ className = '' }) => {
             initial="hidden"
             animate="visible"
           >
-            <motion.div variants={linkVariants} whileHover="hover">
-              <Link
-                to='/search-artists'
-                className='flex items-center space-x-1 text-gray-700 dark:text-gray-300 hover:text-primary-500 dark:hover:text-primary-400 transition-colors font-medium'
+            {navLinks.map((link) => (
+              <motion.div 
+                key={link.to} 
+                variants={linkVariants} 
+                whileHover="hover"
               >
-                <Search size={16} />
-                <span>{t('navigation.artists')}</span>
-              </Link>
-            </motion.div>
-            <motion.div variants={linkVariants} whileHover="hover">
-              <Link
-                to='/favorites'
-                className='flex items-center space-x-1 text-gray-700 dark:text-gray-300 hover:text-primary-500 dark:hover:text-primary-400 transition-colors font-medium'
-              >
-                <Heart size={16} />
-                <span>{t('navigation.favorites')}</span>
-              </Link>
-            </motion.div>
-            <motion.div variants={linkVariants} whileHover="hover">
-              <Link
-                to='/register-track'
-                className='flex items-center space-x-1 text-gray-700 dark:text-gray-300 hover:text-primary-500 dark:hover:text-primary-400 transition-colors font-medium'
-              >
-                <Plus size={16} />
-                <span>{t('navigation.register')}</span>
-              </Link>
-            </motion.div>
-            <motion.div variants={linkVariants} whileHover="hover">
-              <Link
-                to='/dashboard'
-                className='flex items-center space-x-1 text-gray-700 dark:text-gray-300 hover:text-primary-500 dark:hover:text-primary-400 transition-colors font-medium'
-              >
-                <BarChart3 size={16} />
-                <span>{t('navigation.dashboard')}</span>
-              </Link>
-            </motion.div>
+                <Link
+                  to={link.to}
+                  className='flex items-center space-x-1 text-gray-700 dark:text-gray-300 hover:text-primary-500 dark:hover:text-primary-400 transition-colors font-medium relative'
+                >
+                  {link.icon}
+                  <span>{link.label}</span>
+                  {isActive(link.to) && (
+                    <motion.div
+                      className='absolute -bottom-1 left-0 right-0 h-0.5 bg-primary-500'
+                      layoutId='navUnderline'
+                      transition={{ type: 'spring', stiffness: 380, damping: 40 }}
+                    />
+                  )}
+                </Link>
+              </motion.div>
+            ))}
           </motion.nav>
 
           <motion.div 
@@ -156,62 +161,23 @@ export const Header: React.FC<HeaderProps> = ({ className = '' }) => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.6, duration: 0.3 }}
           >
-            <motion.div
-              whileHover={{ scale: 1.05, y: -2 }}
-              whileTap={{ scale: 0.95 }}
-            >
-              <Link
-                to='/search-artists'
-                className='flex flex-col items-center space-y-1 text-gray-600 dark:text-gray-400 hover:text-primary-500 transition-colors'
+            {navLinks.map((link) => (
+              <motion.div 
+                key={link.to}
+                whileHover={{ scale: 1.05, y: -2 }}
+                whileTap={{ scale: 0.95 }}
               >
-                <Search size={20} />
-                <span className='text-xs font-medium'>
-                  {t('navigation.artists')}
-                </span>
-              </Link>
-            </motion.div>
-            <motion.div
-              whileHover={{ scale: 1.05, y: -2 }}
-              whileTap={{ scale: 0.95 }}
-            >
-              <Link
-                to='/favorites'
-                className='flex flex-col items-center space-y-1 text-gray-600 dark:text-gray-400 hover:text-primary-500 transition-colors'
-              >
-                <Heart size={20} />
-                <span className='text-xs font-medium'>
-                  {t('navigation.favorites')}
-                </span>
-              </Link>
-            </motion.div>
-            <motion.div
-              whileHover={{ scale: 1.05, y: -2 }}
-              whileTap={{ scale: 0.95 }}
-            >
-              <Link
-                to='/register-track'
-                className='flex flex-col items-center space-y-1 text-gray-600 dark:text-gray-400 hover:text-primary-500 transition-colors'
-              >
-                <Plus size={20} />
-                <span className='text-xs font-medium'>
-                  {t('navigation.register')}
-                </span>
-              </Link>
-            </motion.div>
-            <motion.div
-              whileHover={{ scale: 1.05, y: -2 }}
-              whileTap={{ scale: 0.95 }}
-            >
-              <Link
-                to='/dashboard'
-                className='flex flex-col items-center space-y-1 text-gray-600 dark:text-gray-400 hover:text-primary-500 transition-colors'
-              >
-                <BarChart3 size={20} />
-                <span className='text-xs font-medium'>
-                  Dashboard
-                </span>
-              </Link>
-            </motion.div>
+                <Link
+                  to={link.to}
+                  className={`flex flex-col items-center space-y-1 transition-colors ${isActive(link.to) ? 'text-primary-500 dark:text-primary-400' : 'text-gray-600 dark:text-gray-400 hover:text-primary-500'}`}
+                >
+                  {link.icon}
+                  <span className='text-xs font-medium'>
+                    {link.label}
+                  </span>
+                </Link>
+              </motion.div>
+            ))}
           </motion.div>
         </motion.div>
       </div>
