@@ -8,6 +8,9 @@ import type { SearchFilters } from '../types';
  * Fetches artists matching a query string. Results are cached and revalidated
  * based on React Query's stale time configuration.
  *
+ * IMPORTANT: The total count is fetched and cached only once per query.
+ * When changing pages, only the results for that page are re-fetched.
+ *
  * @param {string} query - Artist search query (must be non-empty)
  * @param {number} [page=0] - Page number for pagination (0-indexed)
  * @param {number} [limit=20] - Number of results per page
@@ -17,24 +20,48 @@ import type { SearchFilters } from '../types';
  * const { data, isLoading, error } = useSpotifyArtists('The Beatles', 0, 20);
  */
 export const useSpotifyArtists = (query: string, page = 0, limit = 20) => {
-  return useQuery({
+  const {
+    data: pageData,
+    isLoading,
+    error,
+    isFetching,
+  } = useQuery({
     queryKey: ['artists', query, page, limit],
     queryFn: () => spotifyService.searchArtists(query, limit, page * limit),
     enabled: query.length > 0,
-    staleTime: 5 * 60 * 1000,
+    staleTime: Infinity,
     gcTime: 10 * 60 * 1000,
-    select: (data) => ({
-      artists: data.artists,
-      pagination: {
-        currentPage: page,
-        totalPages: Math.ceil(data.total / limit),
-        totalItems: data.total,
-        hasNext: data.hasNext,
-        hasPrevious: data.hasPrevious,
-        limit,
-      },
-    }),
   });
+
+  const { data: firstPageData } = useQuery({
+    queryKey: ['artists-total', query, limit],
+    queryFn: () => spotifyService.searchArtists(query, limit, 0),
+    enabled: query.length > 0,
+    staleTime: Infinity,
+    gcTime: 10 * 60 * 1000,
+  });
+
+  const total = firstPageData?.total ?? pageData?.total ?? 0;
+  const totalPages = Math.ceil(total / limit);
+
+  return {
+    data: pageData
+      ? {
+          artists: pageData.artists,
+          pagination: {
+            currentPage: page,
+            totalPages,
+            totalItems: total,
+            hasNext: page < totalPages - 1,
+            hasPrevious: page > 0,
+            limit,
+          },
+        }
+      : undefined,
+    isLoading,
+    error,
+    isFetching,
+  };
 };
 
 /**
@@ -42,6 +69,9 @@ export const useSpotifyArtists = (query: string, page = 0, limit = 20) => {
  *
  * Fetches albums matching a query string. Results are cached and
  * revalidated based on React Query's stale time configuration.
+ *
+ * IMPORTANT: The total count is fetched and cached only once per query.
+ * When changing pages, only the results for that page are re-fetched.
  *
  * @param {string} query - Album search query (must be non-empty)
  * @param {number} [page=0] - Page number for pagination (0-indexed)
@@ -52,13 +82,58 @@ export const useSpotifyArtists = (query: string, page = 0, limit = 20) => {
  * const { data, isLoading } = useSpotifyAlbums('Thriller', 0, 20);
  */
 export const useSpotifyAlbums = (query: string, page = 0, limit = 20) => {
-  return useQuery({
+  const {
+    data: pageData,
+    isLoading,
+    error,
+    isFetching,
+  } = useQuery({
     queryKey: ['albums', query, page, limit],
-    queryFn: () => spotifyService.searchAlbums(query, limit, page * limit),
+    queryFn: async () => {
+      const response = await spotifyService.searchAlbums(
+        query,
+        limit,
+        page * limit
+      );
+      return response;
+    },
     enabled: query.length > 0,
-    staleTime: 5 * 60 * 1000,
+    staleTime: Infinity,
     gcTime: 10 * 60 * 1000,
   });
+
+  const { data: firstPageData } = useQuery({
+    queryKey: ['albums-total', query, limit],
+    queryFn: async () => {
+      const response = await spotifyService.searchAlbums(query, limit, 0);
+      return response;
+    },
+    enabled: query.length > 0,
+    staleTime: Infinity,
+    gcTime: 10 * 60 * 1000,
+  });
+
+  const total = firstPageData?.total ?? pageData?.total ?? 0;
+  const totalPages = Math.ceil(total / limit);
+
+  return {
+    data: pageData
+      ? {
+          albums: pageData.albums,
+          pagination: {
+            currentPage: page,
+            totalPages,
+            totalItems: total,
+            hasNext: page < totalPages - 1,
+            hasPrevious: page > 0,
+            limit,
+          },
+        }
+      : undefined,
+    isLoading,
+    error,
+    isFetching,
+  };
 };
 
 /**
@@ -211,10 +286,10 @@ export const useSpotifyAlbum = (id: string) => {
  * @example
  * const { data } = useSpotifyAlbumTracks('4m2880jivnjc4YLMAYIx00');
  */
-export const useSpotifyAlbumTracks = (id: string) => {
+export const useSpotifyAlbumTracks = (id: string, albumName?: string) => {
   return useQuery({
-    queryKey: ['album-tracks', id],
-    queryFn: () => spotifyService.getAlbumTracks(id),
+    queryKey: ['album-tracks', id, albumName],
+    queryFn: () => spotifyService.getAlbumTracks(id, albumName),
     enabled: !!id,
     staleTime: 10 * 60 * 1000,
     gcTime: 30 * 60 * 1000,
@@ -255,7 +330,7 @@ export const useSpotifyTrack = (id: string) => {
  *
  * @example
  * ```typescript
- * const { data, fetchNextPage, hasNextPage, isFetchingNextPage } = 
+ * const { data, fetchNextPage, hasNextPage, isFetchingNextPage } =
  *   useInfiniteSpotifyArtists('The Beatles');
  *
  * return (

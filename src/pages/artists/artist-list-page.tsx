@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useRef } from 'react';
 import { Music, Users, TrendingUp, Disc, Filter } from 'lucide-react';
 import { useSpotifyArtists, useSpotifyAlbums } from '../../hooks/useSpotify';
 import { useTranslation } from '../../hooks/useTranslation';
@@ -19,10 +19,14 @@ export const ArtistListPage: React.FC = () => {
   const { addSearch, getTopSearches } = useSearchHistory();
   const [searchQuery, setSearchQuery] = useState('');
   const [debouncedQuery, setDebouncedQuery] = useState('');
-  const [currentPage, setCurrentPage] = useState(1);
+  const [currentArtistsPage, setCurrentArtistsPage] = useState(1);
+  const [currentAlbumsPage, setCurrentAlbumsPage] = useState(1);
   const [searchType, setSearchType] = useState<'artist' | 'album' | 'all'>(
     'all'
   );
+
+  const artistsSectionRef = useRef<HTMLDivElement>(null);
+  const albumsSectionRef = useRef<HTMLDivElement>(null);
 
   const debouncedSearch = useMemo(() => {
     let timeout: ReturnType<typeof setTimeout>;
@@ -39,13 +43,9 @@ export const ArtistListPage: React.FC = () => {
 
   const handleSearchChange = (value: string) => {
     setSearchQuery(value);
-    setCurrentPage(1);
+    setCurrentArtistsPage(1);
+    setCurrentAlbumsPage(1);
     debouncedSearch(value);
-  };
-
-  const handlePageChange = (page: number) => {
-    setCurrentPage(page);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   const {
@@ -53,22 +53,43 @@ export const ArtistListPage: React.FC = () => {
     isLoading: artistsLoading,
     error: artistsError,
     isFetching: artistsFetching,
-  } = useSpotifyArtists(debouncedQuery, currentPage - 1, 20);
+  } = useSpotifyArtists(debouncedQuery, currentArtistsPage - 1, 20);
 
   const {
     data: albumsData,
     isLoading: albumsLoading,
     error: albumsError,
     isFetching: albumsFetching,
-  } = useSpotifyAlbums(debouncedQuery, currentPage - 1, 20);
+  } = useSpotifyAlbums(debouncedQuery, currentAlbumsPage - 1, 20);
 
   const pagination = searchData?.pagination;
+  const albumsPagination = albumsData?.pagination;
 
   const artists = useMemo(
     () => searchData?.artists || [],
     [searchData?.artists]
   );
-  const albums = useMemo(() => albumsData || [], [albumsData]);
+  const albums = useMemo(() => albumsData?.albums || [], [albumsData?.albums]);
+
+  const handlePageChangeArtists = (page: number) => {
+    setCurrentArtistsPage(page);
+    setTimeout(() => {
+      artistsSectionRef.current?.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start',
+      });
+    }, 100);
+  };
+
+  const handlePageChangeAlbums = (page: number) => {
+    setCurrentAlbumsPage(page);
+    setTimeout(() => {
+      albumsSectionRef.current?.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start',
+      });
+    }, 100);
+  };
 
   const isLoading = artistsLoading || albumsLoading;
   const isFetching = artistsFetching || albumsFetching;
@@ -132,19 +153,42 @@ export const ArtistListPage: React.FC = () => {
       (sum, artist) => sum + artist.followers.total,
       0
     );
+
     const avgPopularity =
       artists.length > 0
         ? artists.reduce((sum, artist) => sum + artist.popularity, 0) /
           artists.length
         : 0;
 
+    const genresMap = new Map<string, number>();
+    artists.forEach(artist => {
+      artist.genres?.forEach(genre => {
+        genresMap.set(genre, (genresMap.get(genre) || 0) + 1);
+      });
+    });
+    const topGenre =
+      Array.from(genresMap.entries()).sort((a, b) => b[1] - a[1])[0]?.[0] ||
+      'N/A';
+
+    const topArtist =
+      artists.length > 0
+        ? artists.reduce((max, artist) =>
+            artist.popularity > max.popularity ? artist : max
+          )
+        : null;
+
     return {
-      totalArtists: artists.length,
-      totalAlbums: albums.length,
+      currentPageArtists: artists.length,
+      currentPageAlbums: albums.length,
       totalFollowers,
       avgPopularity: Math.round(avgPopularity),
+      topGenre,
+      topArtist,
+      hasMorePages: pagination
+        ? pagination.currentPage < pagination.totalPages - 1
+        : false,
     };
-  }, [artists, albums]);
+  }, [artists, albums, pagination]);
 
   if (error) {
     return (
@@ -230,17 +274,20 @@ export const ArtistListPage: React.FC = () => {
           </div>
         </div>
 
-        {/* Stats */}
+        {/* Stats - Página Atual */}
         {stats && debouncedQuery && (
           <div className='mb-4'>
             <p className='text-sm text-gray-500 dark:text-gray-400 text-center'>
-              {t('artists:listing.apiNote')}
+              Mostrando {stats.currentPageArtists} artistas e{' '}
+              {stats.currentPageAlbums} álbuns nesta página
+              {stats.hasMorePages && ' • Navegue para ver mais resultados'}
             </p>
           </div>
         )}
 
         {stats && debouncedQuery && (
           <div className='grid grid-cols-1 md:grid-cols-4 gap-4 mb-8'>
+            {/* Card 1: Seguidores (Página Atual) */}
             <div className='bg-white dark:bg-dark-500 rounded-lg p-6 shadow-sm border border-gray-200 dark:border-dark-300'>
               <div className='flex items-center'>
                 <div className='p-2 bg-primary-100 dark:bg-primary-900 rounded-lg'>
@@ -248,39 +295,7 @@ export const ArtistListPage: React.FC = () => {
                 </div>
                 <div className='ml-4'>
                   <p className='text-sm font-medium text-gray-600 dark:text-gray-400'>
-                    {t('artists:listing.stats.totalArtists')}
-                  </p>
-                  <p className='text-2xl font-bold text-gray-900 dark:text-white'>
-                    {stats.totalArtists}
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            <div className='bg-white dark:bg-dark-500 rounded-lg p-6 shadow-sm border border-gray-200 dark:border-dark-300'>
-              <div className='flex items-center'>
-                <div className='p-2 bg-primary-100 dark:bg-primary-900 rounded-lg'>
-                  <Disc className='w-6 h-6 text-primary-600 dark:text-primary-400' />
-                </div>
-                <div className='ml-4'>
-                  <p className='text-sm font-medium text-gray-600 dark:text-gray-400'>
-                    {t('stats.albums')}
-                  </p>
-                  <p className='text-2xl font-bold text-gray-900 dark:text-white'>
-                    {stats.totalAlbums}
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            <div className='bg-white dark:bg-dark-500 rounded-lg p-6 shadow-sm border border-gray-200 dark:border-dark-300'>
-              <div className='flex items-center'>
-                <div className='p-2 bg-primary-100 dark:bg-primary-900 rounded-lg'>
-                  <Users className='w-6 h-6 text-primary-600 dark:text-primary-400' />
-                </div>
-                <div className='ml-4'>
-                  <p className='text-sm font-medium text-gray-600 dark:text-gray-400'>
-                    {t('artists:listing.stats.totalFollowers')}
+                    Seguidores (Página)
                   </p>
                   <p className='text-2xl font-bold text-gray-900 dark:text-white'>
                     {stats.totalFollowers.toLocaleString()}
@@ -289,6 +304,7 @@ export const ArtistListPage: React.FC = () => {
               </div>
             </div>
 
+            {/* Card 2: Popularidade Média */}
             <div className='bg-white dark:bg-dark-500 rounded-lg p-6 shadow-sm border border-gray-200 dark:border-dark-300'>
               <div className='flex items-center'>
                 <div className='p-2 bg-primary-100 dark:bg-primary-900 rounded-lg'>
@@ -300,6 +316,43 @@ export const ArtistListPage: React.FC = () => {
                   </p>
                   <p className='text-2xl font-bold text-gray-900 dark:text-white'>
                     {stats.avgPopularity}%
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* Card 3: Gênero Principal */}
+            <div className='bg-white dark:bg-dark-500 rounded-lg p-6 shadow-sm border border-gray-200 dark:border-dark-300'>
+              <div className='flex items-center'>
+                <div className='p-2 bg-primary-100 dark:bg-primary-900 rounded-lg'>
+                  <Music className='w-6 h-6 text-primary-600 dark:text-primary-400' />
+                </div>
+                <div className='ml-4'>
+                  <p className='text-sm font-medium text-gray-600 dark:text-gray-400'>
+                    Gênero Principal
+                  </p>
+                  <p className='text-lg font-bold text-gray-900 dark:text-white truncate'>
+                    {stats.topGenre}
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* Card 4: Artista Mais Popular */}
+            <div className='bg-white dark:bg-dark-500 rounded-lg p-6 shadow-sm border border-gray-200 dark:border-dark-300'>
+              <div className='flex items-center'>
+                <div className='p-2 bg-primary-100 dark:bg-primary-900 rounded-lg'>
+                  <TrendingUp className='w-6 h-6 text-primary-600 dark:text-primary-400' />
+                </div>
+                <div className='ml-4'>
+                  <p className='text-sm font-medium text-gray-600 dark:text-gray-400'>
+                    Mais Popular
+                  </p>
+                  <p className='text-lg font-bold text-gray-900 dark:text-white truncate'>
+                    {stats.topArtist?.name || 'N/A'}
+                  </p>
+                  <p className='text-xs text-gray-500 dark:text-gray-400'>
+                    {stats.topArtist?.popularity || 0}% popularidade
                   </p>
                 </div>
               </div>
@@ -335,7 +388,8 @@ export const ArtistListPage: React.FC = () => {
                       key={`${search.query}-${index}`}
                       onClick={() => {
                         setSearchQuery(search.query);
-                        setCurrentPage(1);
+                        setCurrentArtistsPage(1);
+                        setCurrentAlbumsPage(1);
                         debouncedSearch(search.query);
                       }}
                       className='p-4 bg-white dark:bg-dark-500 rounded-lg border border-gray-200 dark:border-dark-300 hover:border-primary-500 dark:hover:border-primary-400 hover:shadow-md transition-all duration-200 text-left'
@@ -375,12 +429,28 @@ export const ArtistListPage: React.FC = () => {
           <>
             {/* Artists Section */}
             {filteredResults.artists.length > 0 && (
-              <div className='mb-8'>
+              <div ref={artistsSectionRef} className='mb-8 relative'>
                 <h2 className='text-xl font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2'>
                   <Users className='w-5 h-5' />
-                  {t('sections.artists')} ({filteredResults.artists.length})
+                  {t('sections.artists')}
+                  <span className='text-sm font-normal text-gray-500 dark:text-gray-400'>
+                    ({filteredResults.artists.length} nesta página)
+                  </span>
                 </h2>
-                <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6'>
+
+                {/* Loading overlay apenas para esta seção */}
+                {artistsFetching && !artistsLoading && (
+                  <div className='absolute inset-0 bg-white/70 dark:bg-dark-500/70 backdrop-blur-sm z-10 flex items-center justify-center rounded-lg'>
+                    <div className='flex flex-col items-center gap-2'>
+                      <div className='animate-spin rounded-full h-8 w-8 border-b-2 border-primary-500'></div>
+                      <p className='text-sm text-gray-600 dark:text-gray-400'>
+                        Carregando artistas...
+                      </p>
+                    </div>
+                  </div>
+                )}
+
+                <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mb-6'>
                   {filteredResults.artists.map((artist, index) => (
                     <ArtistCard
                       key={artist.id}
@@ -391,32 +461,61 @@ export const ArtistListPage: React.FC = () => {
                     />
                   ))}
                 </div>
+
+                {/* Paginação de Artistas */}
+                {pagination && pagination.totalPages > 1 && (
+                  <div className='mt-6'>
+                    <Pagination
+                      currentPage={pagination.currentPage + 1}
+                      totalPages={pagination.totalPages}
+                      onPageChange={handlePageChangeArtists}
+                    />
+                  </div>
+                )}
               </div>
             )}
 
             {/* Albums Section */}
             {filteredResults.albums.length > 0 && (
-              <div className='mb-8'>
+              <div ref={albumsSectionRef} className='mb-8 relative'>
                 <h2 className='text-xl font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2'>
                   <Disc className='w-5 h-5' />
-                  {t('sections.albums')} ({filteredResults.albums.length})
+                  {t('sections.albums')}
+                  <span className='text-sm font-normal text-gray-500 dark:text-gray-400'>
+                    ({filteredResults.albums.length} nesta página)
+                  </span>
                 </h2>
-                <AlbumGrid
-                  albums={filteredResults.albums}
-                  onToggleFavorite={handleToggleAlbumFavorite}
-                  isFavorite={handleIsAlbumFavorite}
-                />
-              </div>
-            )}
 
-            {/* Pagination */}
-            {pagination && pagination.totalPages > 1 && (
-              <div className='mt-8'>
-                <Pagination
-                  currentPage={pagination.currentPage + 1}
-                  totalPages={pagination.totalPages}
-                  onPageChange={handlePageChange}
-                />
+                {/* Loading overlay apenas para esta seção */}
+                {albumsFetching && !albumsLoading && (
+                  <div className='absolute inset-0 bg-white/70 dark:bg-dark-500/70 backdrop-blur-sm z-10 flex items-center justify-center rounded-lg'>
+                    <div className='flex flex-col items-center gap-2'>
+                      <div className='animate-spin rounded-full h-8 w-8 border-b-2 border-primary-500'></div>
+                      <p className='text-sm text-gray-600 dark:text-gray-400'>
+                        Carregando álbuns...
+                      </p>
+                    </div>
+                  </div>
+                )}
+
+                <div className='mb-6'>
+                  <AlbumGrid
+                    albums={filteredResults.albums}
+                    onToggleFavorite={handleToggleAlbumFavorite}
+                    isFavorite={handleIsAlbumFavorite}
+                  />
+                </div>
+
+                {/* Paginação de Álbuns */}
+                {albumsPagination && albumsPagination.totalPages > 1 && (
+                  <div className='mt-6'>
+                    <Pagination
+                      currentPage={albumsPagination.currentPage + 1}
+                      totalPages={albumsPagination.totalPages}
+                      onPageChange={handlePageChangeAlbums}
+                    />
+                  </div>
+                )}
               </div>
             )}
           </>
