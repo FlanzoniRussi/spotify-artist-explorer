@@ -1,5 +1,5 @@
 import React from 'react';
-import { Music, Heart, Plus, BarChart3 } from 'lucide-react';
+import { Music, Heart, Plus, BarChart3, Search } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { ThemeToggle } from '../../features/theme/theme-toggle';
 import { LanguageSwitcher } from '../../features/i18n/language-switcher';
@@ -91,6 +91,15 @@ export const Header: React.FC<HeaderProps> = ({ className = '' }) => {
                 className='text-gray-700 dark:text-gray-300 hover:text-primary-500 dark:hover:text-primary-400 transition-colors font-medium'
               >
                 {t('navigation.artists')}
+              </Link>
+            </motion.div>
+            <motion.div variants={linkVariants} whileHover="hover">
+              <Link
+                to='/search-artists'
+                className='flex items-center space-x-1 text-gray-700 dark:text-gray-300 hover:text-primary-500 dark:hover:text-primary-400 transition-colors font-medium'
+              >
+                <Search size={16} />
+                <span>{t('navigation.artists')}</span>
               </Link>
             </motion.div>
             <motion.div variants={linkVariants} whileHover="hover">

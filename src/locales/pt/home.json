@@ -1,0 +1,8 @@
+{
+  "newReleases": {
+    "title": "Lançamentos Recentes",
+    "subtitle": "Descubra os últimos álbuns e singles do Spotify",
+    "empty": "Nenhum lançamento encontrado",
+    "emptyDescription": "Tente novamente mais tarde"
+  }
+}
