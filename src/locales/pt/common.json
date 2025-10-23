@@ -138,5 +138,14 @@
   "ui": {
     "selectYear": "Selecione o ano",
     "search": "Buscar..."
+  },
+  "routeErrors": {
+    "newReleases": "Erro ao carregar lançamentos",
+    "artists": "Erro ao carregar artistas",
+    "artistDetails": "Erro ao carregar detalhes do artista",
+    "albumDetails": "Erro ao carregar detalhes do álbum",
+    "favorites": "Erro ao carregar favoritos",
+    "trackRegistration": "Erro ao carregar formulário de cadastro",
+    "dashboard": "Erro ao carregar dashboard"
   }
 }

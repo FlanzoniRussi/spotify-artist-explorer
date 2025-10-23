@@ -6,6 +6,7 @@ import { CustomTracksProvider } from './contexts/custom-tracks-context';
 import { RatingsProvider } from './contexts/ratings-context';
 import { ErrorBoundary } from './components/error-boundary';
 import { MainLayout } from './components/layout/main-layout';
+import { RouteErrorFallback } from './components/route-error-fallback';
 import { NewReleasesPage } from './pages/home/new-releases-page';
 import { ArtistListPage } from './pages/artists/artist-list-page';
 import { ArtistDetailsPage } from './pages/artists/artist-details-page';
@@ -39,7 +40,7 @@ function App() {
                       <Route
                         path="/"
                         element={
-                          <ErrorBoundary fallback={<div className="p-4">Erro ao carregar lançamentos</div>}>
+                          <ErrorBoundary fallback={<RouteErrorFallback routeKey="newReleases" />}>
                             <NewReleasesPage />
                           </ErrorBoundary>
                         }
@@ -48,7 +49,7 @@ function App() {
                       <Route
                         path="/search-artists"
                         element={
-                          <ErrorBoundary fallback={<div className="p-4">Erro ao carregar artistas</div>}>
+                          <ErrorBoundary fallback={<RouteErrorFallback routeKey="artists" />}>
                             <ArtistListPage />
                           </ErrorBoundary>
                         }
@@ -57,7 +58,7 @@ function App() {
                       <Route
                         path="/artist/:id"
                         element={
-                          <ErrorBoundary fallback={<div className="p-4">Erro ao carregar detalhes do artista</div>}>
+                          <ErrorBoundary fallback={<RouteErrorFallback routeKey="artistDetails" />}>
                             <ArtistDetailsPage />
                           </ErrorBoundary>
                         }
@@ -66,7 +67,7 @@ function App() {
                       <Route
                         path="/album/:id"
                         element={
-                          <ErrorBoundary fallback={<div className="p-4">Erro ao carregar detalhes do álbum</div>}>
+                          <ErrorBoundary fallback={<RouteErrorFallback routeKey="albumDetails" />}>
                             <AlbumDetailsPage />
                           </ErrorBoundary>
                         }
@@ -75,7 +76,7 @@ function App() {
                       <Route
                         path="/favorites"
                         element={
-                          <ErrorBoundary fallback={<div className="p-4">Erro ao carregar favoritos</div>}>
+                          <ErrorBoundary fallback={<RouteErrorFallback routeKey="favorites" />}>
                             <FavoritesPage />
                           </ErrorBoundary>
                         }
@@ -84,7 +85,7 @@ function App() {
                       <Route
                         path="/register-track"
                         element={
-                          <ErrorBoundary fallback={<div className="p-4">Erro ao carregar formulário de cadastro</div>}>
+                          <ErrorBoundary fallback={<RouteErrorFallback routeKey="trackRegistration" />}>
                             <TrackRegistrationPage />
                           </ErrorBoundary>
                         }
@@ -93,7 +94,7 @@ function App() {
                       <Route
                         path="/dashboard"
                         element={
-                          <ErrorBoundary fallback={<div className="p-4">Erro ao carregar dashboard</div>}>
+                          <ErrorBoundary fallback={<RouteErrorFallback routeKey="dashboard" />}>
                             <DashboardPage />
                           </ErrorBoundary>
                         }

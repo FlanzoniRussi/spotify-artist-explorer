@@ -138,5 +138,14 @@
   "ui": {
     "selectYear": "Select year",
     "search": "Search..."
+  },
+  "routeErrors": {
+    "newReleases": "Error loading new releases",
+    "artists": "Error loading artists",
+    "artistDetails": "Error loading artist details",
+    "albumDetails": "Error loading album details",
+    "favorites": "Error loading favorites",
+    "trackRegistration": "Error loading track registration form",
+    "dashboard": "Error loading dashboard"
   }
 }
