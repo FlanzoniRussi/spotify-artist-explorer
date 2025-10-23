@@ -2,18 +2,69 @@ import { Component, type ErrorInfo, type ReactNode } from 'react';
 import { AlertTriangle, RefreshCw, Home } from 'lucide-react';
 import { Button } from './ui/button';
 
+/**
+ * Props for the ErrorBoundary component.
+ *
+ * @typedef {Object} ErrorBoundaryProps
+ * @property {ReactNode} children - Child components to wrap and protect
+ * @property {ReactNode} [fallback] - Optional custom error UI to display on error
+ * @property {Function} [onError] - Optional callback when an error is caught
+ */
 interface ErrorBoundaryProps {
   children: ReactNode;
   fallback?: ReactNode;
   onError?: (error: Error, errorInfo: ErrorInfo) => void;
 }
 
+/**
+ * State for the ErrorBoundary component.
+ *
+ * @typedef {Object} ErrorBoundaryState
+ * @property {boolean} hasError - Whether an error has been caught
+ * @property {Error} [error] - The caught error object
+ * @property {ErrorInfo} [errorInfo] - React error information with component stack
+ */
 interface ErrorBoundaryState {
   hasError: boolean;
   error?: Error;
   errorInfo?: ErrorInfo;
 }
 
+/**
+ * Error Boundary component for React error handling.
+ *
+ * Catches JavaScript errors anywhere in the child component tree,
+ * logs those errors, and displays a fallback UI instead of crashing
+ * the entire application. This is a class component required by React
+ * for error boundary implementation.
+ *
+ * **Key Features:**
+ * - Catches errors during rendering, in lifecycle methods, and constructors
+ * - Displays detailed error information in development mode
+ * - Provides retry and home navigation buttons
+ * - Supports custom fallback UI
+ * - Optional error callback for logging/monitoring
+ *
+ * **Note:** Does NOT catch errors for:
+ * - Event handlers (use try-catch instead)
+ * - Asynchronous code (setTimeout, promises)
+ * - Server-side rendering
+ * - Errors thrown in the error boundary itself
+ *
+ * @component
+ * @example
+ * ```typescript
+ * <ErrorBoundary
+ *   fallback={<CustomErrorPage />}
+ *   onError={(error, errorInfo) => {
+ *     console.error('Component error:', error);
+ *     trackError(error); // Send to error tracking service
+ *   }}
+ * >
+ *   <YourApp />
+ * </ErrorBoundary>
+ * ```
+ */
 export class ErrorBoundary extends Component<
   ErrorBoundaryProps,
   ErrorBoundaryState
@@ -23,10 +74,29 @@ export class ErrorBoundary extends Component<
     this.state = { hasError: false };
   }
 
+  /**
+   * React lifecycle method called when an error is thrown in a child component.
+   *
+   * Updates state to trigger the fallback UI. Called during render phase.
+   *
+   * @static
+   * @param {Error} error - The error that was thrown
+   * @returns {ErrorBoundaryState} New state with hasError flag set to true
+   */
   static getDerivedStateFromError(error: Error): ErrorBoundaryState {
     return { hasError: true, error };
   }
 
+  /**
+   * React lifecycle method called after an error has been thrown.
+   *
+   * Used for error logging and reporting. Called during commit phase.
+   * If running in development, logs the error and component stack to console.
+   * Also calls the optional onError callback if provided.
+   *
+   * @param {Error} error - The error that was thrown
+   * @param {ErrorInfo} errorInfo - Object containing the component stack
+   */
   componentDidCatch(error: Error, errorInfo: ErrorInfo) {
     if (import.meta.env.DEV) {
       console.error('ErrorBoundary caught an error:', error, errorInfo);
@@ -39,10 +109,24 @@ export class ErrorBoundary extends Component<
     this.setState({ errorInfo });
   }
 
+  /**
+   * Retry handler to reset error boundary and attempt to render children again.
+   *
+   * Called when user clicks "Tentar novamente" button.
+   *
+   * @private
+   */
   handleRetry = () => {
     this.setState({ hasError: false, error: undefined, errorInfo: undefined });
   };
 
+  /**
+   * Navigate to home page when error occurs.
+   *
+   * Called when user clicks "Ir para início" button.
+   *
+   * @private
+   */
   handleGoHome = () => {
     window.location.href = '/';
   };
