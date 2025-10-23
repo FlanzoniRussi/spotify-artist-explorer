@@ -10,12 +10,15 @@ import { LoadingSkeleton } from '../../components/ui/loading-skeleton';
 import { EmptyState } from '../../components/ui/empty-state';
 import { ErrorBoundary } from '../../components/error-boundary';
 import { TrackList } from '../../components/tracks/track-list';
+import { Pagination } from '../../components/ui/pagination';
 import { formatDate } from '../../utils/formatters';
 
 export const AlbumDetailsPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const { t } = useTranslation();
   const { favorites, toggleFavorite } = useFavorites();
+  const [currentTracksPage, setCurrentTracksPage] = React.useState(1);
+  const TRACKS_PER_PAGE = 20;
 
   const {
     data: album,
@@ -26,7 +29,7 @@ export const AlbumDetailsPage: React.FC = () => {
   const {
     data: tracksData,
     isLoading: tracksLoading,
-  } = useSpotifyAlbumTracks(id || '');
+  } = useSpotifyAlbumTracks(id || '', album?.name);
 
   const handleToggleTrackFavorite = (track: SpotifyTrack) => {
     const favoriteData = {
@@ -87,6 +90,16 @@ export const AlbumDetailsPage: React.FC = () => {
     const totalMs = tracksData.items.reduce((sum, track) => sum + track.duration_ms, 0);
     return formatDuration(totalMs);
   };
+
+  // Paginate tracks
+  const paginatedTracks = React.useMemo(() => {
+    if (!tracksData?.items) return [];
+    const startIdx = (currentTracksPage - 1) * TRACKS_PER_PAGE;
+    const endIdx = startIdx + TRACKS_PER_PAGE;
+    return tracksData.items.slice(startIdx, endIdx);
+  }, [tracksData?.items, currentTracksPage, TRACKS_PER_PAGE]);
+
+  const totalTracksPages = tracksData?.items ? Math.ceil(tracksData.items.length / TRACKS_PER_PAGE) : 0;
 
   if (albumError) {
     return (
@@ -402,11 +415,25 @@ export const AlbumDetailsPage: React.FC = () => {
               ))}
             </div>
           ) : tracksData?.items && tracksData.items.length > 0 ? (
-            <TrackList
-              tracks={tracksData.items}
-              onToggleFavorite={handleToggleTrackFavorite}
-              isFavorite={isTrackFavorite}
-            />
+            <>
+              <TrackList
+                tracks={paginatedTracks}
+                onToggleFavorite={handleToggleTrackFavorite}
+                isFavorite={isTrackFavorite}
+              />
+              {totalTracksPages > 1 && (
+                <div className="mt-6 flex justify-center">
+                  <Pagination
+                    currentPage={currentTracksPage}
+                    totalPages={totalTracksPages}
+                    onPageChange={(page) => {
+                      setCurrentTracksPage(page);
+                      window.scrollTo({ top: 0, behavior: 'smooth' });
+                    }}
+                  />
+                </div>
+              )}
+            </>
           ) : (
             <EmptyState
               icon={<Music size={48} className='text-gray-400 dark:text-gray-500' />}

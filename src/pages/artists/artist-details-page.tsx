@@ -12,11 +12,15 @@ import { ErrorBoundary } from '../../components/error-boundary';
 import { TrackList } from '../../components/tracks/track-list';
 import { AlbumGrid } from '../../components/albums/album-grid';
 import { PopularityChart } from '../../components/charts/popularity-chart';
+import { Pagination } from '../../components/ui/pagination';
 
 export const ArtistDetailsPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const { t } = useTranslation();
   const { favorites, toggleFavorite } = useFavorites();
+  const [currentTracksPage, setCurrentTracksPage] = React.useState(1);
+  const [currentAlbumsPage, setCurrentAlbumsPage] = React.useState(1);
+  const ITEMS_PER_PAGE = 20;
 
   const {
     data: artist,
@@ -32,7 +36,17 @@ export const ArtistDetailsPage: React.FC = () => {
   const {
     data: albumsData,
     isLoading: albumsLoading,
-  } = useSpotifyArtistAlbums(id || '', 0, 20);
+  } = useSpotifyArtistAlbums(id || '', (currentAlbumsPage - 1) * ITEMS_PER_PAGE, ITEMS_PER_PAGE);
+
+  // Paginate top tracks client-side (API returns only top 10)
+  const paginatedTopTracks = React.useMemo(() => {
+    const startIdx = (currentTracksPage - 1) * ITEMS_PER_PAGE;
+    const endIdx = startIdx + ITEMS_PER_PAGE;
+    return topTracks.slice(startIdx, endIdx);
+  }, [topTracks, currentTracksPage, ITEMS_PER_PAGE]);
+
+  const totalTracksPages = Math.ceil(topTracks.length / ITEMS_PER_PAGE);
+  const totalAlbumsPages = albumsData ? Math.ceil(albumsData.total / ITEMS_PER_PAGE) : 0;
 
   const handleToggleTrackFavorite = (track: SpotifyTrack) => {
     const favoriteData = {
@@ -358,11 +372,25 @@ export const ArtistDetailsPage: React.FC = () => {
               ))}
             </div>
           ) : topTracks.length > 0 ? (
-            <TrackList
-              tracks={topTracks}
-              onToggleFavorite={handleToggleTrackFavorite}
-              isFavorite={isTrackFavorite}
-            />
+            <>
+              <TrackList
+                tracks={paginatedTopTracks}
+                onToggleFavorite={handleToggleTrackFavorite}
+                isFavorite={isTrackFavorite}
+              />
+              {totalTracksPages > 1 && (
+                <div className="mt-6 flex justify-center">
+                  <Pagination
+                    currentPage={currentTracksPage}
+                    totalPages={totalTracksPages}
+                    onPageChange={(page) => {
+                      setCurrentTracksPage(page);
+                      window.scrollTo({ top: 0, behavior: 'smooth' });
+                    }}
+                  />
+                </div>
+              )}
+            </>
           ) : (
             <EmptyState
               icon={<Play size={48} className='text-gray-400 dark:text-gray-500' />}
@@ -393,11 +421,25 @@ export const ArtistDetailsPage: React.FC = () => {
               ))}
             </div>
           ) : albumsData?.items && albumsData.items.length > 0 ? (
-            <AlbumGrid
-              albums={albumsData.items}
-              onToggleFavorite={handleToggleAlbumFavorite}
-              isFavorite={isAlbumFavorite}
-            />
+            <>
+              <AlbumGrid
+                albums={albumsData.items}
+                onToggleFavorite={handleToggleAlbumFavorite}
+                isFavorite={isAlbumFavorite}
+              />
+              {totalAlbumsPages > 1 && (
+                <div className="mt-6 flex justify-center">
+                  <Pagination
+                    currentPage={currentAlbumsPage}
+                    totalPages={totalAlbumsPages}
+                    onPageChange={(page) => {
+                      setCurrentAlbumsPage(page);
+                      window.scrollTo({ top: 0, behavior: 'smooth' });
+                    }}
+                  />
+                </div>
+              )}
+            </>
           ) : (
             <EmptyState
               icon={<Calendar size={48} className='text-gray-400 dark:text-gray-500' />}

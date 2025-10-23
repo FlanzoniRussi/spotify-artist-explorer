@@ -89,8 +89,6 @@ class SpotifyService {
     offset = 0
   ): Promise<{ artists: SpotifyArtist[]; total: number; hasNext: boolean; hasPrevious: boolean }> {
     try {
-      const searchQuery = `artist:"${query}"`;
-      
       const response: AxiosResponse<{ 
         artists: { 
           items: SpotifyArtist[];
@@ -102,32 +100,24 @@ class SpotifyService {
         } 
       }> = await this.api.get('/search', {
         params: {
-          q: searchQuery,
+          q: query,
           type: 'artist',
           limit,
           offset,
         },
       });
       const artists = response.data.artists.items;
-      const queryLower = query.toLowerCase().trim();
-      const filteredArtists = artists.filter(artist => {
-        const artistName = artist.name.toLowerCase();
-        if (artistName === queryLower) return true;
-        if (artistName.startsWith(queryLower)) return true;
-        const queryWords = queryLower.split(' ');
-        if (queryWords.length > 1) {
-          return queryWords.every(word => artistName.includes(word));
-        }
-        return artistName.includes(queryLower) && queryLower.length >= 3;
-      });
 
       logger.info('Artist search completed', {
         query,
-        found: filteredArtists.length,
+        found: artists.length,
+        apiTotal: response.data.artists.total,
+        offset,
+        limit,
       });
 
       return {
-        artists: filteredArtists,
+        artists: artists,
         total: response.data.artists.total,
         hasNext: !!response.data.artists.next,
         hasPrevious: !!response.data.artists.previous,
@@ -146,9 +136,9 @@ class SpotifyService {
     query: string,
     limit = 20,
     offset = 0
-  ): Promise<SpotifyAlbum[]> {
+  ): Promise<{ albums: SpotifyAlbum[]; total: number; hasNext: boolean; hasPrevious: boolean }> {
     try {
-      const response: AxiosResponse<{ albums: { items: SpotifyAlbum[] } }> =
+      const response: AxiosResponse<{ albums: { items: SpotifyAlbum[]; total: number; limit: number; offset: number; next: string | null; previous: string | null } }> =
         await this.api.get('/search', {
           params: {
             q: query,
@@ -161,9 +151,17 @@ class SpotifyService {
       logger.info('Album search completed', {
         query,
         found: response.data.albums.items.length,
+        total: response.data.albums.total,
+        offset,
+        limit,
       });
 
-      return response.data.albums.items;
+      return {
+        albums: response.data.albums.items,
+        total: response.data.albums.total,
+        hasNext: !!response.data.albums.next,
+        hasPrevious: !!response.data.albums.previous,
+      };
     } catch (error) {
       errorReporter.reportError(error, {
         component: 'SpotifyService',
@@ -343,12 +341,33 @@ class SpotifyService {
     }
   }
 
-  async getAlbumTracks(id: string): Promise<{ items: SpotifyTrack[] }> {
+  async getAlbumTracks(id: string, albumName?: string): Promise<{ items: SpotifyTrack[] }> {
     try {
       const response: AxiosResponse<{ items: SpotifyTrack[] }> = await this.api.get(
         `/albums/${id}/tracks`
       );
-      logger.info('Album tracks retrieved', { id });
+      
+      // Album tracks endpoint doesn't include popularity, so we need to fetch it separately
+      const trackIds = response.data.items.map(track => track.id);
+      if (trackIds.length > 0) {
+        const tracksWithPopularity = await this.getTracks(trackIds);
+        
+        // Create a map of track IDs to full track data
+        const tracksMap = new Map(tracksWithPopularity.map(t => [t.id, t]));
+        
+        // Merge popularity and album data into original tracks while preserving all original data
+        response.data.items = response.data.items.map(track => {
+          const enrichedTrack = tracksMap.get(track.id);
+          return {
+            ...track,
+            popularity: enrichedTrack?.popularity ?? 0,
+            // Ensure album information is complete
+            album: enrichedTrack?.album || track.album || (albumName ? { name: albumName, images: [], id: id } : track.album),
+          };
+        });
+      }
+      
+      logger.info('Album tracks retrieved with popularity', { id });
       return response.data;
     } catch (error) {
       errorReporter.reportError(error, {
@@ -372,6 +391,50 @@ class SpotifyService {
         component: 'SpotifyService',
         action: 'getTrack',
         id,
+      });
+      throw this.handleError(error);
+    }
+  }
+
+  /**
+   * Fetch multiple tracks with their popularity data.
+   * Spotify's album tracks endpoint doesn't include popularity,
+   * so we need to fetch them separately using this endpoint.
+   * 
+   * @param {string[]} ids - Array of track IDs (max 50 per request)
+   * @returns {Promise<SpotifyTrack[]>} Array of tracks with full metadata including popularity
+   */
+  async getTracks(ids: string[]): Promise<SpotifyTrack[]> {
+    if (ids.length === 0) return [];
+    
+    try {
+      // Spotify allows max 50 IDs per request
+      const chunks = [];
+      for (let i = 0; i < ids.length; i += 50) {
+        chunks.push(ids.slice(i, i + 50));
+      }
+
+      const allTracks: SpotifyTrack[] = [];
+      
+      for (const chunk of chunks) {
+        const response: AxiosResponse<{ tracks: SpotifyTrack[] }> = await this.api.get(
+          '/tracks',
+          {
+            params: {
+              ids: chunk.join(','),
+            },
+          }
+        );
+        allTracks.push(...response.data.tracks.filter(track => track !== null));
+      }
+
+      logger.info('Multiple tracks retrieved with popularity', { count: allTracks.length });
+      return allTracks;
+    } catch (error) {
+      errorReporter.reportError(error, {
+        component: 'SpotifyService',
+        action: 'getTracks',
+        count: ids.length,
       });
       throw this.handleError(error);
     }

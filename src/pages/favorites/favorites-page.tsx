@@ -153,9 +153,7 @@ export const FavoritesPage: React.FC = () => {
               {t('navigation.favorites')}
             </h1>
             <p className='text-gray-600 dark:text-gray-400'>
-              {favorites.length === 0
-                ? t('favorites:subtitle')
-                : `${favorites.length} ${favorites.length === 1 ? t('favorites:saved', { count: 1 }).split(' ')[0] : t('favorites:saved', { count: 2 }).split(' ')[1]} salvos`}
+              {favorites.length === 0 && t('favorites:subtitle')}
             </p>
           </motion.div>
 
