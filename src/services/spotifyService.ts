@@ -9,6 +9,9 @@ import type {
   SpotifyError,
   SearchFilters,
 } from '../types';
+import { logger } from '../lib/logger';
+import { errorReporter } from '../lib/error-reporter';
+import { requestLogger } from '../lib/request-logger';
 
 class SpotifyService {
   private api: AxiosInstance;
@@ -19,6 +22,55 @@ class SpotifyService {
       baseURL: this.baseURL,
       timeout: 10000,
     });
+
+    // Add request/response interceptors for logging
+    this.api.interceptors.request.use(
+      (config) => {
+        logger.debug(`Spotify API Request: ${config.method?.toUpperCase()} ${config.url}`);
+        return config;
+      },
+      (error) => {
+        errorReporter.reportError(error, {
+          component: 'SpotifyService',
+          action: 'request-interceptor',
+        });
+        return Promise.reject(error);
+      }
+    );
+
+    this.api.interceptors.response.use(
+      (response) => {
+        const duration = 0; // Approximate, would need timing middleware for accuracy
+        requestLogger.logRequest(
+          response.config.method?.toUpperCase() || 'GET',
+          response.config.url || '',
+          duration,
+          response.status
+        );
+        return response;
+      },
+      (error) => {
+        if (error.response) {
+          requestLogger.logRequest(
+            error.config?.method?.toUpperCase() || 'GET',
+            error.config?.url || '',
+            0,
+            error.response.status,
+            error
+          );
+          errorReporter.reportApiError(error, error.config?.url || '', error.response.status, {
+            component: 'SpotifyService',
+            action: 'api-response-error',
+          });
+        } else {
+          errorReporter.reportError(error, {
+            component: 'SpotifyService',
+            action: 'api-request-failed',
+          });
+        }
+        return Promise.reject(error);
+      }
+    );
   }
 
   async searchArtists(
@@ -59,6 +111,11 @@ class SpotifyService {
         return artistName.includes(queryLower) && queryLower.length >= 3;
       });
 
+      logger.info('Artist search completed', {
+        query,
+        found: filteredArtists.length,
+      });
+
       return {
         artists: filteredArtists,
         total: response.data.artists.total,
@@ -66,7 +123,11 @@ class SpotifyService {
         hasPrevious: !!response.data.artists.previous,
       };
     } catch (error) {
-      console.error('Error searching artists:', error);
+      errorReporter.reportError(error, {
+        component: 'SpotifyService',
+        action: 'searchArtists',
+        query,
+      });
       throw this.handleError(error);
     }
   }
@@ -87,9 +148,18 @@ class SpotifyService {
           },
         });
 
+      logger.info('Album search completed', {
+        query,
+        found: response.data.albums.items.length,
+      });
+
       return response.data.albums.items;
     } catch (error) {
-      console.error('Error searching albums:', error);
+      errorReporter.reportError(error, {
+        component: 'SpotifyService',
+        action: 'searchAlbums',
+        query,
+      });
       throw this.handleError(error);
     }
   }
@@ -110,9 +180,18 @@ class SpotifyService {
           },
         });
 
+      logger.info('Track search completed', {
+        query,
+        found: response.data.tracks.items.length,
+      });
+
       return response.data.tracks.items;
     } catch (error) {
-      console.error('Error searching tracks:', error);
+      errorReporter.reportError(error, {
+        component: 'SpotifyService',
+        action: 'searchTracks',
+        query,
+      });
       throw this.handleError(error);
     }
   }
@@ -147,13 +226,26 @@ class SpotifyService {
           }),
         ]);
 
+      logger.info('All search completed', {
+        query: filters.query,
+        found: {
+          artists: artistsResponse.data.artists.total,
+          albums: albumsResponse.data.albums.total,
+          tracks: tracksResponse.data.tracks.total,
+        },
+      });
+
       return {
         artists: artistsResponse.data.artists,
         albums: albumsResponse.data.albums,
         tracks: tracksResponse.data.tracks,
       };
     } catch (error) {
-      console.error('Error searching all:', error);
+      errorReporter.reportError(error, {
+        component: 'SpotifyService',
+        action: 'searchAll',
+        query: filters.query,
+      });
       throw this.handleError(error);
     }
   }
@@ -163,9 +255,14 @@ class SpotifyService {
       const response: AxiosResponse<SpotifyArtist> = await this.api.get(
         `/artists/${id}`
       );
+      logger.info('Artist retrieved', { id });
       return response.data;
     } catch (error) {
-      console.error('Error getting artist:', error);
+      errorReporter.reportError(error, {
+        component: 'SpotifyService',
+        action: 'getArtist',
+        id,
+      });
       throw this.handleError(error);
     }
   }
@@ -176,9 +273,15 @@ class SpotifyService {
         await this.api.get(`/artists/${id}/top-tracks`, {
           params: { market },
         });
+      logger.info('Artist top tracks retrieved', { id, market });
       return response.data.tracks;
     } catch (error) {
-      console.error('Error getting artist top tracks:', error);
+      errorReporter.reportError(error, {
+        component: 'SpotifyService',
+        action: 'getArtistTopTracks',
+        id,
+        market,
+      });
       throw this.handleError(error);
     }
   }
@@ -199,9 +302,16 @@ class SpotifyService {
           },
         }
       );
+      logger.info('Artist albums retrieved', { id, limit, offset });
       return response.data;
     } catch (error) {
-      console.error('Error getting artist albums:', error);
+      errorReporter.reportError(error, {
+        component: 'SpotifyService',
+        action: 'getArtistAlbums',
+        id,
+        limit,
+        offset,
+      });
       throw this.handleError(error);
     }
   }
@@ -211,9 +321,14 @@ class SpotifyService {
       const response: AxiosResponse<SpotifyAlbum> = await this.api.get(
         `/albums/${id}`
       );
+      logger.info('Album retrieved', { id });
       return response.data;
     } catch (error) {
-      console.error('Error getting album:', error);
+      errorReporter.reportError(error, {
+        component: 'SpotifyService',
+        action: 'getAlbum',
+        id,
+      });
       throw this.handleError(error);
     }
   }
@@ -223,9 +338,14 @@ class SpotifyService {
       const response: AxiosResponse<{ items: SpotifyTrack[] }> = await this.api.get(
         `/albums/${id}/tracks`
       );
+      logger.info('Album tracks retrieved', { id });
       return response.data;
     } catch (error) {
-      console.error('Error getting album tracks:', error);
+      errorReporter.reportError(error, {
+        component: 'SpotifyService',
+        action: 'getAlbumTracks',
+        id,
+      });
       throw this.handleError(error);
     }
   }
@@ -235,21 +355,42 @@ class SpotifyService {
       const response: AxiosResponse<SpotifyTrack> = await this.api.get(
         `/tracks/${id}`
       );
+      logger.info('Track retrieved', { id });
       return response.data;
     } catch (error) {
-      console.error('Error getting track:', error);
+      errorReporter.reportError(error, {
+        component: 'SpotifyService',
+        action: 'getTrack',
+        id,
+      });
       throw this.handleError(error);
     }
   }
 
   private handleError(error: unknown): Error {
     if (error && typeof error === 'object' && 'response' in error) {
-      const axiosError = error as { response?: { data?: SpotifyError } };
+      const axiosError = error as { 
+        response?: { 
+          data?: SpotifyError;
+          status?: number;
+          config?: { url?: string };
+        };
+      };
       if (axiosError.response?.data) {
         const spotifyError: SpotifyError = axiosError.response.data;
+        const status = axiosError.response.status ?? 500;
+        const url = axiosError.response.config?.url ?? '';
+        errorReporter.reportApiError(new Error(spotifyError.error.message), url, status, {
+          component: 'SpotifyService',
+          action: 'spotify-api-error',
+        });
         return new Error(`Spotify API Error: ${spotifyError.error.message}`);
       }
     }
+    errorReporter.reportError(error, {
+      component: 'SpotifyService',
+      action: 'unexpected-error',
+    });
     return new Error('An unexpected error occurred');
   }
 }
