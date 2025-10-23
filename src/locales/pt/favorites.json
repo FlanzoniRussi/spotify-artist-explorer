@@ -1,0 +1,40 @@
+{
+  "subtitle": "Nenhum favorito adicionado ainda",
+  "saved": "{{count}} {{count, plural, one {favorito} other {favoritos}}} salvos",
+  "clearAllButton": "Limpar todos",
+  "stats": {
+    "total": "Total",
+    "songs": "Músicas"
+  },
+  "analysis": {
+    "title": "Análise dos Favoritos",
+    "show": "Mostrar Gráficos",
+    "hide": "Ocultar Gráficos",
+    "distributionByType": "Distribuição por Tipo",
+    "topArtists": "Artistas Mais Favoritados",
+    "durationDistribution": "Distribuição de Duração",
+    "evolution": "Evolução dos Favoritos",
+    "ratingsDistribution": "Distribuição de Avaliações"
+  },
+  "search": {
+    "placeholder": "Buscar favoritos...",
+    "allButton": "Todos ({{count}})",
+    "artistsButton": "{{count}} {{count, plural, one {artista} other {artistas}}}",
+    "albumsButton": "{{count}} {{count, plural, one {álbum} other {álbuns}}}",
+    "songsButton": "Músicas ({{count}})",
+    "ratingLabel": "Avaliação:",
+    "allRatings": "Todas"
+  },
+  "empty": {
+    "noFavorites": "Nenhum favorito ainda",
+    "noFavoritesDescription": "Adicione artistas, álbuns ou músicas aos seus favoritos para vê-los aqui.",
+    "noResults": "Nenhum resultado encontrado",
+    "noResultsDescription": "Tente ajustar sua busca ou filtros para encontrar seus favoritos."
+  },
+  "dialogs": {
+    "clearAllTitle": "Tem certeza que deseja remover todos os favoritos?",
+    "clearAllDescription": "Esta ação removerá todos os favoritos salvos. Esta operação não pode ser desfeita.",
+    "confirmRemove": "Sim, remover todos",
+    "cancel": "Cancelar"
+  }
+}

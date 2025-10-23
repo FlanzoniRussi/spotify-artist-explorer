@@ -1,0 +1,40 @@
+{
+  "subtitle": "No favorites added yet",
+  "saved": "{{count}} {{count, plural, one {favorite} other {favorites}}} saved",
+  "clearAllButton": "Clear all",
+  "stats": {
+    "total": "Total",
+    "songs": "Songs"
+  },
+  "analysis": {
+    "title": "Favorites Analysis",
+    "show": "Show Charts",
+    "hide": "Hide Charts",
+    "distributionByType": "Distribution by Type",
+    "topArtists": "Top Favorited Artists",
+    "durationDistribution": "Duration Distribution",
+    "evolution": "Favorites Evolution",
+    "ratingsDistribution": "Ratings Distribution"
+  },
+  "search": {
+    "placeholder": "Search favorites...",
+    "allButton": "All ({{count}})",
+    "artistsButton": "{{count}} {{count, plural, one {artist} other {artists}}}",
+    "albumsButton": "{{count}} {{count, plural, one {album} other {albums}}}",
+    "songsButton": "Songs ({{count}})",
+    "ratingLabel": "Rating:",
+    "allRatings": "All"
+  },
+  "empty": {
+    "noFavorites": "No favorites yet",
+    "noFavoritesDescription": "Add artists, albums, or songs to your favorites to see them here.",
+    "noResults": "No results found",
+    "noResultsDescription": "Try adjusting your search or filters to find your favorites."
+  },
+  "dialogs": {
+    "clearAllTitle": "Are you sure you want to remove all favorites?",
+    "clearAllDescription": "This action will remove all saved favorites. This operation cannot be undone.",
+    "confirmRemove": "Yes, remove all",
+    "cancel": "Cancel"
+  }
+}

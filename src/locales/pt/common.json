@@ -96,6 +96,13 @@
     "faixa": "faixa",
     "faixas": "faixas",
     "today": "Hoje",
-    "yesterday": "Ontem"
+    "yesterday": "Ontem",
+    "released": "Lançada",
+    "notReleased": "Não lançada",
+    "rating": "Avaliação:",
+    "openInSpotify": "Abrir no Spotify",
+    "editTrack": "Editar música",
+    "deleteTrack": "Deletar música",
+    "removeFavorite": "Remover dos favoritos"
   }
 }

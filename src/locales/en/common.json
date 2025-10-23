@@ -96,6 +96,13 @@
     "faixa": "track",
     "faixas": "tracks",
     "today": "Today",
-    "yesterday": "Yesterday"
+    "yesterday": "Yesterday",
+    "released": "Released",
+    "notReleased": "Not Released",
+    "rating": "Rating:",
+    "openInSpotify": "Open in Spotify",
+    "editTrack": "Edit track",
+    "deleteTrack": "Delete track",
+    "removeFavorite": "Remove from favorites"
   }
 }

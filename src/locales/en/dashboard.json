@@ -1,0 +1,38 @@
+{
+  "title": "Dashboard Analytics",
+  "subtitle": "Overview of your musical activity and preferences",
+  "metrics": {
+    "favorites": "Favorites",
+    "customTracks": "Custom Tracks",
+    "diversity": "Musical Diversity",
+    "recentActivity": "Recent Activity"
+  },
+  "charts": {
+    "favoritesDistribution": "Favorites Distribution",
+    "genreFavorites": "Favorite Genres",
+    "favoritesEvolution": "Favorites Evolution",
+    "tracksEvolution": "Tracks Evolution",
+    "topArtists": "Top Favorited Artists",
+    "releaseStatus": "Release Status"
+  },
+  "empty": {
+    "noFavoritesToView": "No favorites to view",
+    "addFavoritesDescription": "Add songs to your favorites to see the detailed distribution.",
+    "addFavoritesButton": "Add Favorite",
+    "noTracksForGenres": "No tracks registered",
+    "addTracksForGenresDescription": "Add tracks to see the genre distribution.",
+    "addTracksForGenresButton": "Add Track",
+    "noFavoritesEvolution": "No favorites to view",
+    "noFavoritesEvolutionDescription": "Add songs to your favorites to see the evolution.",
+    "noFavoritesEvolutionButton": "Add Favorite",
+    "noTracksEvolution": "No tracks registered",
+    "noTracksEvolutionDescription": "Add tracks to see the registration evolution.",
+    "noTracksEvolutionButton": "Add Track",
+    "noTopArtists": "No favorites to view",
+    "noTopArtistsDescription": "Add songs to your favorites to see the top favorited artists.",
+    "noTopArtistsButton": "Add Favorite",
+    "noReleaseStatus": "No tracks registered",
+    "noReleaseStatusDescription": "Add tracks to see the release status.",
+    "noReleaseStatusButton": "Add Track"
+  }
+}

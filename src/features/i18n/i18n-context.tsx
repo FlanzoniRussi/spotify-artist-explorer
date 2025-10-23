@@ -14,9 +14,15 @@ import type {
 import ptCommon from '../../locales/pt/common.json';
 import ptArtists from '../../locales/pt/artists.json';
 import ptForms from '../../locales/pt/forms.json';
+import ptDashboard from '../../locales/pt/dashboard.json';
+import ptTracks from '../../locales/pt/tracks.json';
+import ptFavorites from '../../locales/pt/favorites.json';
 import enCommon from '../../locales/en/common.json';
 import enArtists from '../../locales/en/artists.json';
 import enForms from '../../locales/en/forms.json';
+import enDashboard from '../../locales/en/dashboard.json';
+import enTracks from '../../locales/en/tracks.json';
+import enFavorites from '../../locales/en/favorites.json';
 
 const initialState: I18nState = {
   language: (localStorage.getItem('i18nextLng') as SupportedLanguage) || 'pt',
@@ -47,11 +53,17 @@ const resources = {
     common: ptCommon,
     artists: ptArtists,
     forms: ptForms,
+    dashboard: ptDashboard,
+    tracks: ptTracks,
+    favorites: ptFavorites,
   },
   en: {
     common: enCommon,
     artists: enArtists,
     forms: enForms,
+    dashboard: enDashboard,
+    tracks: enTracks,
+    favorites: enFavorites,
   },
 };
 
@@ -63,7 +75,7 @@ i18n
     lng: 'pt',
     fallbackLng: 'pt',
     defaultNS: 'common',
-    ns: ['common', 'artists', 'forms'],
+    ns: ['common', 'artists', 'forms', 'dashboard', 'tracks', 'favorites'],
     interpolation: {
       escapeValue: false,
     },
@@ -86,7 +98,7 @@ export function I18nProvider({ children }: I18nProviderProps) {
         if (!localStorage.getItem('i18nextLng')) {
           localStorage.setItem('i18nextLng', 'pt');
         }
-        
+
         await i18n.init();
         const detectedLanguage = i18n.language as SupportedLanguage;
         dispatch({ type: 'SET_LANGUAGE', payload: detectedLanguage });

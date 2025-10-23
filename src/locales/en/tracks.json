@@ -1,0 +1,36 @@
+{
+  "title": "My Track Registration",
+  "description": "Manage your custom tracks",
+  "buttons": {
+    "showList": "Show List",
+    "newTrack": "New Track",
+    "clearAll": "Clear All",
+    "registerFirst": "Register First Track"
+  },
+  "stats": {
+    "total": "Total",
+    "released": "Released",
+    "pending": "Pending",
+    "genres": "Genres"
+  },
+  "analysis": {
+    "title": "Track Analysis",
+    "show": "Show Charts",
+    "hide": "Hide Charts",
+    "genreDistribution": "Genre Distribution",
+    "releaseStatus": "Release Status",
+    "yearDistribution": "Year Distribution",
+    "evolution": "Registration Evolution"
+  },
+  "empty": {
+    "title": "No tracks registered",
+    "description": "Start by adding your first custom track."
+  },
+  "dialogs": {
+    "deleteTrack": "Are you sure you want to remove this track?",
+    "clearAllTitle": "Are you sure you want to remove all registered tracks?",
+    "clearAllDescription": "This action will remove all tracks from your custom track list. This operation cannot be undone.",
+    "clearAllConfirm": "Remove All",
+    "cancel": "Cancel"
+  }
+}

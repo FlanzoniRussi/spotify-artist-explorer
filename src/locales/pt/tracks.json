@@ -1,0 +1,36 @@
+{
+  "title": "Meu Cadastro de Músicas",
+  "description": "Gerencie suas músicas personalizadas",
+  "buttons": {
+    "showList": "Ver Lista",
+    "newTrack": "Nova Música",
+    "clearAll": "Limpar Tudo",
+    "registerFirst": "Cadastrar Primeira Música"
+  },
+  "stats": {
+    "total": "Total",
+    "released": "Lançadas",
+    "pending": "Pendentes",
+    "genres": "Gêneros"
+  },
+  "analysis": {
+    "title": "Análise das Músicas",
+    "show": "Mostrar Gráficos",
+    "hide": "Ocultar Gráficos",
+    "genreDistribution": "Distribuição por Gênero",
+    "releaseStatus": "Status de Lançamento",
+    "yearDistribution": "Distribuição por Ano",
+    "evolution": "Evolução do Cadastro"
+  },
+  "empty": {
+    "title": "Nenhuma música cadastrada",
+    "description": "Comece adicionando sua primeira música personalizada."
+  },
+  "dialogs": {
+    "deleteTrack": "Tem certeza que deseja remover esta música?",
+    "clearAllTitle": "Tem certeza que deseja remover todas as músicas cadastradas?",
+    "clearAllDescription": "Esta ação removerá todas as músicas da sua lista de músicas personalizadas. Esta operação não pode ser desfeita.",
+    "clearAllConfirm": "Remover Tudo",
+    "cancel": "Cancelar"
+  }
+}

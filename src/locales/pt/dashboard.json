@@ -1,0 +1,38 @@
+{
+  "title": "Dashboard Analytics",
+  "subtitle": "Visão geral da sua atividade musical e preferências",
+  "metrics": {
+    "favorites": "Favoritos",
+    "customTracks": "Músicas Cadastradas",
+    "diversity": "Diversidade Musical",
+    "recentActivity": "Atividade Recente"
+  },
+  "charts": {
+    "favoritesDistribution": "Distribuição de Favoritos",
+    "genreFavorites": "Gêneros Favoritos",
+    "favoritesEvolution": "Evolução dos Favoritos",
+    "tracksEvolution": "Evolução do Cadastro",
+    "topArtists": "Artistas Mais Favoritados",
+    "releaseStatus": "Status de Lançamento"
+  },
+  "empty": {
+    "noFavoritesToView": "Nenhum favorito para visualizar",
+    "addFavoritesDescription": "Adicione músicas aos seus favoritos para ver a distribuição detalhada.",
+    "addFavoritesButton": "Adicionar Favorito",
+    "noTracksForGenres": "Nenhuma música cadastrada",
+    "addTracksForGenresDescription": "Adicione músicas para ver a distribuição de gêneros.",
+    "addTracksForGenresButton": "Adicionar Música",
+    "noFavoritesEvolution": "Nenhum favorito para visualizar",
+    "noFavoritesEvolutionDescription": "Adicione músicas aos seus favoritos para ver a evolução.",
+    "noFavoritesEvolutionButton": "Adicionar Favorito",
+    "noTracksEvolution": "Nenhuma música cadastrada",
+    "noTracksEvolutionDescription": "Adicione músicas para ver a evolução do cadastro.",
+    "noTracksEvolutionButton": "Adicionar Música",
+    "noTopArtists": "Nenhum favorito para visualizar",
+    "noTopArtistsDescription": "Adicione músicas aos seus favoritos para ver os artistas mais favoritados.",
+    "noTopArtistsButton": "Adicionar Favorito",
+    "noReleaseStatus": "Nenhuma música cadastrada",
+    "noReleaseStatusDescription": "Adicione músicas para ver o status de lançamento.",
+    "noReleaseStatusButton": "Adicionar Música"
+  }
+}
