@@ -193,7 +193,6 @@ describe('ErrorBoundary', () => {
       </ErrorBoundary>
     );
 
-    // Check for error details section
     const detailsButton = screen.getByText(/📋 Detalhes do erro/);
     expect(detailsButton).toBeInTheDocument();
 
@@ -210,9 +209,6 @@ describe('ErrorBoundary', () => {
     );
 
     expect(screen.getByText('Oops! Algo deu errado')).toBeInTheDocument();
-
-    // After retry, we would need to re-render with a component that doesn't throw
-    // In a real scenario, the component might fix itself or user would navigate away
 
     consoleErrorSpy.mockRestore();
   });
