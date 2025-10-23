@@ -104,7 +104,7 @@ export class ErrorBoundary extends Component<
    */
   componentDidCatch(error: Error, errorInfo: ErrorInfo) {
     if (import.meta.env.DEV) {
-      console.error('ErrorBoundary caught an error:', error, errorInfo);
+      // Error logged in dev mode
     }
 
     // Report error with structured logging

@@ -55,7 +55,7 @@ export const useSearchHistory = () => {
           setHistory(JSON.parse(stored));
         }
       } catch (error) {
-        console.error('Error loading search history:', error);
+        // Silent fail
       }
     };
 
@@ -92,7 +92,7 @@ export const useSearchHistory = () => {
       try {
         localStorage.setItem(SEARCH_HISTORY_KEY, JSON.stringify(updated));
       } catch (error) {
-        console.error('Error saving search history:', error);
+        // Silent fail
       }
 
       return updated;
@@ -125,7 +125,7 @@ export const useSearchHistory = () => {
       localStorage.removeItem(SEARCH_HISTORY_KEY);
       setHistory([]);
     } catch (error) {
-      console.error('Error clearing search history:', error);
+      // Silent fail
     }
   }, []);
 

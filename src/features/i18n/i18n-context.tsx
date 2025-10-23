@@ -104,7 +104,6 @@ export function I18nProvider({ children }: I18nProviderProps) {
         dispatch({ type: 'SET_LANGUAGE', payload: detectedLanguage });
         dispatch({ type: 'SET_LOADING', payload: false });
       } catch (error) {
-        console.error('Error initializing i18n:', error);
         dispatch({ type: 'SET_LOADING', payload: false });
       }
     };
@@ -119,7 +118,7 @@ export function I18nProvider({ children }: I18nProviderProps) {
       dispatch({ type: 'SET_LANGUAGE', payload: language });
       localStorage.setItem('i18nextLng', language);
     } catch (error) {
-      console.error('Error changing language:', error);
+      // Silent fail
     } finally {
       dispatch({ type: 'SET_LOADING', payload: false });
     }

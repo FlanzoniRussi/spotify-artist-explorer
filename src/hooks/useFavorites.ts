@@ -41,10 +41,22 @@ export const useFavorites = () => {
       try {
         const stored = localStorage.getItem(FAVORITES_KEY);
         if (stored) {
-          setFavorites(JSON.parse(stored));
+          const parsed = JSON.parse(stored);
+          // Migrate old favorites without popularity
+          const migrated = parsed.map((fav: UserFavorite) => {
+            if ((fav.type === 'track' || fav.type === 'artist') && fav.popularity === undefined) {
+              return { ...fav, popularity: 0 };
+            }
+            return fav;
+          });
+          setFavorites(migrated);
+          // Save migrated data back to localStorage
+          if (migrated.some((fav: UserFavorite) => fav.popularity === 0 && (fav.type === 'track' || fav.type === 'artist'))) {
+            localStorage.setItem(FAVORITES_KEY, JSON.stringify(migrated));
+          }
         }
       } catch (error) {
-        console.error('Error loading favorites:', error);
+        // Silent fail
       } finally {
         setIsLoading(false);
       }
@@ -64,7 +76,7 @@ export const useFavorites = () => {
       localStorage.setItem(FAVORITES_KEY, JSON.stringify(newFavorites));
       setFavorites(newFavorites);
     } catch (error) {
-      console.error('Error saving favorites:', error);
+      // Silent fail
     }
   }, []);
 
@@ -76,10 +88,18 @@ export const useFavorites = () => {
    */
   const addFavorite = useCallback(
     (item: Omit<UserFavorite, 'id' | 'addedAt'>) => {
+      if ((item.type === 'track' || item.type === 'artist') && item.popularity === undefined) {
+        // Set default popularity if missing
+      }
+
       const newFavorite: UserFavorite = {
         ...item,
         id: generateId(),
         addedAt: new Date().toISOString(),
+        // Ensure popularity is at least 0 for tracks and artists
+        popularity: (item.type === 'track' || item.type === 'artist') 
+          ? (item.popularity ?? 0)
+          : item.popularity,
       };
 
       const updatedFavorites = [...favorites, newFavorite];

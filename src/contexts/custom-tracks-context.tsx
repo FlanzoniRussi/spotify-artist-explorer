@@ -74,7 +74,7 @@ export const CustomTracksProvider: React.FC<CustomTracksProviderProps> = ({ chil
           setCustomTracks(parsedTracks);
         }
       } catch (error) {
-        console.error('Error loading custom tracks:', error);
+        // Silent fail
       } finally {
         setIsLoading(false);
       }
@@ -94,7 +94,7 @@ export const CustomTracksProvider: React.FC<CustomTracksProviderProps> = ({ chil
       localStorage.setItem(CUSTOM_TRACKS_KEY, JSON.stringify(newTracks));
       setCustomTracks(newTracks);
     } catch (error) {
-      console.error('Error saving custom tracks:', error);
+      // Silent fail
     }
   }, []);
 

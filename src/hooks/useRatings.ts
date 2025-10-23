@@ -45,7 +45,7 @@ export const useRatings = () => {
         setRatings(JSON.parse(stored));
       }
     } catch (error) {
-      console.error('Error loading ratings:', error);
+      // Silent fail
     } finally {
       setIsLoading(false);
     }

@@ -53,7 +53,7 @@ export const TrackRegistrationForm: React.FC<TrackRegistrationFormProps> = ({
       try {
         localStorage.setItem('track-form-draft', JSON.stringify(value));
       } catch (error) {
-        console.error('Error saving form draft:', error);
+        // Silent fail
       }
     });
     return () => subscription.unsubscribe();
@@ -71,7 +71,7 @@ export const TrackRegistrationForm: React.FC<TrackRegistrationFormProps> = ({
         });
       }
     } catch (error) {
-      console.error('Error loading form draft:', error);
+      // Silent fail
     }
   }, [setValue, initialData, editingTrack]);
 
@@ -102,7 +102,7 @@ export const TrackRegistrationForm: React.FC<TrackRegistrationFormProps> = ({
       reset();
       onSuccess?.(result);
     } catch (error) {
-      console.error('Error saving track:', error);
+      // Silent fail
     }
   };
 
