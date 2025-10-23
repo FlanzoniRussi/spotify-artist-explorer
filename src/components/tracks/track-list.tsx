@@ -12,9 +12,6 @@ interface TrackListProps {
   showAlbum?: boolean;
 }
 
-/**
- * Animation for the heart when favorited
- */
 const heartBeatVariants = {
   unfavorited: {
     scale: 1,
@@ -34,11 +31,11 @@ export const TrackList: React.FC<TrackListProps> = ({
   showAlbum = true,
 }) => {
   const { t } = useTranslation();
+
   const handlePlayTrack = (track: SpotifyTrack) => {
     if (track.preview_url) {
       const audio = new Audio(track.preview_url);
       audio.play().catch(() => {
-        // Audio play failed silently
       });
     }
   };

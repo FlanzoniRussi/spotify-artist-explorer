@@ -42,8 +42,6 @@ export const ArtistCard: React.FC<ArtistCardProps> = ({
     if (popularity >= 40) return t('labels.moderate');
     return t('labels.emerging');
   };
-
-  // Animation variants
   const cardVariants = {
     hidden: { 
       opacity: 0, 
@@ -89,9 +87,6 @@ export const ArtistCard: React.FC<ArtistCardProps> = ({
     }
   };
 
-  /**
-   * Animation for the heart when favorited
-   */
   const heartBeatVariants = {
     unfavorited: {
       scale: 1,

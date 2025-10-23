@@ -51,8 +51,6 @@ export const trackSchema = z.object({
 });
 
 export type TrackFormData = z.infer<typeof trackSchema>;
-
-// Gêneros musicais disponíveis
 export const MUSIC_GENRES = [
   'Pop',
   'Rock',

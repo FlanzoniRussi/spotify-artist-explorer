@@ -2,43 +2,18 @@ import { Component, type ErrorInfo, type ReactNode } from 'react';
 import { AlertTriangle, RefreshCw, Home } from 'lucide-react';
 import { Button } from './ui/button';
 
-/**
- * Props for ErrorBoundary component
- */
 interface ErrorBoundaryProps {
-  /** Child components to wrap */
   children: ReactNode;
-  /** Custom fallback UI to display on error */
   fallback?: ReactNode;
-  /** Callback when error occurs */
   onError?: (error: Error, errorInfo: ErrorInfo) => void;
 }
 
-/**
- * State for ErrorBoundary component
- */
 interface ErrorBoundaryState {
-  /** Whether an error has been caught */
   hasError: boolean;
-  /** The caught error */
   error?: Error;
-  /** Error info from componentDidCatch */
   errorInfo?: ErrorInfo;
 }
 
-/**
- * ErrorBoundary Component
- *
- * Catches React component errors and displays a fallback UI.
- * Logs errors for debugging and provides recovery options.
- *
- * @example
- * ```tsx
- * <ErrorBoundary fallback={<div>Error loading section</div>}>
- *   <MyComponent />
- * </ErrorBoundary>
- * ```
- */
 export class ErrorBoundary extends Component<
   ErrorBoundaryProps,
   ErrorBoundaryState
@@ -48,24 +23,14 @@ export class ErrorBoundary extends Component<
     this.state = { hasError: false };
   }
 
-  /**
-   * Update state when error is caught
-   */
   static getDerivedStateFromError(error: Error): ErrorBoundaryState {
     return { hasError: true, error };
   }
 
-  /**
-   * Log error details for debugging
-   */
   componentDidCatch(error: Error, errorInfo: ErrorInfo) {
-    // Log to console in development
     if (import.meta.env.DEV) {
       console.error('ErrorBoundary caught an error:', error, errorInfo);
     }
-
-    // Could send to external error tracking service
-    // Example: Sentry.captureException(error, { contexts: { react: errorInfo } });
 
     if (this.props.onError) {
       this.props.onError(error, errorInfo);
@@ -74,23 +39,16 @@ export class ErrorBoundary extends Component<
     this.setState({ errorInfo });
   }
 
-  /**
-   * Handle retry action
-   */
   handleRetry = () => {
     this.setState({ hasError: false, error: undefined, errorInfo: undefined });
   };
 
-  /**
-   * Navigate to home page
-   */
   handleGoHome = () => {
     window.location.href = '/';
   };
 
   render() {
     if (this.state.hasError) {
-      // Use custom fallback if provided
       if (this.props.fallback) {
         return this.props.fallback;
       }

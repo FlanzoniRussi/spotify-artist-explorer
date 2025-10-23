@@ -12,9 +12,6 @@ interface AlbumGridProps {
   isFavorite: (album: SpotifyAlbum) => boolean;
 }
 
-/**
- * Animation for the heart when favorited
- */
 const heartBeatVariants = {
   unfavorited: {
     scale: 1,

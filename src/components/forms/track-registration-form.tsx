@@ -4,7 +4,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { Music, Save, RotateCcw, Calendar, Clock, User, Disc } from 'lucide-react';
 import { trackSchema, MUSIC_GENRES, type TrackFormData } from '../../lib/validations/track-schema';
 import { useTranslation } from '../../hooks/useTranslation';
-import { useCustomTracks } from '../../hooks/useCustomTracks';
+import { useCustomTracks } from '../../contexts/custom-tracks-context';
 import { DatePicker } from '../ui/date-picker';
 import type { CustomTrack } from '../../types';
 

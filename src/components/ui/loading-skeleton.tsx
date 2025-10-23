@@ -103,6 +103,4 @@ export const ChartSkeleton: React.FC = () => (
     <Skeleton height={300} width='100%' className='rounded' />
   </motion.div>
 );
-
-// Export the main LoadingSkeleton component
 export const LoadingSkeleton: React.FC<SkeletonProps> = (props) => <Skeleton {...props} />;

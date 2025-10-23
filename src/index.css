@@ -1,6 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 
-/* Critical CSS - Applied immediately to prevent FOUC */
 html {
   scroll-behavior: smooth;
 }
@@ -20,8 +19,6 @@ html.dark body {
   background-color: #000000;
   color: #ffffff;
 }
-
-/* End Critical CSS */
 
 @layer base {
   :root {

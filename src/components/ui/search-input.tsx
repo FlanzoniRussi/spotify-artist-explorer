@@ -3,40 +3,14 @@ import { Search, X, Loader2 } from 'lucide-react';
 import { Input } from './input';
 import { cn } from '@/lib/utils';
 
-/**
- * Props for SearchInput component
- */
 interface SearchInputProps {
-  /** Current search value */
   value: string;
-  /** Callback when search value changes */
   onChange: (value: string) => void;
-  /** Placeholder text */
   placeholder?: string;
-  /** Show loading spinner */
   loading?: boolean;
-  /** Additional CSS classes */
   className?: string;
 }
 
-/**
- * SearchInput Component
- *
- * A reusable search input with clear button and loading state.
- * Uses shadcn/ui Input component for consistency.
- * Features orange border on focus for better visual feedback.
- *
- * @example
- * ```tsx
- * const [search, setSearch] = useState('');
- * <SearchInput
- *   value={search}
- *   onChange={setSearch}
- *   placeholder="Search artists..."
- *   loading={isLoading}
- * />
- * ```
- */
 export const SearchInput: React.FC<SearchInputProps> = ({
   value,
   onChange,
@@ -44,9 +18,6 @@ export const SearchInput: React.FC<SearchInputProps> = ({
   loading = false,
   className = '',
 }) => {
-  /**
-   * Handle clearing the search input
-   */
   const handleClear = () => {
     onChange('');
   };
@@ -66,14 +37,12 @@ export const SearchInput: React.FC<SearchInputProps> = ({
           />
         </div>
 
-        {/* Loading Spinner */}
         {loading && (
           <div className="absolute right-12 top-1/2 transform -translate-y-1/2">
             <Loader2 className="w-5 h-5 text-orange-500 animate-spin" />
           </div>
         )}
 
-        {/* Clear Button */}
         {value && !loading && (
           <button
             onClick={handleClear}

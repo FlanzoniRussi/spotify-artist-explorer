@@ -35,6 +35,9 @@ export const AlbumDetailsPage: React.FC = () => {
       album: album?.name || 'Unknown',
       duration: track.duration_ms,
       type: 'track' as const,
+      imageUrl: track.album?.images?.[0]?.url || album?.images?.[0]?.url,
+      popularity: track.popularity,
+      spotifyUrl: track.external_urls?.spotify,
     };
     toggleFavorite(favoriteData);
   };
@@ -48,6 +51,10 @@ export const AlbumDetailsPage: React.FC = () => {
       album: album.name,
       duration: 0,
       type: 'album' as const,
+      imageUrl: album.images?.[0]?.url,
+      trackCount: album.total_tracks,
+      releaseDate: album.release_date,
+      spotifyUrl: album.external_urls?.spotify,
     };
     toggleFavorite(favoriteData);
   };

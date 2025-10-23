@@ -1,5 +1,5 @@
 import React from 'react';
-import { Music, Search, Heart, Plus, BarChart3 } from 'lucide-react';
+import { Music, Heart, Plus, BarChart3 } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { ThemeToggle } from '../../features/theme/theme-toggle';
 import { LanguageSwitcher } from '../../features/i18n/language-switcher';
@@ -117,7 +117,7 @@ export const Header: React.FC<HeaderProps> = ({ className = '' }) => {
                 className='flex items-center space-x-1 text-gray-700 dark:text-gray-300 hover:text-primary-500 dark:hover:text-primary-400 transition-colors font-medium'
               >
                 <BarChart3 size={16} />
-                <span>Dashboard</span>
+                <span>{t('navigation.dashboard')}</span>
               </Link>
             </motion.div>
           </motion.nav>
@@ -128,13 +128,6 @@ export const Header: React.FC<HeaderProps> = ({ className = '' }) => {
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.4, duration: 0.3 }}
           >
-            <motion.button 
-              className='md:hidden p-2 rounded-md text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 transition-colors'
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.9 }}
-            >
-              <Search size={20} />
-            </motion.button>
             <motion.div
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
