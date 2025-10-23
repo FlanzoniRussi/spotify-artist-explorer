@@ -12,6 +12,7 @@ import type {
 import { logger } from '../lib/logger';
 import { errorReporter } from '../lib/error-reporter';
 import { requestLogger } from '../lib/request-logger';
+import { spotifyAuth } from './spotifyAuth';
 
 class SpotifyService {
   private api: AxiosInstance;
@@ -23,9 +24,18 @@ class SpotifyService {
       timeout: 10000,
     });
 
-    // Add request/response interceptors for logging
+    // Add authorization token to all requests
     this.api.interceptors.request.use(
-      (config) => {
+      async (config) => {
+        try {
+          const token = await spotifyAuth.getToken();
+          config.headers.Authorization = `Bearer ${token}`;
+        } catch (error) {
+          errorReporter.reportError(error, {
+            component: 'SpotifyService',
+            action: 'token-injection-failed',
+          });
+        }
         logger.debug(`Spotify API Request: ${config.method?.toUpperCase()} ${config.url}`);
         return config;
       },
