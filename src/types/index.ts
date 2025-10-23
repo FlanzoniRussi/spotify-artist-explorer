@@ -1,5 +1,4 @@
 export * from './spotify';
-import type { UserFavorite } from './spotify';
 
 export interface CustomTrack {
   id: string;
@@ -16,11 +15,15 @@ export interface CustomTrack {
   createdAt: string;
 }
 
-export interface AppState {
-  theme: 'light' | 'dark';
-  language: 'pt' | 'en';
-  favorites: UserFavorite[];
-  customTracks: CustomTrack[];
+export interface UserRating {
+  id: string;
+  itemId: string;
+  itemType: 'track' | 'artist' | 'album' | 'custom-track';
+  itemName: string;
+  itemArtist?: string;
+  rating: number;
+  createdAt: string;
+  updatedAt: string;
 }
 
 export interface SearchFilters {
@@ -28,12 +31,4 @@ export interface SearchFilters {
   type: 'artist' | 'album' | 'track';
   limit: number;
   offset: number;
-}
-
-export interface PaginationState {
-  page: number;
-  limit: number;
-  total: number;
-  hasNext: boolean;
-  hasPrevious: boolean;
 }

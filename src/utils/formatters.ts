@@ -4,12 +4,6 @@ export const formatDuration = (ms: number): string => {
   return `${minutes}:${seconds.toString().padStart(2, '0')}`;
 };
 
-export const formatDurationFromSeconds = (totalSeconds: number): string => {
-  const minutes = Math.floor(totalSeconds / 60);
-  const seconds = totalSeconds % 60;
-  return `${minutes}:${seconds.toString().padStart(2, '0')}`;
-};
-
 export const formatNumber = (num: number): string => {
   if (num >= 1000000) {
     return `${(num / 1000000).toFixed(1)}M`;
@@ -59,28 +53,6 @@ export const formatRelativeDate = (dateString: string): string => {
 export const truncateText = (text: string, maxLength: number): string => {
   if (text.length <= maxLength) return text;
   return `${text.substring(0, maxLength)}...`;
-};
-
-export const getImageUrl = (
-  images: Array<{ url: string; height: number; width: number }>,
-  preferredSize: 'small' | 'medium' | 'large' = 'medium'
-): string => {
-  if (!images || images.length === 0) {
-    return '/placeholder-album.png';
-  }
-
-  const sizeMap = {
-    small: 64,
-    medium: 300,
-    large: 640,
-  };
-
-  const targetSize = sizeMap[preferredSize];
-  const sortedImages = images.sort(
-    (a, b) => Math.abs(a.height - targetSize) - Math.abs(b.height - targetSize)
-  );
-
-  return sortedImages[0].url;
 };
 
 export const generateId = (): string => {
