@@ -1,4 +1,4 @@
-# 🎵 Spotify Artists Explorer
+# Spotify Artists Explorer
 
 > Uma aplicação React moderna e performática para descobrir e explorar artistas do Spotify — construída com **TypeScript**, **React Query**, **Vite** e um polido sistema de design inspirado na estética do Spotify.
 
@@ -9,51 +9,51 @@
 
 ---
 
-## 📋 Índice
+## Índice
 
-- [Visão Geral](#-visão-geral)
-- [Funcionalidades](#-funcionalidades)
-- [Tech Stack](#-tech-stack)
-- [Começando](#-começando)
-- [Estrutura do Projeto](#-estrutura-do-projeto)
-- [Scripts Disponíveis](#-scripts-disponíveis)
-- [Arquitetura e Padrões](#-arquitetura-e-padrões)
-- [Requisitos Atendidos](#-requisitos-atendidos)
-- [Licença](#-licença)
+- [Visão Geral](#visão-geral)
+- [Funcionalidades](#funcionalidades)
+- [Tech Stack](#tech-stack)
+- [Começando](#começando)
+- [Estrutura do Projeto](#estrutura-do-projeto)
+- [Scripts Disponíveis](#scripts-disponíveis)
+- [Arquitetura e Padrões](#arquitetura-e-padrões)
+- [Requisitos Atendidos](#requisitos-atendidos)
+- [Licença](#licença)
 
 ---
 
-## 💡 Visão Geral
+## Visão Geral
 
 Este projeto foi desenvolvido como parte de um **desafio técnico para a Kanastra**, com foco em:
 
-✨ **Arquitetura Limpa** – Separação de responsabilidades, estrutura escalável  
-⚡ **Performance** – Renderização otimizada, cache inteligente, code splitting  
-🎨 **Experiência do Usuário** – Design responsivo, animações suaves, modo escuro  
-🧠 **Qualidade de Código** – Type-safe, bem testado, ESLint/Prettier configurado  
-🌍 **Internacionalização** – Suporte completo PT-BR e EN-US  
+**Arquitetura Limpa** – Separação de responsabilidades, estrutura escalável  
+**Performance** – Renderização otimizada, cache inteligente, code splitting  
+**Experiência do Usuário** – Design responsivo, animações suaves, modo escuro  
+**Qualidade de Código** – Type-safe, bem testado, ESLint/Prettier configurado  
+**Internacionalização** – Suporte completo PT-BR e EN-US  
 
 O objetivo era criar uma **aplicação frontend de nível profissional** que demonstrasse proficiência técnica mantendo uma UX cuidadosa e atenção aos detalhes.
 
 ---
 
-## ✨ Funcionalidades
+## Funcionalidades
 
-### 🔍 **Busca e Descoberta**
+### Busca e Descoberta
 - Buscar artistas por nome com filtro inteligente
 - Filtrar por nome de álbum
 - Paginação (20 itens por página)
 - Input de busca responsivo com debounce
 - Histórico de buscas em tempo real
 
-### 👤 **Detalhes do Artista**
+### Detalhes do Artista
 - Página de perfil completo do artista
 - Top 10 faixas com métricas de popularidade
 - Discografia completa de álbuns/singles
 - Contagem de seguidores e gêneros
 - Link direto para página do artista no Spotify
 
-### 📊 **Análise e Visualização**
+### Análise e Visualização
 - 13+ gráficos interativos incluindo:
   - Tendências de popularidade de artistas
   - Distribuição de popularidade de faixas
@@ -62,7 +62,7 @@ O objetivo era criar uma **aplicação frontend de nível profissional** que dem
   - Visualizações em linhas do tempo
   - Distribuição de favoritos por métricas
 
-### ❤️ **Favoritos e Avaliações**
+### Favoritos e Avaliações
 - Adicionar/remover faixas favoritas
 - Avaliar faixas (1-5 estrelas)
 - Armazenamento persistente (LocalStorage)
@@ -70,7 +70,7 @@ O objetivo era criar uma **aplicação frontend de nível profissional** que dem
 - Dashboard de estatísticas de avaliações
 - Gráficos detalhados de distribuição
 
-### 🎵 **Faixas Personalizadas**
+### Faixas Personalizadas
 - Registre suas próprias faixas musicais
 - Validação de formulário com feedback em tempo real
 - Metadados de faixa: nome, artista, álbum, ano, gênero, duração
@@ -78,28 +78,28 @@ O objetivo era criar uma **aplicação frontend de nível profissional** que dem
 - Gerenciar e editar faixas personalizadas
 - Visualizar estatísticas de faixas personalizadas
 
-### 🌍 **Internacionalização (i18n)**
+### Internacionalização (i18n)
 - Suporte completo PT-BR e EN-US
 - Seletor de idioma no header
 - Todo conteúdo traduzido
 - Formatação de data/número sensível à localidade
 - Preferência de idioma persistente
 
-### 🎨 **Sistema de Temas**
+### Sistema de Temas
 - Modo claro/escuro com autodetecção
 - Respeita preferências do sistema
 - Transições suaves de tema
 - Seleção de tema persistente
 - UI linda em ambos os modos
 
-### 📱 **Design Responsivo**
+### Design Responsivo
 - Abordagem mobile-first
 - Otimizado para todos os tamanhos de tela
 - Interações touch-friendly
 - Layout grid fluido
 - Dimensionamento adaptativo de gráficos
 
-### ⚡ **Performance**
+### Performance
 - Cache de estado de servidor com React Query
 - Lazy loading de componentes
 - Code splitting para carregamentos mais rápidos
@@ -108,35 +108,35 @@ O objetivo era criar uma **aplicação frontend de nível profissional** que dem
 
 ---
 
-## 🛠️ Tech Stack
+## Tech Stack
 
-### 🧩 **Framework Principal**
+### Framework Principal
 - **React 19.1.1** – Biblioteca de UI com hooks
 - **TypeScript 5.9.3** – JavaScript type-safe
 - **Vite 7.1.7** – Ferramenta de build ultra-rápida
 - **React Router 7.9.4** – Roteamento no lado cliente
 
-### 🧭 **Gerenciamento de Estado e Dados**
+### Gerenciamento de Estado e Dados
 - **React Query 5.90.5** – Gerenciamento de estado de servidor & cache
 - **Context API + useReducer** – Gerenciamento de estado cliente
 - **Axios 1.12.2** – Cliente HTTP
 
-### 🎨 **UI e Styling**
+### UI e Styling
 - **Tailwind CSS 3.4.18** – Framework CSS utility-first
 - **Lucide React 0.546.0** – Biblioteca de ícones bela
 - **Framer Motion 12.23.24** – Animações suaves
 - **Recharts 3.3.0** – Gráficos componíveis
 
-### 🧾 **Formulários e Validação**
+### Formulários e Validação
 - **React Hook Form 7.65.0** – Formulários performáticos
 - **Zod 4.1.12** – Validação schema-first com TypeScript
 - **@hookform/resolvers** – Integração de form resolver
 
-### 🌍 **Internacionalização**
+### Internacionalização
 - **react-i18next 16.1.2** – Framework i18n
 - **i18next-browser-languagedetector** – Autodetecção de idioma
 
-### ⚙️ **Experiência do Desenvolvedor**
+### Experiência do Desenvolvedor
 - **ESLint 9.38.0** – Linting de qualidade de código
 - **Prettier 3.6.2** – Formatação de código
 - **Husky 9.1.7** – Git hooks
@@ -146,15 +146,15 @@ O objetivo era criar uma **aplicação frontend de nível profissional** que dem
 
 ---
 
-## 🚀 Começando
+## Começando
 
-### ✅ Pré-requisitos
+### Pré-requisitos
 
 - **Node.js** 18+ ([Download](https://nodejs.org))
 - **npm** 9+ ou **yarn** 3+ (vem com Node)
 - **Git** para clonar o repositório
 
-### ⚡ Instalação
+### Instalação
 
 #### 1. Clone o repositório
 ```bash
@@ -198,7 +198,7 @@ Abra [http://localhost:3000](http://localhost:3000) no seu navegador.
 
 ---
 
-## 📁 Estrutura do Projeto
+## Estrutura do Projeto
 
 ```
 src/
@@ -241,7 +241,7 @@ src/
 
 ---
 
-## 📝 Scripts Disponíveis
+## Scripts Disponíveis
 
 ### Desenvolvimento
 ```bash
@@ -271,7 +271,7 @@ npm run test:all     # Execute todos os testes
 
 ---
 
-## 🏗️ Arquitetura e Padrões
+## Arquitetura e Padrões
 
 ### Gerenciamento de Estado
 
@@ -282,10 +282,10 @@ npm run test:all     # Execute todos os testes
 
 **Estado Cliente (Context API + useReducer)**
 ```
-📦 RatingsContext        → Avaliações do usuário (add, update, remove, stats)
-📦 CustomTracksContext   → Faixas personalizadas (operações CRUD)
-📦 ThemeContext          → Preferência de modo claro/escuro
-📦 I18nContext           → Seleção de idioma (PT-BR/EN-US)
+RatingsContext        → Avaliações do usuário (add, update, remove, stats)
+CustomTracksContext   → Faixas personalizadas (operações CRUD)
+ThemeContext          → Preferência de modo claro/escuro
+I18nContext           → Seleção de idioma (PT-BR/EN-US)
 ```
 
 ### Padrões de Componentes
@@ -312,9 +312,9 @@ npm run test:all     # Execute todos os testes
 
 ---
 
-## 🎯 Requisitos Atendidos
+## Requisitos Atendidos
 
-### ✅ Requisitos Funcionais (Obrigatórios)
+### Requisitos Funcionais (Obrigatórios)
 - [x] Demo funcional com requisições funcionando
 - [x] Listagem artistas com paginação (20 itens/página)
 - [x] Filtros por nome e álbum
@@ -325,7 +325,7 @@ npm run test:all     # Execute todos os testes
 - [x] Formulário cadastro de músicas favoritas
 - [x] Listagem de músicas favoritadas
 
-### ✅ Requisitos Técnicos (Obrigatórios)
+### Requisitos Técnicos (Obrigatórios)
 - [x] React
 - [x] Vite (SPA)
 - [x] TypeScript
@@ -338,7 +338,7 @@ npm run test:all     # Execute todos os testes
 - [x] i18n (PT-BR e EN-US)
 - [x] README com instruções
 
-### 🎁 Diferenciais Implementados
+### Diferenciais Implementados
 - [x] Validações com Zod
 - [x] ESLint + Prettier configurados
 - [x] Testes unitários (Vitest)
@@ -359,7 +359,7 @@ npm run test:all     # Execute todos os testes
 
 ---
 
-## 📄 Licença
+## Licença
 
 Este projeto está licenciado sob a **Licença MIT** - veja o arquivo [LICENSE](LICENSE) para detalhes.
 
