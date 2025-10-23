@@ -38,7 +38,7 @@ export const NewReleasesPage: React.FC = () => {
   const handleToggleFavorite = (album: SpotifyAlbum) => {
     const favoriteData = {
       name: album.name,
-      artist: album.artists[0]?.name || 'Unknown',
+      artist: album.artists[0]?.name || t('fallbacks.unknown'),
       album: album.name,
       duration: 0,
       type: 'album' as const,
@@ -54,7 +54,7 @@ export const NewReleasesPage: React.FC = () => {
     return favorites.some(fav => 
       fav.type === 'album' && 
       fav.name === album.name && 
-      fav.artist === (album.artists[0]?.name || 'Unknown')
+      fav.artist === (album.artists[0]?.name || t('fallbacks.unknown'))
     );
   };
 

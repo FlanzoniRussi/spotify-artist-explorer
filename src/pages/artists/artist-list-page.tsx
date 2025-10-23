@@ -119,7 +119,7 @@ export const ArtistListPage: React.FC = () => {
   const handleToggleAlbumFavorite = (album: SpotifyAlbum) => {
     const favoriteData = {
       name: album.name,
-      artist: album.artists[0]?.name || 'Unknown',
+      artist: album.artists[0]?.name || t('fallbacks.unknown'),
       album: album.name,
       duration: 0,
       type: 'album' as const,
@@ -136,7 +136,7 @@ export const ArtistListPage: React.FC = () => {
       fav =>
         fav.type === 'album' &&
         fav.name === album.name &&
-        fav.artist === (album.artists[0]?.name || 'Unknown')
+        fav.artist === (album.artists[0]?.name || t('fallbacks.unknown'))
     );
   };
 
@@ -167,8 +167,7 @@ export const ArtistListPage: React.FC = () => {
       });
     });
     const topGenre =
-      Array.from(genresMap.entries()).sort((a, b) => b[1] - a[1])[0]?.[0] ||
-      'N/A';
+      Array.from(genresMap.entries()).sort((a, b) => b[1] - a[1])[0]?.[0] || t('fallbacks.unknown');
 
     const topArtist =
       artists.length > 0
@@ -188,7 +187,7 @@ export const ArtistListPage: React.FC = () => {
         ? pagination.currentPage < pagination.totalPages - 1
         : false,
     };
-  }, [artists, albums, pagination]);
+  }, [artists, albums, pagination, t]);
 
   if (error) {
     return (
@@ -348,7 +347,7 @@ export const ArtistListPage: React.FC = () => {
                     Mais Popular
                   </p>
                   <p className='text-lg font-bold text-gray-900 dark:text-white truncate'>
-                    {stats.topArtist?.name || 'N/A'}
+                    {stats.topArtist?.name || t('fallbacks.unknown')}
                   </p>
                   <p className='text-xs text-gray-500 dark:text-gray-400'>
                     {stats.topArtist?.popularity || 0}% popularidade

@@ -147,5 +147,11 @@
     "favorites": "Erro ao carregar favoritos",
     "trackRegistration": "Erro ao carregar formulário de cadastro",
     "dashboard": "Erro ao carregar dashboard"
+  },
+  "fallbacks": {
+    "unknown": "Desconhecido",
+    "unknownAlbum": "Álbum Desconhecido",
+    "notAvailable": "N/A",
+    "albumNotFound": "Álbum não encontrado ou foi removido."
   }
 }

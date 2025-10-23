@@ -111,7 +111,7 @@ export const TrackList: React.FC<TrackListProps> = ({
                 </td>
                 {showAlbum && (
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
-                    {track.album?.name || 'Unknown Album'}
+                    {track.album?.name || t('fallbacks.unknown')}
                   </td>
                 )}
                 <td className="px-6 py-4 whitespace-nowrap">

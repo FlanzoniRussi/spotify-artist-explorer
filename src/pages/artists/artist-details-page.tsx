@@ -63,8 +63,8 @@ export const ArtistDetailsPage: React.FC = () => {
   const handleToggleTrackFavorite = (track: SpotifyTrack) => {
     const favoriteData = {
       name: track.name,
-      artist: track.artists[0]?.name || artist?.name || 'Unknown',
-      album: track.album?.name || 'Unknown',
+      artist: track.artists[0]?.name || artist?.name || t('fallbacks.unknown'),
+      album: track.album?.name || t('fallbacks.unknown'),
       duration: track.duration_ms,
       type: 'track' as const,
       imageUrl: track.album?.images?.[0]?.url,
@@ -78,7 +78,7 @@ export const ArtistDetailsPage: React.FC = () => {
   const handleToggleAlbumFavorite = (album: SpotifyAlbum) => {
     const favoriteData = {
       name: album.name,
-      artist: artist?.name || 'Unknown',
+      artist: artist?.name || t('fallbacks.unknown'),
       album: album.name,
       duration: 0,
       type: 'album' as const,
@@ -95,7 +95,7 @@ export const ArtistDetailsPage: React.FC = () => {
     return favorites.some(fav => 
       fav.type === 'track' && 
       fav.name === track.name && 
-      fav.artist === (track.artists[0]?.name || artist?.name || 'Unknown')
+      fav.artist === (track.artists[0]?.name || artist?.name || t('fallbacks.unknown'))
     );
   };
 
@@ -103,7 +103,7 @@ export const ArtistDetailsPage: React.FC = () => {
     return favorites.some(fav => 
       fav.type === 'album' && 
       fav.name === album.name && 
-      fav.artist === (artist?.name || 'Unknown')
+      fav.artist === (artist?.name || t('fallbacks.unknown'))
     );
   };
 
@@ -488,7 +488,7 @@ export const ArtistDetailsPage: React.FC = () => {
                         )}
                       </TableCell>
                       <TableCell className="text-gray-900 dark:text-white">{album.name}</TableCell>
-                      <TableCell className="text-gray-600 dark:text-gray-400">{artist?.name || 'Unknown'}</TableCell>
+                      <TableCell className="text-gray-600 dark:text-gray-400">{artist?.name || t('fallbacks.unknown')}</TableCell>
                       <TableCell className="text-gray-600 dark:text-gray-400">{formatDate(album.release_date)}</TableCell>
                       <TableCell className="text-gray-600 dark:text-gray-400">{album.total_tracks}</TableCell>
                       <TableCell>

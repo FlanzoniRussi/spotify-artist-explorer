@@ -147,5 +147,11 @@
     "favorites": "Error loading favorites",
     "trackRegistration": "Error loading track registration form",
     "dashboard": "Error loading dashboard"
+  },
+  "fallbacks": {
+    "unknown": "Unknown",
+    "unknownAlbum": "Unknown Album",
+    "notAvailable": "N/A",
+    "albumNotFound": "Album not found or has been removed."
   }
 }

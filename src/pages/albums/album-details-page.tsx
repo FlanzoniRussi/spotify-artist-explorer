@@ -34,8 +34,8 @@ export const AlbumDetailsPage: React.FC = () => {
   const handleToggleTrackFavorite = (track: SpotifyTrack) => {
     const favoriteData = {
       name: track.name,
-      artist: track.artists[0]?.name || album?.artists[0]?.name || 'Unknown',
-      album: album?.name || 'Unknown',
+      artist: track.artists[0]?.name || album?.artists[0]?.name || t('fallbacks.unknown'),
+      album: album?.name || t('fallbacks.unknown'),
       duration: track.duration_ms,
       type: 'track' as const,
       imageUrl: track.album?.images?.[0]?.url || album?.images?.[0]?.url,
@@ -50,7 +50,7 @@ export const AlbumDetailsPage: React.FC = () => {
     
     const favoriteData = {
       name: album.name,
-      artist: album.artists[0]?.name || 'Unknown',
+      artist: album.artists[0]?.name || t('fallbacks.unknown'),
       album: album.name,
       duration: 0,
       type: 'album' as const,
@@ -66,7 +66,7 @@ export const AlbumDetailsPage: React.FC = () => {
     return favorites.some(fav => 
       fav.type === 'track' && 
       fav.name === track.name && 
-      fav.artist === (track.artists[0]?.name || album?.artists[0]?.name || 'Unknown')
+      fav.artist === (track.artists[0]?.name || album?.artists[0]?.name || t('fallbacks.unknown'))
     );
   };
 
@@ -75,7 +75,7 @@ export const AlbumDetailsPage: React.FC = () => {
     return favorites.some(fav => 
       fav.type === 'album' && 
       fav.name === album.name && 
-      fav.artist === (album.artists[0]?.name || 'Unknown')
+      fav.artist === (album.artists[0]?.name || t('fallbacks.unknown'))
     );
   };
 
@@ -154,7 +154,7 @@ export const AlbumDetailsPage: React.FC = () => {
         <EmptyState
           icon={<Music size={48} className='text-gray-400 dark:text-gray-500' />}
           title={t('errors.notFound')}
-          description="Album not found or has been removed."
+          description={t('fallbacks.albumNotFound')}
         />
       </div>
     );
