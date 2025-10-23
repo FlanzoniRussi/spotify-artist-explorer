@@ -2,6 +2,7 @@ import { Component, type ErrorInfo, type ReactNode } from 'react';
 import { AlertTriangle, RefreshCw, Home } from 'lucide-react';
 import { Button } from './ui/button';
 import { errorReporter } from '../lib/error-reporter';
+import i18n from 'i18next';
 
 /**
  * Props for the ErrorBoundary component.
@@ -162,22 +163,22 @@ export class ErrorBoundary extends Component<
               </div>
 
               <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
-                Oops! Algo deu errado
+                {i18n.t('errorBoundary.title')}
               </h2>
 
               <p className="text-gray-600 dark:text-gray-300 mb-6">
-                Ocorreu um erro inesperado. Tente recarregar a página ou volte
-                para a página inicial.
+                {i18n.t('errorBoundary.message')}
               </p>
 
               {import.meta.env.DEV && this.state.error && (
                 <details className="mb-6 text-left">
                   <summary className="cursor-pointer text-sm font-semibold text-gray-600 dark:text-gray-400 mb-2 hover:text-gray-900 dark:hover:text-gray-200">
-                    📋 Detalhes do erro (desenvolvimento)
+                    {i18n.t('errorBoundary.detailsTitle')}
                   </summary>
                   <div className="bg-gray-100 dark:bg-gray-900 p-3 rounded-lg overflow-auto max-h-48">
                     <p className="text-xs text-gray-700 dark:text-gray-300 font-mono mb-2">
-                      <strong>Mensagem:</strong> {this.state.error.message}
+                      <strong>{i18n.t('errorBoundary.messageDetails')}:</strong>{" "}
+                      {this.state.error.message}
                     </p>
                     {this.state.error.stack && (
                       <pre className="text-xs text-gray-600 dark:text-gray-400 font-mono overflow-auto">
@@ -194,7 +195,7 @@ export class ErrorBoundary extends Component<
                   className="flex items-center gap-2"
                 >
                   <RefreshCw size={16} />
-                  Tentar novamente
+                  {i18n.t('errorBoundary.retryButton')}
                 </Button>
 
                 <Button
@@ -203,7 +204,7 @@ export class ErrorBoundary extends Component<
                   className="flex items-center gap-2"
                 >
                   <Home size={16} />
-                  Ir para início
+                  {i18n.t('errorBoundary.homeButton')}
                 </Button>
               </div>
             </div>

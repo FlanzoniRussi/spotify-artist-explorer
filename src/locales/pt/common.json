@@ -104,5 +104,21 @@
     "editTrack": "Editar música",
     "deleteTrack": "Deletar música",
     "removeFavorite": "Remover dos favoritos"
+  },
+  "errorBoundary": {
+    "title": "Oops! Algo deu errado",
+    "message": "Ocorreu um erro inesperado. Tente recarregar a página ou volte para a página inicial.",
+    "detailsTitle": "📋 Detalhes do erro (desenvolvimento)",
+    "messageDetails": "Mensagem",
+    "retryButton": "Tentar novamente",
+    "homeButton": "Ir para início"
+  },
+  "errorState": {
+    "title": "Algo deu errado",
+    "description": "Ocorreu um erro inesperado. Tente novamente.",
+    "retryButton": "Tentar novamente"
+  },
+  "failedToLoad": {
+    "album": "Falha ao carregar álbum. Tente novamente."
   }
 }

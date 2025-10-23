@@ -94,7 +94,7 @@ export const AlbumDetailsPage: React.FC = () => {
         <EmptyState
           icon={<Music size={48} className='text-gray-400 dark:text-gray-500' />}
           title={t('errors.notFound')}
-          description="Failed to load album. Please try again."
+          description={t('failedToLoad.album')}
           action={
             <Link
               to="/"

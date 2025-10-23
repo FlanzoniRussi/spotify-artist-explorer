@@ -104,5 +104,21 @@
     "editTrack": "Edit track",
     "deleteTrack": "Delete track",
     "removeFavorite": "Remove from favorites"
+  },
+  "errorBoundary": {
+    "title": "Oops! Something went wrong",
+    "message": "An unexpected error occurred. Please try refreshing the page or go back to the home page.",
+    "detailsTitle": "📋 Error Details (development)",
+    "messageDetails": "Message",
+    "retryButton": "Try Again",
+    "homeButton": "Go to Home"
+  },
+  "errorState": {
+    "title": "Something went wrong",
+    "description": "An unexpected error occurred. Please try again.",
+    "retryButton": "Try Again"
+  },
+  "failedToLoad": {
+    "album": "Failed to load album. Please try again."
   }
 }

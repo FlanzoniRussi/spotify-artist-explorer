@@ -1,5 +1,6 @@
 import React from 'react';
 import { Music, Search, Heart, AlertCircle } from 'lucide-react';
+import { useTranslation } from '../../hooks/useTranslation';
 
 interface EmptyStateProps {
   icon?: React.ReactNode;
@@ -75,17 +76,20 @@ export const ErrorState: React.FC<{
   title = 'Algo deu errado',
   description = 'Ocorreu um erro inesperado. Tente novamente.',
   onRetry,
-}) => (
-  <EmptyState
-    icon={<AlertCircle size={48} className='text-red-400' />}
-    title={title}
-    description={description}
-    action={
-      onRetry && (
-        <button onClick={onRetry} className='btn-primary'>
-          Tentar novamente
-        </button>
-      )
-    }
-  />
-);
+}) => {
+  const { t } = useTranslation();
+  return (
+    <EmptyState
+      icon={<AlertCircle size={48} className='text-red-400' />}
+      title={title}
+      description={description}
+      action={
+        onRetry && (
+          <button onClick={onRetry} className='btn-primary'>
+            Tentar novamente
+          </button>
+        )
+      }
+    />
+  );
+};
