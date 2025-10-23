@@ -8,6 +8,10 @@ interface TokenResponse {
   expires_in: number;
 }
 
+interface AuthError extends Error {
+  translationKey?: string;
+}
+
 class SpotifyAuth {
   private token: string | null = null;
   private tokenExpireTime: number | null = null;
@@ -28,7 +32,8 @@ class SpotifyAuth {
   private async refreshToken(): Promise<string> {
     try {
       if (!this.clientId || !this.clientSecret) {
-        const error = new Error('Spotify credentials not configured. Please set VITE_SPOTIFY_CLIENT_ID and VITE_SPOTIFY_CLIENT_SECRET in .env');
+        const error: AuthError = new Error('Spotify credentials not configured. Please set VITE_SPOTIFY_CLIENT_ID and VITE_SPOTIFY_CLIENT_SECRET in .env');
+        error.translationKey = 'common:errors.api.credentialsNotConfigured';
         errorReporter.reportError(error, {
           component: 'SpotifyAuth',
           action: 'missing-credentials',
@@ -58,7 +63,9 @@ class SpotifyAuth {
         component: 'SpotifyAuth',
         action: 'token-refresh-failed',
       });
-      throw new Error('Failed to obtain Spotify access token. Check your credentials.');
+      const authError: AuthError = new Error('Failed to obtain Spotify access token. Check your credentials.');
+      authError.translationKey = 'common:errors.api.tokenFailed';
+      throw authError;
     }
   }
 }

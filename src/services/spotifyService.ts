@@ -15,6 +15,10 @@ import { errorReporter } from '../lib/error-reporter';
 import { requestLogger } from '../lib/request-logger';
 import { spotifyAuth } from './spotifyAuth';
 
+interface TranslatableError extends Error {
+  translationKey?: string;
+}
+
 class SpotifyService {
   private api: AxiosInstance;
   private readonly baseURL = 'https://api.spotify.com/v1';
@@ -482,14 +486,18 @@ class SpotifyService {
           component: 'SpotifyService',
           action: 'spotify-api-error',
         });
-        return new Error(`Spotify API Error: ${spotifyError.error.message}`);
+        const apiError: TranslatableError = new Error(`${spotifyError.error.message}`);
+        apiError.translationKey = 'common:errors.api.spotifyApi';
+        return apiError;
       }
     }
     errorReporter.reportError(error, {
       component: 'SpotifyService',
       action: 'unexpected-error',
     });
-    return new Error('An unexpected error occurred');
+    const unexpectedError: TranslatableError = new Error('An unexpected error occurred');
+    unexpectedError.translationKey = 'common:errors.api.unexpected';
+    return unexpectedError;
   }
 }
 

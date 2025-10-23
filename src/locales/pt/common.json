@@ -43,7 +43,13 @@
     "generic": "Algo deu errado. Tente novamente.",
     "network": "Erro de conexão. Verifique sua internet.",
     "notFound": "Não encontrado",
-    "unauthorized": "Acesso não autorizado"
+    "unauthorized": "Acesso não autorizado",
+    "api": {
+      "credentialsNotConfigured": "Credenciais do Spotify não configuradas. Verifique VITE_SPOTIFY_CLIENT_ID e VITE_SPOTIFY_CLIENT_SECRET no arquivo .env",
+      "tokenFailed": "Falha ao obter token de acesso do Spotify. Verifique suas credenciais.",
+      "unexpected": "Ocorreu um erro inesperado",
+      "spotifyApi": "Erro da API do Spotify"
+    }
   },
   "empty": {
     "noArtists": "Nenhum artista encontrado",

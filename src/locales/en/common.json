@@ -41,9 +41,15 @@
   },
   "errors": {
     "generic": "Something went wrong. Please try again.",
-    "network": "Connection error. Check your internet.",
+    "network": "Network error. Please check your connection.",
     "notFound": "Not found",
-    "unauthorized": "Unauthorized access"
+    "unauthorized": "Access unauthorized",
+    "api": {
+      "credentialsNotConfigured": "Spotify credentials not configured. Please set VITE_SPOTIFY_CLIENT_ID and VITE_SPOTIFY_CLIENT_SECRET in .env",
+      "tokenFailed": "Failed to obtain Spotify access token. Check your credentials.",
+      "unexpected": "An unexpected error occurred",
+      "spotifyApi": "Spotify API Error"
+    }
   },
   "empty": {
     "noArtists": "No artists found",
