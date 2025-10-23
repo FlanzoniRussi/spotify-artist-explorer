@@ -1,9 +1,70 @@
-import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
+import React, { createContext, useContext, useReducer, useEffect, useCallback } from 'react';
 import type { ReactNode } from 'react';
 import type { CustomTrack } from '../types';
 import { generateId } from '../utils/formatters';
 
 const CUSTOM_TRACKS_KEY = 'spotify-artists-custom-tracks';
+
+/**
+ * Action types for custom tracks reducer.
+ */
+type CustomTracksAction =
+  | { type: 'LOAD_TRACKS'; payload: CustomTrack[] }
+  | { type: 'ADD_TRACK'; payload: CustomTrack }
+  | { type: 'REMOVE_TRACK'; payload: string }
+  | { type: 'UPDATE_TRACK'; payload: { id: string; data: Partial<CustomTrack> } }
+  | { type: 'CLEAR_TRACKS' }
+  | { type: 'SET_LOADING'; payload: boolean };
+
+/**
+ * Initial state for custom tracks reducer.
+ */
+interface CustomTracksState {
+  customTracks: CustomTrack[];
+  isLoading: boolean;
+}
+
+const initialState: CustomTracksState = {
+  customTracks: [],
+  isLoading: true,
+};
+
+/**
+ * Reducer function for managing custom tracks state with Redux-like actions.
+ *
+ * @param {CustomTracksState} state - Current state
+ * @param {CustomTracksAction} action - Action to dispatch
+ * @returns {CustomTracksState} Updated state
+ */
+const customTracksReducer = (
+  state: CustomTracksState,
+  action: CustomTracksAction
+): CustomTracksState => {
+  switch (action.type) {
+    case 'LOAD_TRACKS':
+      return { ...state, customTracks: action.payload, isLoading: false };
+    case 'ADD_TRACK':
+      return { ...state, customTracks: [...state.customTracks, action.payload] };
+    case 'REMOVE_TRACK':
+      return {
+        ...state,
+        customTracks: state.customTracks.filter(track => track.id !== action.payload),
+      };
+    case 'UPDATE_TRACK':
+      return {
+        ...state,
+        customTracks: state.customTracks.map(track =>
+          track.id === action.payload.id ? { ...track, ...action.payload.data } : track
+        ),
+      };
+    case 'CLEAR_TRACKS':
+      return { ...state, customTracks: [] };
+    case 'SET_LOADING':
+      return { ...state, isLoading: action.payload };
+    default:
+      return state;
+  }
+};
 
 /**
  * Context type definition for custom tracks management.
@@ -62,8 +123,7 @@ interface CustomTracksProviderProps {
  * ```
  */
 export const CustomTracksProvider: React.FC<CustomTracksProviderProps> = ({ children }) => {
-  const [customTracks, setCustomTracks] = useState<CustomTrack[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const [state, dispatch] = useReducer(customTracksReducer, initialState);
 
   useEffect(() => {
     const loadCustomTracks = () => {
@@ -71,12 +131,13 @@ export const CustomTracksProvider: React.FC<CustomTracksProviderProps> = ({ chil
         const stored = localStorage.getItem(CUSTOM_TRACKS_KEY);
         if (stored) {
           const parsedTracks = JSON.parse(stored);
-          setCustomTracks(parsedTracks);
+          dispatch({ type: 'LOAD_TRACKS', payload: parsedTracks });
+        } else {
+          dispatch({ type: 'SET_LOADING', payload: false });
         }
       } catch {
         // Silent fail
-      } finally {
-        setIsLoading(false);
+        dispatch({ type: 'SET_LOADING', payload: false });
       }
     };
 
@@ -92,11 +153,16 @@ export const CustomTracksProvider: React.FC<CustomTracksProviderProps> = ({ chil
   const saveCustomTracks = useCallback((newTracks: CustomTrack[]) => {
     try {
       localStorage.setItem(CUSTOM_TRACKS_KEY, JSON.stringify(newTracks));
-      setCustomTracks(newTracks);
     } catch {
       // Silent fail
     }
   }, []);
+
+  useEffect(() => {
+    if (!state.isLoading) {
+      saveCustomTracks(state.customTracks);
+    }
+  }, [state.customTracks, state.isLoading, saveCustomTracks]);
 
   /**
    * Add a new custom track to the collection.
@@ -112,11 +178,10 @@ export const CustomTracksProvider: React.FC<CustomTracksProviderProps> = ({ chil
         createdAt: new Date().toISOString(),
       };
 
-      const updatedTracks = [...customTracks, newTrack];
-      saveCustomTracks(updatedTracks);
+      dispatch({ type: 'ADD_TRACK', payload: newTrack });
       return newTrack;
     },
-    [customTracks, saveCustomTracks]
+    []
   );
 
   /**
@@ -124,13 +189,9 @@ export const CustomTracksProvider: React.FC<CustomTracksProviderProps> = ({ chil
    *
    * @param {string} id - The custom track ID to remove
    */
-  const removeCustomTrack = useCallback(
-    (id: string) => {
-      const updatedTracks = customTracks.filter(track => track.id !== id);
-      saveCustomTracks(updatedTracks);
-    },
-    [customTracks, saveCustomTracks]
-  );
+  const removeCustomTrack = useCallback((id: string) => {
+    dispatch({ type: 'REMOVE_TRACK', payload: id });
+  }, []);
 
   /**
    * Update a custom track with partial data.
@@ -140,23 +201,17 @@ export const CustomTracksProvider: React.FC<CustomTracksProviderProps> = ({ chil
    * @param {string} id - The custom track ID to update
    * @param {Partial<CustomTrack>} updatedData - Partial track data to merge
    */
-  const updateCustomTrack = useCallback(
-    (id: string, updatedData: Partial<CustomTrack>) => {
-      const updatedTracks = customTracks.map(track =>
-        track.id === id ? { ...track, ...updatedData } : track
-      );
-      saveCustomTracks(updatedTracks);
-    },
-    [customTracks, saveCustomTracks]
-  );
+  const updateCustomTrack = useCallback((id: string, updatedData: Partial<CustomTrack>) => {
+    dispatch({ type: 'UPDATE_TRACK', payload: { id, data: updatedData } });
+  }, []);
 
   /**
    * Clear all custom tracks and reset the context state.
    * This also clears localStorage.
    */
   const clearCustomTracks = useCallback(() => {
-    saveCustomTracks([]);
-  }, [saveCustomTracks]);
+    dispatch({ type: 'CLEAR_TRACKS' });
+  }, []);
 
   /**
    * Get all custom tracks of a specific genre.
@@ -166,9 +221,9 @@ export const CustomTracksProvider: React.FC<CustomTracksProviderProps> = ({ chil
    */
   const getCustomTracksByGenre = useCallback(
     (genre: string) => {
-      return customTracks.filter(track => track.genre === genre);
+      return state.customTracks.filter(track => track.genre === genre);
     },
-    [customTracks]
+    [state.customTracks]
   );
 
   /**
@@ -179,9 +234,9 @@ export const CustomTracksProvider: React.FC<CustomTracksProviderProps> = ({ chil
    */
   const getCustomTracksByYear = useCallback(
     (year: number) => {
-      return customTracks.filter(track => track.year === year);
+      return state.customTracks.filter(track => track.year === year);
     },
-    [customTracks]
+    [state.customTracks]
   );
 
   /**
@@ -192,14 +247,14 @@ export const CustomTracksProvider: React.FC<CustomTracksProviderProps> = ({ chil
    */
   const getCustomTracksByStatus = useCallback(
     (isReleased: boolean) => {
-      return customTracks.filter(track => track.isReleased === isReleased);
+      return state.customTracks.filter(track => track.isReleased === isReleased);
     },
-    [customTracks]
+    [state.customTracks]
   );
 
   const value: CustomTracksContextType = {
-    customTracks,
-    isLoading,
+    customTracks: state.customTracks,
+    isLoading: state.isLoading,
     addCustomTrack,
     removeCustomTrack,
     updateCustomTrack,
