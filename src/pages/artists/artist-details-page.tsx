@@ -371,7 +371,7 @@ export const ArtistDetailsPage: React.FC = () => {
                 <LoadingSkeleton key={index} className="h-16 w-full" />
               ))}
             </div>
-          ) : topTracks.length > 0 ? (
+          ) : paginatedTopTracks.length > 0 ? (
             <>
               <TrackList
                 tracks={paginatedTopTracks}
@@ -391,13 +391,13 @@ export const ArtistDetailsPage: React.FC = () => {
                 </div>
               )}
             </>
-          ) : (
+          ) : topTracks.length === 0 ? (
             <EmptyState
               icon={<Play size={48} className='text-gray-400 dark:text-gray-500' />}
               title={t('artists:details.noTracks')}
               description={t('artists:details.noTracksDescription')}
             />
-          )}
+          ) : null}
         </motion.div>
 
         {/* Albums */}
@@ -440,15 +440,15 @@ export const ArtistDetailsPage: React.FC = () => {
                 </div>
               )}
             </>
-          ) : (
+          ) : !albumsLoading && !albumsData ? (
             <EmptyState
               icon={<Calendar size={48} className='text-gray-400 dark:text-gray-500' />}
               title={t('artists:details.noAlbums')}
               description={t('artists:details.noAlbumsDescription')}
             />
-          )}
+          ) : null}
         </motion.div>
-      </motion.div>
+        </motion.div>
     </ErrorBoundary>
   );
 };
