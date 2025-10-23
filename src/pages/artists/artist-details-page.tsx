@@ -36,7 +36,7 @@ export const ArtistDetailsPage: React.FC = () => {
   const {
     data: albumsData,
     isLoading: albumsLoading,
-  } = useSpotifyArtistAlbums(id || '', (currentAlbumsPage - 1) * ITEMS_PER_PAGE, ITEMS_PER_PAGE);
+  } = useSpotifyArtistAlbums(id || '', currentAlbumsPage - 1, ITEMS_PER_PAGE);
 
   // Paginate top tracks client-side (API returns only top 10)
   const paginatedTopTracks = React.useMemo(() => {
