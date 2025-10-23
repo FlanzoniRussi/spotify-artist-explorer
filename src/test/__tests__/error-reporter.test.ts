@@ -193,17 +193,12 @@ describe('ErrorReporter', () => {
 
   describe('error tracking integration readiness', () => {
     it('should have production error tracking support', () => {
-      // This test verifies the structure supports Sentry/Rollbar integration
       const error = new Error('Test error');
       const context = { component: 'Test', action: 'test' };
       
       expect(() => {
         errorReporter.reportError(error, context);
       }).not.toThrow();
-      
-      // In production, you would have:
-      // Sentry.captureException(error, { contexts: { context } })
-      // or similar integration
     });
   });
 });

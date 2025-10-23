@@ -40,7 +40,7 @@ interface RequestMetrics {
  */
 class RequestLogger {
   private requests: RequestMetrics[] = [];
-  private maxRequests = 100; // Keep last 100 requests
+  private maxRequests = 100;
 
   /**
    * Log an API request with response time and status.

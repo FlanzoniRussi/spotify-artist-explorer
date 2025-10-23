@@ -115,7 +115,6 @@ describe('Logger', () => {
       
       if (consoleSpy.mock.calls.length > 0) {
         const output = consoleSpy.mock.calls[0][0];
-        // Check if ISO timestamp is present
         expect(output).toMatch(/\d{4}-\d{2}-\d{2}T/);
       }
       
