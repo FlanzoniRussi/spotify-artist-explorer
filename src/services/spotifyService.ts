@@ -440,6 +440,30 @@ class SpotifyService {
     }
   }
 
+  async getNewReleases(limit = 20, offset = 0): Promise<SpotifyArtistAlbums> {
+    try {
+      const response: AxiosResponse<SpotifyArtistAlbums> = await this.api.get(
+        '/browse/new-releases',
+        {
+          params: {
+            limit,
+            offset,
+          },
+        }
+      );
+      logger.info('New releases retrieved', { limit, offset });
+      return response.data;
+    } catch (error) {
+      errorReporter.reportError(error, {
+        component: 'SpotifyService',
+        action: 'getNewReleases',
+        limit,
+        offset,
+      });
+      throw this.handleError(error);
+    }
+  }
+
   private handleError(error: unknown): Error {
     if (error && typeof error === 'object' && 'response' in error) {
       const axiosError = error as { 

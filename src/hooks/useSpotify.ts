@@ -360,3 +360,24 @@ export const useInfiniteSpotifyArtists = (query: string, limit = 20) => {
     gcTime: 10 * 60 * 1000,
   });
 };
+
+/**
+ * Hook for fetching new album releases on Spotify.
+ *
+ * Fetches the latest new releases from Spotify's browse API with pagination support.
+ *
+ * @param {number} [page=0] - Page number for pagination (0-indexed)
+ * @param {number} [limit=20] - Number of releases per page
+ * @returns {UseQueryResult} React Query object with new releases data
+ *
+ * @example
+ * const { data, isLoading } = useSpotifyNewReleases(0, 20);
+ */
+export const useSpotifyNewReleases = (page = 0, limit = 20) => {
+  return useQuery({
+    queryKey: ['new-releases', page, limit],
+    queryFn: () => spotifyService.getNewReleases(limit, page * limit),
+    staleTime: 30 * 60 * 1000,
+    gcTime: 60 * 60 * 1000,
+  });
+};

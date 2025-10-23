@@ -6,6 +6,7 @@ import { CustomTracksProvider } from './contexts/custom-tracks-context';
 import { RatingsProvider } from './contexts/ratings-context';
 import { ErrorBoundary } from './components/error-boundary';
 import { MainLayout } from './components/layout/main-layout';
+import { NewReleasesPage } from './pages/home/new-releases-page';
 import { ArtistListPage } from './pages/artists/artist-list-page';
 import { ArtistDetailsPage } from './pages/artists/artist-details-page';
 import { AlbumDetailsPage } from './pages/albums/album-details-page';
@@ -37,6 +38,15 @@ function App() {
                     <Routes>
                       <Route
                         path="/"
+                        element={
+                          <ErrorBoundary fallback={<div className="p-4">Erro ao carregar lançamentos</div>}>
+                            <NewReleasesPage />
+                          </ErrorBoundary>
+                        }
+                      />
+
+                      <Route
+                        path="/search-artists"
                         element={
                           <ErrorBoundary fallback={<div className="p-4">Erro ao carregar artistas</div>}>
                             <ArtistListPage />
